@@ -63,11 +63,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/splashvector" />
+                android:src="@drawable/splashvector"
+                />
 
             <EditText
                 android:id="@+id/emailinput"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
@@ -81,24 +82,40 @@
                 android:textColor="#535353"
                 android:textColorHint="#BAB4B4"
                 android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/passwordinput"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/eduttextborder5"
-                android:ems="10"
-                android:fontFamily="@font/titilliumweregular"
-                android:hint="@string/enter_your_password"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="18dp"
-                android:paddingRight="18dp"
-                android:textColor="#535353"
-                android:textColorHint="#BAB4B4"
-                android:textSize="20sp" />
+                >
 
+                <EditText
+                    android:id="@+id/passwordinput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/eduttextborder5"
+                    android:ems="10"
+                    android:fontFamily="@font/titilliumweregular"
+                    android:hint="@string/enter_your_password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/passwordshowbutton"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:background="@drawable/show2"
+                    />
+            </RelativeLayout>
             <Button
                 android:id="@+id/singinbutton"
                 android:layout_width="match_parent"

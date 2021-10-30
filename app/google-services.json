@@ -1,21 +1,20 @@
 {
   "project_info": {
-    "project_number": "1052448512364",
-    "firebase_url": "https://attendance-management-sy-4708a-default-rtdb.firebaseio.com",
-    "project_id": "attendance-management-sy-4708a",
-    "storage_bucket": "attendance-management-sy-4708a.appspot.com"
+    "project_number": "126959241056",
+    "project_id": "attendance-5eae6",
+    "storage_bucket": "attendance-5eae6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1052448512364:android:16a35ff02c777dcdeabb49",
+        "mobilesdk_app_id": "1:126959241056:android:66887132d77690276e8005",
         "android_client_info": {
           "package_name": "com.example.attendance"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1052448512364-34t5damv15t31r212v9fjbc6ggqnb9ov.apps.googleusercontent.com",
+          "client_id": "126959241056-34p9lgopgamg61t0ttge4mvf10ak3mcd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.attendance",
@@ -23,20 +22,20 @@
           }
         },
         {
-          "client_id": "1052448512364-6ui2b8t9icpds1gm22n85io48cb1n4m2.apps.googleusercontent.com",
+          "client_id": "126959241056-tmdtm7uen9e818ks1tkeec3rarnmar5f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAsUxUpjocrFhlwaSilPeOjR0lZpPC0uac"
+          "current_key": "AIzaSyDHaRo_DbNMFK9QCz1FVIEtvtOgrvFmIHw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1052448512364-6ui2b8t9icpds1gm22n85io48cb1n4m2.apps.googleusercontent.com",
+              "client_id": "126959241056-tmdtm7uen9e818ks1tkeec3rarnmar5f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

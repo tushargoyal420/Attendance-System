@@ -96,24 +96,42 @@
                 android:textColor="#535353"
                 android:textColorHint="#BAB4B4"
                 android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/createpasswordinput"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/eduttextborder5"
-                android:ems="10"
-                android:fontFamily="@font/titilliumweregular"
-                android:hint="@string/create_a_password"
-                android:inputType="none|textVisiblePassword"
-                android:paddingLeft="18dp"
-                android:paddingRight="18dp"
-                android:textColor="#535353"
-                android:textColorHighlight="@color/teal_700"
-                android:textColorHint="#BAB4B4"
-                android:textSize="20sp" />
+                >
+
+                <EditText
+                    android:id="@+id/createpasswordinput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/eduttextborder5"
+                    android:ems="10"
+                    android:fontFamily="@font/titilliumweregular"
+                    android:hint="@string/create_a_password"
+                    android:inputType="none|textPassword"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHighlight="@color/teal_700"
+                    android:textColorHint="#BAB4B4"
+                    android:textSize="20sp" />
+
+
+                <ImageView
+                    android:id="@+id/passwordshowbutton"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:background="@drawable/show2"
+                    />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/singinbutton"

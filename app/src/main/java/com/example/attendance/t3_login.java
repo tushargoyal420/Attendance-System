@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +26,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class t3_login extends AppCompatActivity {
     private EditText temailaddress, tpassword;
     private Button tsignin;
+    private ImageView tpasswordshow;
     private TextView tcreateaccount;
     private  FirebaseAuth fAuth;
     private ProgressDialog mprogressDialog;
-//    private Context context = this;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +40,31 @@ public class t3_login extends AppCompatActivity {
         tpassword = findViewById(R.id.passwordinput);
         tsignin = findViewById(R.id.singinbutton);
         tcreateaccount = findViewById(R.id.createanewaccountpagelink);
+        tpasswordshow = findViewById(R.id.passwordshowbutton);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
 
-        tcreateaccount.setOnClickListener(new View.OnClickListener() {
+        tpasswordshow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getId()==R.id.passwordshowbutton){
+
+                    if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+
+                        tpasswordshow.setImageResource(R.drawable.hide3);
+
+                        //Show Password
+                        tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    }
+                    else{
+                        tpasswordshow.setImageResource(R.drawable.show2);
+
+                        //Hide Password
+                        tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    }
+                }
+            }
+        });tcreateaccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), t4_signup.class));
@@ -88,9 +113,7 @@ public class t3_login extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(), hometry.class));
                         }
                     } else {
-//                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                        Toast.makeText(t3_login.this, "Authentication Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         mprogressDialog.hide();
                     }
                 }

@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +33,12 @@ public class t4_signup extends AppCompatActivity {
     private Button tcreateaccount;
     private TextView tsignin;
     private String userid;
+    private ImageView tpasswordshow;
     private Context context = this;
     private ProgressDialog mprogressDialog;
     FirebaseAuth fAuth;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference root;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +50,35 @@ public class t4_signup extends AppCompatActivity {
         tpassword = findViewById(R.id.createpasswordinput);
         tcreateaccount = findViewById(R.id.singinbutton);
         tsignin = findViewById(R.id.gotoSingInLink);
-        fAuth = FirebaseAuth.getInstance();     //for take instance from the our firebase
+        fAuth = FirebaseAuth.getInstance();
+        tpasswordshow = findViewById(R.id.passwordshowbutton);
 
+        tpasswordshow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getId()==R.id.passwordshowbutton){
+
+                    if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+
+                        tpasswordshow.setImageResource(R.drawable.hide3);
+
+                        //Show Password
+                        tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    }
+                    else{
+                        tpasswordshow.setImageResource(R.drawable.show2);
+
+                        //Hide Password
+                        tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    }
+                }
+            }
+        });
         tsignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), t3_login.class));
                 finish();
-
             }
         });
         tcreateaccount.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +108,6 @@ public class t4_signup extends AppCompatActivity {
                 String sapid =  tsapid.getText().toString().trim();
                 String email = temailaddress.getText().toString().trim();
                 String password = tpassword.getText().toString().trim();
-                Log.i(email,sapid);
 
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -100,7 +122,7 @@ public class t4_signup extends AppCompatActivity {
 
                                         userid = fAuth.getCurrentUser().getUid();
                                         HashMap<String, String> userMap = new HashMap<>();
-//                                        userMap.put("id", userid);
+                                        userMap.put("id", userid);
                                         userMap.put("Sapid", sapid);
                                         userMap.put("Email", email);
 
@@ -115,9 +137,7 @@ public class t4_signup extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(), hometry.class));
                         }else{
                             Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                            Toast.makeText(t4_signup.this, "Could not registered. Please try again", Toast.LENGTH_SHORT).show();
                             mprogressDialog.hide();
-
                         }
                     }
                 });
