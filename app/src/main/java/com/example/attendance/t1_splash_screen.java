@@ -12,7 +12,6 @@ public class t1_splash_screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t1_splash_screen);
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

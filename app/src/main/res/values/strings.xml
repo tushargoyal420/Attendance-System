@@ -7,4 +7,14 @@
     <string name="enter_your_sapid">Enter your SapID</string>
     <string name="enter_your_email_address">Enter your Email address</string>
     <string name="submit">Submit</string>
+    <string name="sign">Sign</string>
+    <string name="up">up</string>
+    <string name="in">in</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="create_a_password">Create a password</string>
+    <string name="create_account">Create account</string>
+    <string name="sign_in">Sign in</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="create_a_new_account">Create a new account</string>
+    <string name="dont_have_an_account">Don\'t have an account</string>
 </resources>

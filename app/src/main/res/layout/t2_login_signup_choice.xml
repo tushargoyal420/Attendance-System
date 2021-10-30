@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcome_in_our_application_text"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -10,6 +10,7 @@
 
 
     <LinearLayout
+        android:id="@+id/choicepage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -19,77 +20,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/splashvector" />
 
         <LinearLayout
+            android:id="@+id/choicepagelinear"
             android:layout_width="350dp"
             android:layout_height="match_parent"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:paddingTop="30dp"
+            android:paddingBottom="100dp">
+
+            <ImageView
+                android:id="@+id/loginPageImage"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/splashvector" />
 
             <TextView
-                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/titilliumwebbold"
                 android:gravity="center"
-                android:text="@string/signup"
-                android:textColor="#000000"
-                android:textSize="35sp"
-                android:textStyle="bold" />
+                android:text="Welcome in our application"
+                android:textColor="@color/teal_700"
+                android:textSize="22sp"
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:hint="@string/enter_your_name"
-                android:inputType="textPersonName"
-                android:padding="5dp"
-                android:textColor="#000000"
-                android:textColorHighlight="@color/teal_700"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/enter_your_email_address"
-                android:inputType="textEmailAddress"
-                android:padding="5dp"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/sapid"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/enter_your_sapid"
-                android:inputType="textPersonName"
-                android:padding="5dp"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                />
 
-            <Button
-                android:id="@+id/button"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/submit"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                app:backgroundTint="@color/teal_700" />
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="vertical">
 
+
+                <Button
+                    android:id="@+id/signinbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:fontFamily="@font/titilliumwebbold"
+                    android:text="@string/sign_in"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/teal_700"
+                    app:cornerRadius="25dp" />
+
+                <Button
+                    android:id="@+id/singinbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:fontFamily="@font/titilliumwebbold"
+                    android:text="@string/create_a_new_account"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/teal_700"
+                    app:cornerRadius="25dp" />
+            </LinearLayout>
         </LinearLayout>
-
 
     </LinearLayout>
 

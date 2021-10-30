@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Major1/Code/app/src/main/res/drawable/edittextborder.xml" value="0.2555" />
+        <entry key="..\:/Major1/Code/app/src/main/res/drawable/my_vector.xml" value="0.2555" />
+        <entry key="..\:/Major1/Code/app/src/main/res/font/font.xml" value="0.28020833333333334" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_hometry.xml" value="0.25" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t1_splash_screen.xml" value="0.134375" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t2_login_signup_choice.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t3_login.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t4_signup.xml" value="0.25" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

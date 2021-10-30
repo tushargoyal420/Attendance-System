@@ -4,6 +4,159 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".t4_signup">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:id="@+id/singuppagelinear"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="30dp">
+
+            <LinearLayout
+                android:id="@+id/signupheadinglinear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/signheadText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumwebbold"
+                    android:gravity="center"
+                    android:text="@string/sign"
+                    android:textColor="#000000"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/upHeadText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumwebbold"
+                    android:gravity="center"
+                    android:text="@string/up"
+                    android:textColor="@color/teal_700"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/loginPageImage"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/splashvector" />
+
+            <EditText
+                android:id="@+id/sapidInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/eduttextborder5"
+                android:ems="10"
+                android:fontFamily="@font/titilliumweregular"
+                android:hint="@string/enter_your_sapid"
+                android:inputType="textPersonName"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:textColor="#535353"
+                android:textColorHint="#BAB4B4"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/emailinput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/eduttextborder5"
+                android:ems="10"
+                android:fontFamily="@font/titilliumweregular"
+                android:hint="@string/enter_your_email_address"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:textColor="#535353"
+                android:textColorHint="#BAB4B4"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/createpasswordinput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/eduttextborder5"
+                android:ems="10"
+                android:fontFamily="@font/titilliumweregular"
+                android:hint="@string/create_a_password"
+                android:inputType="none|textVisiblePassword"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:textColor="#535353"
+                android:textColorHighlight="@color/teal_700"
+                android:textColorHint="#BAB4B4"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/singinbutton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/titilliumwebbold"
+                android:text="@string/create_account"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                app:backgroundTint="@color/teal_700"
+                app:cornerRadius="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweregular"
+                    android:text="@string/already_have_an_account"
+                    android:textColor="#535353"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/gotoSingInLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/titilliumweregular"
+                    android:onClick=""
+                    android:text="Sign in"
+                    android:textColor="@color/teal_700"
+                    android:textFontWeight="600"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
