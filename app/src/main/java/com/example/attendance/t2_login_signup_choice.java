@@ -18,12 +18,12 @@ public class t2_login_signup_choice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t2_login_signup_choice);
         tsigninButton = findViewById(R.id.signinbutton);
-        tcreatenewaccountbutton = findViewById(R.id.singinbutton);
+        tcreatenewaccountbutton = findViewById(R.id.getpasswordbutton);
 
         fAuth = FirebaseAuth.getInstance();     //for take instance from the our firebase
 
         if (fAuth.getCurrentUser() != null) {             //if user is already login
-            startActivity(new Intent(getApplicationContext(), hometry.class));
+            startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
             finish();
         }
 

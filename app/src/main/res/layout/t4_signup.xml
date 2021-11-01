@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".t4_signup">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,17 +67,25 @@
                 android:layout_marginBottom="10dp"
                 android:src="@drawable/splashvector" />
 
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="vertical"-->
+<!--                android:gravity="bottom|center"-->
+<!--                android:paddingBottom="80dp"-->
+<!--                >-->
+
             <EditText
                 android:id="@+id/sapidInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/eduttextborder5"
                 android:ems="10"
                 android:fontFamily="@font/titilliumweregular"
                 android:hint="@string/enter_your_sapid"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
                 android:textColor="#535353"
@@ -134,7 +146,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/singinbutton"
+                android:id="@+id/getpasswordbutton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
@@ -146,35 +158,37 @@
                 app:backgroundTint="@color/teal_700"
                 app:cornerRadius="25dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/bottomsection"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/titilliumweregular"
-                    android:text="@string/already_have_an_account"
-                    android:textColor="#535353"
-                    android:textSize="18sp" />
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="40dp"
+                    >
 
-                <TextView
-                    android:id="@+id/gotoSingInLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:fontFamily="@font/titilliumweregular"
-                    android:onClick=""
-                    android:text="Sign in"
-                    android:textColor="@color/teal_700"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/titilliumweregular"
+                        android:text="@string/already_have_an_account"
+                        android:textColor="#535353"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/gotoSingInLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/titilliumweregular"
+                        android:text="Sign in"
+                        android:textColor="@color/teal_700"
+                        android:textFontWeight="600"
+                        android:textSize="18sp" />
+                </LinearLayout>
+<!--            </LinearLayout>-->
         </LinearLayout>
 
 
     </LinearLayout>
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

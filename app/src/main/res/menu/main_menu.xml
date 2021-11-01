@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="General">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_dashboard"
+                    android:title="Dashboard" />
+                <!--                android:icon="@drawable/home_icon"-->
+                <item
+                    android:id="@+id/nav_profile"
+                    android:title="Profile" />
+                <!--                    android:icon="@drawable/profile_icon"-->
+                <item
+                    android:id="@+id/nav_attendance"
+                    android:title="Attendance" />
+                <!--                android:icon="@drawable/icons8_cycling_500"-->
+                <item
+                    android:id="@+id/nav_setting"
+                    android:title="Settings" />
+                <!--                android:icon="@drawable/icons8_cycling_500"-->
+
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="Logout" />
+                <!--                    android:icon="@drawable/logout_icon"-->
+
+            </group>
+        </menu>
+    </item>
+
+    <group>
+
+        <item
+            android:id="@+id/customer_care"
+            android:title="Customer Care" />
+
+        <item
+            android:id="@+id/terms"
+            android:title="Terms and Conditions" />
+        <!--                android:icon="@drawable/rate_icon"-->
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/myname"
+            android:title="Tushar Goyal" />
+        <!--                android:icon="@drawable/share_icon"-->
+        <item
+            android:id="@+id/balluname"
+            android:title="Bhavuk Baluja" />
+        <!--                android:icon="@drawable/rate_icon"-->
+    </group>
+</menu>

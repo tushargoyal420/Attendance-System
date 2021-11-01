@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +47,7 @@ public class t4_signup extends AppCompatActivity {
         tsapid = findViewById(R.id.sapidInput);
         temailaddress = findViewById(R.id.emailinput);
         tpassword = findViewById(R.id.createpasswordinput);
-        tcreateaccount = findViewById(R.id.singinbutton);
+        tcreateaccount = findViewById(R.id.getpasswordbutton);
         tsignin = findViewById(R.id.gotoSingInLink);
         fAuth = FirebaseAuth.getInstance();
         tpasswordshow = findViewById(R.id.passwordshowbutton);
@@ -59,15 +58,12 @@ public class t4_signup extends AppCompatActivity {
                 if(view.getId()==R.id.passwordshowbutton){
 
                     if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-
                         tpasswordshow.setImageResource(R.drawable.hide3);
-
                         //Show Password
                         tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     }
                     else{
-                        tpasswordshow.setImageResource(R.drawable.show2);
-
+                        tpasswordshow.setImageResource(R.drawable.show3);
                         //Hide Password
                         tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     }
@@ -92,10 +88,19 @@ public class t4_signup extends AppCompatActivity {
                     tsapid.setError("Please enter your Sapid ");
                     return;
                 }if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
-                    temailaddress.setError("Please enter Email");
+                    temailaddress.setError("Please enter email");
                     return;
                 }if (TextUtils.isEmpty(tpassword.getText().toString().trim())) {
-                    tpassword.setError("Please enter an Password");
+                    tpassword.setError("Please enter password");
+                    return;
+                }if ((tpassword.getText().toString().trim()).length() < 6) {
+                    tpassword.setError("Enter password more then 6 characters");
+                    return;
+                }if ((tsapid.getText().toString().trim()).length() < 9){
+                    tsapid.setError("Enter a valid sapId");
+                    return;
+                }if ((tsapid.getText().toString().trim()).length() > 9){
+                    tsapid.setError("Enter a valid sapId");
                     return;
                 }else {
                     mprogressDialog.setMessage("Registering...");
@@ -134,7 +139,8 @@ public class t4_signup extends AppCompatActivity {
                                     }
                                 }});
                             finish();
-                            startActivity(new Intent(getApplicationContext(), hometry.class));
+                            startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
+//                            startActivity(new Intent(getApplicationContext(), hometry.class));
                         }else{
                             Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             mprogressDialog.hide();

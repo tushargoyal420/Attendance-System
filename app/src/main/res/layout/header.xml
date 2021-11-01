@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="200dp"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:paddingLeft="15dp"
+    android:background="@color/teal_700"
+    >
+
+    <ImageView
+        android:paddingTop="5dp"
+        android:id="@+id/userprofile"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:srcCompat="@drawable/userimage"
+        tools:srcCompat="@drawable/userimage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/titilliumwebbold"
+        android:text="Tushar Goyal"
+        android:textColor="@color/white"
+        android:textSize="23sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="500068373"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>

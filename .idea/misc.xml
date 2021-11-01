@@ -6,11 +6,21 @@
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/edittextborder.xml" value="0.2555" />
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/my_vector.xml" value="0.2555" />
         <entry key="..\:/Major1/Code/app/src/main/res/font/font.xml" value="0.28020833333333334" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout-v28/t5_forget_password.xml" value="0.25" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_hometry.xml" value="0.25" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t1_splash_screen.xml" value="0.134375" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/backtoolbar.xml" value="0.20521590423257802" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/header.xml" value="0.72" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t1_splash_screen.xml" value="0.4" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t2_login_signup_choice.xml" value="0.264" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t3_login.xml" value="0.46647230320699706" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t4_signup.xml" value="0.4" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t3_login.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t4_signup.xml" value="0.2" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t5_forget_password.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t6_dashboard.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t7_profile.xml" value="0.1936725096194955" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t8_setting.xml" value="0.20521590423257802" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/toolbar.xml" value="0.176" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/toolbarsecond.xml" value="0.1" />
+        <entry key="..\:/Major1/Code/app/src/main/res/menu/main_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

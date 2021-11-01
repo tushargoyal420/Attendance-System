@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.attendance" >
+    package="com.example.attendance">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,37 +12,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Attendance" >
-
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
-
+        android:theme="@style/Theme.Attendance">
         <activity
-            android:name=".MapsActivity"
+            android:name=".t8_setting"
             android:exported="true"
-            android:label="@string/title_activity_maps" />
+            android:parentActivityName=".t6_dashboard" />
         <activity
-            android:name=".hometry"
+            android:name=".t7_profile"
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
+        <activity
+            android:name=".t6_dashboard"
             android:exported="true" />
+        <activity android:name=".t5_forget_password" />
         <activity android:name=".t4_signup" />
         <activity android:name=".t3_login" />
         <activity android:name=".t2_login_signup_choice" />
-        <activity android:name=".t1_splash_screen" >
+        <activity
+            android:name=".t1_splash_screen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

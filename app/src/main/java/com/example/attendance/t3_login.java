@@ -27,7 +27,7 @@ public class t3_login extends AppCompatActivity {
     private EditText temailaddress, tpassword;
     private Button tsignin;
     private ImageView tpasswordshow;
-    private TextView tcreateaccount;
+    private TextView tcreateaccount , tforgetpassword;
     private  FirebaseAuth fAuth;
     private ProgressDialog mprogressDialog;
     private Context context = this;
@@ -38,8 +38,9 @@ public class t3_login extends AppCompatActivity {
         setContentView(R.layout.t3_login);
         temailaddress = findViewById(R.id.emailinput);
         tpassword = findViewById(R.id.passwordinput);
-        tsignin = findViewById(R.id.singinbutton);
+        tsignin = findViewById(R.id.getpasswordbutton);
         tcreateaccount = findViewById(R.id.createanewaccountpagelink);
+        tforgetpassword= findViewById(R.id.gobackbutton);
         tpasswordshow = findViewById(R.id.passwordshowbutton);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
@@ -57,14 +58,21 @@ public class t3_login extends AppCompatActivity {
                         tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     }
                     else{
-                        tpasswordshow.setImageResource(R.drawable.show2);
+                        tpasswordshow.setImageResource(R.drawable.show3);
 
                         //Hide Password
                         tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     }
                 }
             }
-        });tcreateaccount.setOnClickListener(new View.OnClickListener() {
+        });
+        tforgetpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), t5_forget_password.class));
+            }
+        });
+        tcreateaccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), t4_signup.class));
@@ -110,7 +118,8 @@ public class t3_login extends AppCompatActivity {
                             mprogressDialog.hide();
                         } else {
                             finish();
-                            startActivity(new Intent(getApplicationContext(), hometry.class));
+                            startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
+//                            startActivity(new Intent(getApplicationContext(), hometry.class));
                         }
                     } else {
                         Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
