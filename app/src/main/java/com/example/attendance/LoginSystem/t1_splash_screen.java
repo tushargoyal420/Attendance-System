@@ -1,9 +1,11 @@
-package com.example.attendance;
+package com.example.attendance.LoginSystem;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.attendance.R;
 
 public class t1_splash_screen extends AppCompatActivity {
     private static final int SPLASH_TIME_OUT = 4000;

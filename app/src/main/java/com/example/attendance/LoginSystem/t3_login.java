@@ -1,4 +1,4 @@
-package com.example.attendance;
+package com.example.attendance.LoginSystem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendance.R;
+import com.example.attendance.t6_dashboard;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -38,28 +41,25 @@ public class t3_login extends AppCompatActivity {
         setContentView(R.layout.t3_login);
         temailaddress = findViewById(R.id.emailinput);
         tpassword = findViewById(R.id.passwordinput);
-        tsignin = findViewById(R.id.getpasswordbutton);
+        tsignin = findViewById(R.id.studentlogin);
         tcreateaccount = findViewById(R.id.createanewaccountpagelink);
         tforgetpassword= findViewById(R.id.gobackbutton);
         tpasswordshow = findViewById(R.id.passwordshowbutton);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
 
+
         tpasswordshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(view.getId()==R.id.passwordshowbutton){
-
                     if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-
                         tpasswordshow.setImageResource(R.drawable.hide3);
-
-                        //Show Password
+                       //Show Password
                         tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     }
                     else{
                         tpasswordshow.setImageResource(R.drawable.show3);
-
                         //Hide Password
                         tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     }
@@ -114,12 +114,12 @@ public class t3_login extends AppCompatActivity {
                         FirebaseUser user = fAuth.getCurrentUser();
                         assert user != null;
                         if (!user.isEmailVerified()) {
-                            Toast.makeText(t3_login.this, "Please Verify email.", Toast.LENGTH_SHORT).show();
+                            SimpleToast.ok(t3_login.this, "Please verify your email");
+//                            Toast.makeText(t3_login.this, "Please Verify email.", Toast.LENGTH_SHORT).show();
                             mprogressDialog.hide();
                         } else {
                             finish();
                             startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
-//                            startActivity(new Intent(getApplicationContext(), hometry.class));
                         }
                     } else {
                         Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

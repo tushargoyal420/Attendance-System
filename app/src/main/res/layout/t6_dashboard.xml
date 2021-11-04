@@ -36,20 +36,31 @@
                 android:background="@color/teal_700"
                 app:buttonGravity="center_vertical"
                 />
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hello this is attendance application"
-                android:textColor="@color/teal_700"
-                android:textSize="30sp" />
-            <Button
-                android:id="@+id/logutbutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Logout" />
+                <Button
+                    android:id="@+id/getAttendanceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/teal_700"
+                    android:paddingLeft="40dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="40dp"
+                    android:paddingBottom="20dp"
+                    android:text="Get Attendance"
+                    android:textAllCaps="false"
+                    android:textSize="28sp"
+                    app:cornerRadius="25dp" />
+            </LinearLayout>
+
 
         </LinearLayout>
+
+
     </ScrollView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

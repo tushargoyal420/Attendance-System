@@ -1,4 +1,4 @@
-package com.example.attendance;
+package com.example.attendance.LoginSystem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,36 +7,40 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.attendance.R;
+import com.example.attendance.t6_dashboard;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class t2_login_signup_choice extends AppCompatActivity {
-    private Button tsigninButton, tcreatenewaccountbutton;
+    private Button tsignin, tcreateanewaccount;
     FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t2_login_signup_choice);
-        tsigninButton = findViewById(R.id.signinbutton);
-        tcreatenewaccountbutton = findViewById(R.id.getpasswordbutton);
+        tsignin = findViewById(R.id.signin);
+        tcreateanewaccount = findViewById(R.id.createanewaccount);
 
         fAuth = FirebaseAuth.getInstance();     //for take instance from the our firebase
 
-        if (fAuth.getCurrentUser() != null) {             //if user is already login
+        if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
             finish();
         }
 
-        tsigninButton.setOnClickListener(new View.OnClickListener() {
+        tsignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), t3_login.class));
+                finish();
             }
         });
-        tcreatenewaccountbutton.setOnClickListener(new View.OnClickListener() {
+        tcreateanewaccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), t4_signup.class));
+                finish();
             }
         });
 

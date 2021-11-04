@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".t4_signup">
+    tools:context=".LoginSystem.t4_signup">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,7 +76,7 @@
 <!--                >-->
 
             <EditText
-                android:id="@+id/sapidInput"
+                android:id="@+id/nameInput"
                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -84,8 +84,8 @@
                 android:background="@drawable/eduttextborder5"
                 android:ems="10"
                 android:fontFamily="@font/titilliumweregular"
-                android:hint="@string/enter_your_sapid"
-                android:inputType="number"
+                android:hint="@string/enter_your_name"
+                android:inputType="text"
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
                 android:textColor="#535353"
@@ -101,7 +101,7 @@
                 android:background="@drawable/eduttextborder5"
                 android:ems="10"
                 android:fontFamily="@font/titilliumweregular"
-                android:hint="@string/enter_your_email_address"
+                android:hint="@string/enter_your_college_email_address"
                 android:inputType="textEmailAddress"
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
@@ -146,7 +146,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/getpasswordbutton"
+                android:id="@+id/studentlogin"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"

@@ -1,11 +1,10 @@
-package com.example.attendance;
+package com.example.attendance.LoginSystem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendance.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +31,7 @@ public class t5_forget_password extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t5_forget_password);
         temailaddress= findViewById(R.id.emailinput);
-        tgetpassword= findViewById(R.id.getpasswordbutton);
+        tgetpassword= findViewById(R.id.studentlogin);
         tgoback= findViewById(R.id.gobackbutton);
         mprogressDialog = new ProgressDialog(this);
         fAuth = FirebaseAuth.getInstance();

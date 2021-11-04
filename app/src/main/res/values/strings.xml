@@ -3,7 +3,6 @@
     <string name="Stay_Cool_And_Be_At_School.">Stay Cool And Be At School</string>
     <string name="splashiconimage">splashiconimage</string>
     <string name="signup">SignUp</string>
-    <string name="enter_your_name">Enter your name</string>
     <string name="enter_your_sapid">Enter your SapID</string>
     <string name="enter_your_email_address">Enter your Email address</string>
     <string name="submit">Submit</string>
@@ -24,6 +23,10 @@
     <string name="go_back">Go back</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="student">Student</string>
+    <string name="faculty">Faculty</string>
+    <string name="enter_your_college_email_address">Enter your College email address</string>
+    <string name="enter_your_name">Enter your name</string>
 
 
 </resources>

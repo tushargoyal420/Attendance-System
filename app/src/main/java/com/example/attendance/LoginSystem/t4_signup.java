@@ -1,4 +1,4 @@
-package com.example.attendance;
+package com.example.attendance.LoginSystem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendance.R;
+import com.example.attendance.t6_dashboard;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class t4_signup extends AppCompatActivity {
-    private EditText tsapid, temailaddress, tpassword;
+    private EditText tname, temailaddress, tpassword;
     private Button tcreateaccount;
     private TextView tsignin;
     private String userid;
@@ -44,10 +47,10 @@ public class t4_signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mprogressDialog = new ProgressDialog(this);
         setContentView(R.layout.t4_signup);
-        tsapid = findViewById(R.id.sapidInput);
+        tname = findViewById(R.id.nameInput);
         temailaddress = findViewById(R.id.emailinput);
         tpassword = findViewById(R.id.createpasswordinput);
-        tcreateaccount = findViewById(R.id.getpasswordbutton);
+        tcreateaccount = findViewById(R.id.studentlogin);
         tsignin = findViewById(R.id.gotoSingInLink);
         fAuth = FirebaseAuth.getInstance();
         tpasswordshow = findViewById(R.id.passwordshowbutton);
@@ -59,7 +62,7 @@ public class t4_signup extends AppCompatActivity {
 
                     if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
                         tpasswordshow.setImageResource(R.drawable.hide3);
-                        //Show Password
+
                         tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     }
                     else{
@@ -84,8 +87,8 @@ public class t4_signup extends AppCompatActivity {
             }
 
             private void validation() {
-                if(TextUtils.isEmpty(tsapid.getText().toString().trim())){
-                    tsapid.setError("Please enter your Sapid ");
+                if(TextUtils.isEmpty(tname.getText().toString().trim())){
+                    tname.setError("Please enter your Name ");
                     return;
                 }if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
                     temailaddress.setError("Please enter email");
@@ -96,21 +99,30 @@ public class t4_signup extends AppCompatActivity {
                 }if ((tpassword.getText().toString().trim()).length() < 6) {
                     tpassword.setError("Enter password more then 6 characters");
                     return;
-                }if ((tsapid.getText().toString().trim()).length() < 9){
-                    tsapid.setError("Enter a valid sapId");
-                    return;
-                }if ((tsapid.getText().toString().trim()).length() > 9){
-                    tsapid.setError("Enter a valid sapId");
-                    return;
                 }else {
                     mprogressDialog.setMessage("Registering...");
                     mprogressDialog.show();
                     mprogressDialog.setCancelable(false);
-                    registerUser();
+
+                    String studentemailtype = "[0-9]+@[stu]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
+//                    String facultyemailtype = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+                    //if we have faculty email then we add below pattern for faculty's email  but we don't have
+                    //faculty email so we are using normal email vaildation for faculty
+                    //String forfaculty = "[a-zA-Z0-9._-]+@[ddn]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
+
+                    String email = temailaddress.getText().toString().trim();
+                    if(email.matches(studentemailtype) && email.length()> 0 ){
+                        String currentUser = "student";
+                        registerUser(currentUser);
+                    }else{
+                        String currentUser = "faculty";
+                        registerUser(currentUser);
+                    }
                 }
             }
-            private void registerUser() {
-                String sapid =  tsapid.getText().toString().trim();
+            private void registerUser(String currentUser) {
+                String name =  tname.getText().toString().trim();
                 String email = temailaddress.getText().toString().trim();
                 String password = tpassword.getText().toString().trim();
 
@@ -123,24 +135,32 @@ public class t4_signup extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(context, "successful", Toast.LENGTH_SHORT).show();
-
                                         userid = fAuth.getCurrentUser().getUid();
                                         HashMap<String, String> userMap = new HashMap<>();
                                         userMap.put("id", userid);
-                                        userMap.put("Sapid", sapid);
+                                        userMap.put("name", name);
                                         userMap.put("Email", email);
 
-                                        root = db.getReference("users").child(userid);
+                                        String emailname   = email.substring(0, email.lastIndexOf("@"));
+                                        String domain = email.substring(email.lastIndexOf("@") +1);
+
+                                        if(String.valueOf(currentUser).equals("student")) {
+                                            String sapid= emailname;
+                                            userMap.put("SapId", sapid);
+                                            root = db.getReference("students").child(emailname);
+                                        }
+                                        else{
+                                            root = db.getReference("faculty").child(emailname);
+                                        }
                                         root.setValue(userMap);
                                     }else {
+
                                         Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         mprogressDialog.hide();
                                     }
                                 }});
-                            finish();
                             startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
-//                            startActivity(new Intent(getApplicationContext(), hometry.class));
+                            finish();
                         }else{
                             Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             mprogressDialog.hide();
@@ -149,6 +169,5 @@ public class t4_signup extends AppCompatActivity {
                 });
             }
         });
-
     }
 }

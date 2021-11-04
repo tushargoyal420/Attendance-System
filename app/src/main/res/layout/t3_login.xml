@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".t3_login"
+    tools:context=".LoginSystem.t3_login"
     android:background="@color/white"
     >
     <ScrollView
@@ -126,7 +126,7 @@
                     />
             </RelativeLayout>
             <Button
-                android:id="@+id/getpasswordbutton"
+                android:id="@+id/studentlogin"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
