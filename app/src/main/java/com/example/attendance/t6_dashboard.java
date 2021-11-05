@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.camerakit.CameraKitView;
 import com.example.attendance.LoginSystem.t2_login_signup_choice;
-import com.example.attendance.facedetection.facedetectiontry;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,7 +28,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     private Toolbar tdashboardtoolbar;
     private TextView textView;
     private FirebaseAuth fAuth;
-
     private Button gotoface;
 
 
@@ -61,7 +59,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         gotoface.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), facedetectiontry.class));
+//                startActivity(new Intent(getApplicationContext(), facedetectiontry.class));
             }
         });
 
