@@ -21,8 +21,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,20 +29,20 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
                 android:id="@+id/toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/teal_700"
-                app:buttonGravity="center_vertical"
-                />
+                app:buttonGravity="center_vertical" />
+
             <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/getAttendanceButton"
+                    android:id="@+id/opencam"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/teal_700"
@@ -51,12 +50,13 @@
                     android:paddingTop="20dp"
                     android:paddingRight="40dp"
                     android:paddingBottom="20dp"
-                    android:text="Get Attendance"
+                    android:text="Open camera"
                     android:textAllCaps="false"
                     android:textSize="28sp"
                     app:cornerRadius="25dp" />
-            </LinearLayout>
 
+
+            </LinearLayout>
 
         </LinearLayout>
 
