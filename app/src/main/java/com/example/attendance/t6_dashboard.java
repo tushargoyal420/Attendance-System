@@ -45,7 +45,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth fAuth;
 
     //    for camera
-    private Button topencam;
+    private Button topencam ,toverify ;
     private final static int REQUEST_IMAGE_CAPTURE = 124;
     //for face detection
     FirebaseVisionImage image;
@@ -65,10 +65,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tdashboardtoolbar.setTitle("Dashboard");
         fAuth = FirebaseAuth.getInstance();
 
-
-
-
-
         tnavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, tdrawerLayout, tdashboardtoolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         tdrawerLayout.addDrawerListener(toggle);
@@ -79,6 +75,13 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tnavigationView.setCheckedItem(R.id.nav_dashboard);
 
 // open camera
+        toverify = findViewById(R.id.openver);
+        toverify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
         topencam = findViewById(R.id.opencam);
         topencam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +98,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // after the image is captured, ML Kit provides an easy way to detect faces from variety of image types like Bitmap
