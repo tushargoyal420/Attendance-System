@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,14 +44,12 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     Toolbar tdashboardtoolbar;
     TextView textView;
     private FirebaseAuth fAuth;
-
     //    for camera
-    private Button topencam ,toverify ;
+    private Button topencam ,toverify , tuploadImage;
     private final static int REQUEST_IMAGE_CAPTURE = 124;
     //for face detection
     FirebaseVisionImage image;
     FirebaseVisionFaceDetector detector;
-//    private RecyclerView trecyclerview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +69,18 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tdrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-//        to make navigation clickable
         tnavigationView.setNavigationItemSelectedListener(this);
         tnavigationView.setCheckedItem(R.id.nav_dashboard);
 
-// open camera
+        tuploadImage = findViewById(R.id.openver);
+        tuploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            Log.e("tr", "try");
+            }
+        });
+
+        // open camera
         toverify = findViewById(R.id.openver);
         toverify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,10 +281,10 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(), t2_login_signup_choice.class));
                 break;
             }
-            case R.id.nav_setting: {
-                startActivity(new Intent(getApplicationContext(), t8_setting.class));
-                break;
-            }
+//            case R.id.nav_setting: {
+//                startActivity(new Intent(getApplicationContext(), t8_setting.class));
+//                break;
+//            }
             case R.id.nav_profile: {
                 startActivity(new Intent(getApplicationContext(), t7_profile.class));
                 break;

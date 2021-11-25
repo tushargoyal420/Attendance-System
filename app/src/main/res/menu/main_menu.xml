@@ -15,9 +15,9 @@
                     android:id="@+id/nav_attendance"
                     android:title="Attendance" />
                 <!--                android:icon="@drawable/icons8_cycling_500"-->
-                <item
-                    android:id="@+id/nav_setting"
-                    android:title="Settings" />
+<!--                <item-->
+<!--                    android:id="@+id/nav_setting"-->
+<!--                    android:title="Settings" />-->
                 <!--                android:icon="@drawable/icons8_cycling_500"-->
 
                 <item
@@ -41,14 +41,14 @@
         <!--                android:icon="@drawable/rate_icon"-->
     </group>
 
-    <group>
-        <item
-            android:id="@+id/myname"
-            android:title="Tushar Goyal" />
-        <!--                android:icon="@drawable/share_icon"-->
-        <item
-            android:id="@+id/balluname"
-            android:title="Bhavuk Baluja" />
-        <!--                android:icon="@drawable/rate_icon"-->
-    </group>
+<!--    <group>-->
+<!--        <item-->
+<!--            android:id="@+id/myname"-->
+<!--            android:title="Tushar Goyal" />-->
+<!--        &lt;!&ndash;                android:icon="@drawable/share_icon"&ndash;&gt;-->
+<!--        <item-->
+<!--            android:id="@+id/balluname"-->
+<!--            android:title="Bhavuk Baluja" />-->
+<!--        &lt;!&ndash;                android:icon="@drawable/rate_icon"&ndash;&gt;-->
+<!--    </group>-->
 </menu>

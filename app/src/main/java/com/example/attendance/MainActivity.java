@@ -101,16 +101,12 @@ public class MainActivity extends AppCompatActivity {
             buverify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     double distance=calculate_distance(ori_embedding,test_embedding);
-
                     if(distance<6.0)
                         result_text.setText("Result : Same Faces");
                     else
                         result_text.setText("Result : Different Faces");
-
                 }
-
             });
 
         }
