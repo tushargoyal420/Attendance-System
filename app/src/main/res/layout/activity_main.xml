@@ -9,26 +9,27 @@
     >
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/title"
+        android:layout_marginTop="30dp"
         android:text="Face Verfication"
         android:textColor="@color/colorAccent"
-        android:layout_marginTop="30dp"
         android:textSize="30dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
     <TextView
+        android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/result"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:text="Result : "
         android:textColor="@color/colorAccent"
-        android:layout_marginTop="30dp"
         android:textSize="25dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,26 +57,24 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/llay"
-        android:layout_centerVertical="true">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/image1"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/download"
-            android:id="@+id/image1">
-        </ImageView>
+            android:src="@drawable/download"></ImageView>
 
         <ImageView
+            android:id="@+id/image2"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
-            android:src="@drawable/download"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/image2"/>
+            android:src="@drawable/download" />
 
     </LinearLayout>
 

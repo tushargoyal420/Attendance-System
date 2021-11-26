@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.face.Face;
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initComponents();
     }
+
+
         private void initComponents() {
 
             oriImage=(ImageView)findViewById(R.id.image1);

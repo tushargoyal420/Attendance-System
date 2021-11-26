@@ -1,8 +1,11 @@
 package com.example.attendance;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,34 +25,62 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.attendance.LoginSystem.t2_login_signup_choice;
+import com.example.attendance.model.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
-import com.google.firebase.ml.vision.face.FirebaseVisionFace;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceContour;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.face.Face;
+import com.google.mlkit.vision.face.FaceDetection;
+import com.google.mlkit.vision.face.FaceDetector;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.support.common.TensorOperator;
+import org.tensorflow.lite.support.common.ops.NormalizeOp;
+import org.tensorflow.lite.support.image.ImageProcessor;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.image.ops.ResizeOp;
+import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.List;
 
 public class t6_dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout tdrawerLayout;
     NavigationView tnavigationView;
-    Toolbar tdashboardtoolbar;
-    TextView textView;
+    private ImageView tCurrentImage;
+    private Toolbar tdashboardtoolbar;
+    private TextView result_text;
+
     private FirebaseAuth fAuth;
-    //    for camera
-    private Button topencam ,toverify , tuploadImage;
+    private Button topencam, tmatchImage;
     private final static int REQUEST_IMAGE_CAPTURE = 124;
-    //for face detection
-    FirebaseVisionImage image;
-    FirebaseVisionFaceDetector detector;
+    DatabaseReference DataRef;
+
+    protected Interpreter tflite;
+    private int imageSizeX;
+    private int imageSizeY;
+
+    private static final float IMAGE_MEAN = 0.0f;
+    private static final float IMAGE_STD = 1.0f;
+
+    public static Bitmap cropped;
+
+    float[][] ori_embedding = new float[1][128];
+    float[][] test_embedding = new float[1][128];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,206 +90,185 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tdrawerLayout = findViewById(R.id.drawer_layout);
         tnavigationView = findViewById(R.id.navigationView);
         tdashboardtoolbar = findViewById(R.id.toolbar);
-        textView = findViewById(R.id.textView);
         setSupportActionBar(tdashboardtoolbar);
         tdashboardtoolbar.setTitle("Dashboard");
-        fAuth = FirebaseAuth.getInstance();
 
+        //drawer
         tnavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, tdrawerLayout, tdashboardtoolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         tdrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
         tnavigationView.setNavigationItemSelectedListener(this);
         tnavigationView.setCheckedItem(R.id.nav_dashboard);
+        fAuth = FirebaseAuth.getInstance();
+        LoadUserData();
 
-        tuploadImage = findViewById(R.id.openver);
-        tuploadImage.setOnClickListener(new View.OnClickListener() {
+        tCurrentImage = findViewById(R.id.currentImage);
+        result_text = findViewById(R.id.result);
+
+        tmatchImage = findViewById(R.id.matchImage);
+        tmatchImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            Log.e("tr", "try");
-            }
+                double distance=calculate_distance(ori_embedding,test_embedding);
+                Log.e("distance", String.valueOf(distance));
+                if(distance<5.0) {
+                    result_text.setText("Result : Same Faces");
+                }else{
+                    result_text.setText("Result : Different Faces");
+            }}
         });
-
         // open camera
-        toverify = findViewById(R.id.openver);
-        toverify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
         topencam = findViewById(R.id.opencam);
         topencam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                 } else {
-                    // if the image is not captured, set a toast to display an error image.
                     Toast.makeText(t6_dashboard.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        initTflite();
+    }
+    private double calculate_distance(float[][] ori_embedding, float[][] test_embedding) {
+        double sum =0.0;
+        for(int i=0;i<128;i++){
+            sum=sum+Math.pow((ori_embedding[0][i]-test_embedding[0][i]),2.0);
+        }
+        return Math.sqrt(sum);
+    }
 
+    private TensorImage loadImage(final Bitmap bitmap, TensorImage inputImageBuffer) {
+        // Loads bitmap into a TensorImage.
+        inputImageBuffer.load(bitmap);
+
+        // Creates processor for the TensorImage.
+        int cropSize = Math.min(bitmap.getWidth(), bitmap.getHeight());
+        // TODO(b/143564309): Fuse ops inside ImageProcessor.
+        ImageProcessor imageProcessor =
+                new ImageProcessor.Builder()
+                        .add(new ResizeWithCropOrPadOp(cropSize, cropSize))
+                        .add(new ResizeOp(imageSizeX, imageSizeY, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
+                        .add(getPreprocessNormalizeOp())
+                        .build();
+        return imageProcessor.process(inputImageBuffer);
+    }
+    //Getting original image from firebase
+    private void LoadUserData() {
+        String CurrentUser = fAuth.getCurrentUser().getUid();
+        DataRef = FirebaseDatabase.getInstance().getReference().child("students").child(CurrentUser);
+        DataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    UserData user = dataSnapshot.getValue(UserData.class);
+//                    Picasso.get().load(user.getImageUri()).into(tOriginalImage);
+                    Picasso.get()
+                            .load(user.getImageUri())
+                            .into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(final Bitmap originalBitmap, Picasso.LoadedFrom from) {
+                                    Log.i("donec", "code run");
+                                    face_detector(originalBitmap, "original");
+                                }
+                                @Override public void onBitmapFailed(Exception e, Drawable errorDrawable) {}
+                                @Override public void onPrepareLoad(Drawable placeHolderDrawable) {}});
+                }}
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // after the image is captured, ML Kit provides an easy way to detect faces from variety of image types like Bitmap
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extra = data.getExtras();
             Bitmap bitmap = (Bitmap) extra.get("data");
-            detectFace(bitmap);
-
+            tCurrentImage.setImageBitmap(bitmap);
+            face_detector(bitmap, "current");
         }
     }
 
-    private void detectFace(Bitmap bitmap) {
-        FirebaseVisionFaceDetectorOptions options =
-                new FirebaseVisionFaceDetectorOptions.Builder()
-                        .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
-                        .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
-                        .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-                        .build();
+    private void initTflite() {
         try {
-            image = FirebaseVisionImage.fromBitmap(bitmap);
-            detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+            tflite = new Interpreter(loadmodelfile(this));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
-            @Override
-            public void onSuccess(List<FirebaseVisionFace> firebaseVisionFaces) {
-
-                for (FirebaseVisionFace face : firebaseVisionFaces) {
-                    Rect bounds = face.getBoundingBox();
-                    float rotY = face.getHeadEulerAngleY();  // Head is rotated to the right rotY degrees
-                    float rotZ = face.getHeadEulerAngleZ();  // Head is tilted sideways rotZ degrees
-
-                    // If landmark detection was enabled (mouth, ears, eyes, cheeks, and
-                    // nose available):
-                    FirebaseVisionFaceLandmark leftEar = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_EAR);
-                    FirebaseVisionFaceLandmark rightEar = face.getLandmark(FirebaseVisionFaceLandmark.RIGHT_EAR);
-                    FirebaseVisionFaceLandmark leftChick = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_CHEEK);
-                    FirebaseVisionFaceLandmark rightChick = face.getLandmark(FirebaseVisionFaceLandmark.RIGHT_CHEEK);
-                    FirebaseVisionFaceLandmark mouthBottom = face.getLandmark(FirebaseVisionFaceLandmark.MOUTH_BOTTOM);
-                    FirebaseVisionFaceLandmark mouthLeft = face.getLandmark(FirebaseVisionFaceLandmark.MOUTH_LEFT);
-                    FirebaseVisionFaceLandmark mouthRight = face.getLandmark(FirebaseVisionFaceLandmark.MOUTH_RIGHT);
-                    FirebaseVisionFaceLandmark noseBase = face.getLandmark(FirebaseVisionFaceLandmark.NOSE_BASE);
-                    FirebaseVisionFaceLandmark leftEye = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_EYE);
-                    FirebaseVisionFaceLandmark rightEye = face.getLandmark(FirebaseVisionFaceLandmark.RIGHT_EYE);
-
-                    if (leftEar != null && rightEar != null && leftChick != null && rightChick != null ) {
-                        FirebaseVisionPoint leftEarPos = leftEar.getPosition();
-                        FirebaseVisionPoint rightEarPos = rightEar.getPosition();
-                        FirebaseVisionPoint leftChickPos = leftChick.getPosition();
-                        FirebaseVisionPoint rightChickPos = rightChick.getPosition();
-                        FirebaseVisionPoint mouthBottomPos = mouthBottom.getPosition();
-                        FirebaseVisionPoint mouthLeftPos = mouthLeft.getPosition();
-                        FirebaseVisionPoint mouthRightPos = mouthRight.getPosition();
-                        FirebaseVisionPoint noseBasePos = noseBase.getPosition();
-                        FirebaseVisionPoint leftEyePos = leftEye.getPosition();
-                        FirebaseVisionPoint rightEyePos = rightEye.getPosition();
-
-
-                        int leftEarLandmarkType = leftEar.getLandmarkType();
-                        int rightEarLandmarkType = rightEar.getLandmarkType();
-                        int leftChickType = leftChick.getLandmarkType();
-                        int rightChickType = rightChick.getLandmarkType();
-
-                        int mouthBottomTyp = mouthBottom.getLandmarkType();
-                        int mouthLeftTyp = mouthLeft.getLandmarkType();
-                        int mouthRightTyp = mouthRight.getLandmarkType();
-                        int noseBaseTyp = noseBase.getLandmarkType();
-                        int leftEyeTyp = leftEye.getLandmarkType();
-                        int rightEyeTyp = rightEye.getLandmarkType();
-
-
-                        int leftChickHashcode = leftChick.hashCode();
-                        int rightChickHashcode = rightChick.hashCode();
-                        String leftChickToString = rightChick.toString();
-                        String rightChickToString = rightChick.toString();
-
-
-                        Log.d("mine  leftEarPos", String.valueOf(leftEarPos));
-                        Log.d("mine  rightEarPos", String.valueOf(rightEarPos));
-                        Log.d("mine  leftChickPos", String.valueOf(leftChickPos));
-                        Log.d("mine  rightChickPos", String.valueOf(rightChickPos));
-                        Log.d("mine  mouthBottomPos", String.valueOf(mouthBottomPos));
-                        Log.d("mine  mouthLeftPos", String.valueOf(mouthLeftPos));
-                        Log.d("mine  mouthRightPos", String.valueOf(mouthRightPos));
-                        Log.d("mine  noseBasePos", String.valueOf(noseBasePos));
-                        Log.d("mine  leftEyePos", String.valueOf(leftEyePos));
-                        Log.d("mine  rightEyePos", String.valueOf(rightEyePos));
-
-                        Log.d("mine  mouthBottomTyp", String.valueOf(mouthBottomTyp));
-                        Log.d("mine  mouthLeftTyp", String.valueOf(mouthLeftTyp));
-                        Log.d("mine  mouthRightTyp", String.valueOf(mouthRightTyp));
-                        Log.d("mine  noseBaseTyp", String.valueOf(noseBaseTyp));
-                        Log.d("mine  leftEyeTyp", String.valueOf(leftEyeTyp));
-                        Log.d("mine  rightEyeTyp", String.valueOf(rightEyeTyp));
-
-                        Log.d("mine  leftEarType", String.valueOf(leftEarLandmarkType));
-                        Log.d("mine  rightEarType", String.valueOf(rightEarLandmarkType));
-                        Log.d("mine  leftChickType", String.valueOf(leftChickType));
-                        Log.d("mine  rightChickType", String.valueOf(rightChickType));
-                        Log.d("mine  leftChickHashcode", String.valueOf(leftChickHashcode));
-                        Log.d("mine  riChickHashcode", String.valueOf(rightChickHashcode));
-
-
-                        Log.d("mine  leftChickToString", leftChickToString);
-                        Log.d("mine  rChickToString", rightChickToString);
-
-
-
-
-
-
-
-                        String minebreak  = "___________________________________________________";
-                        Log.d("mine  this_is_break", minebreak);
-                    }
-
-                    // If contour detection was enabled:
-
-                    List<FirebaseVisionPoint> leftEyeContour = face.getContour(FirebaseVisionFaceContour.LEFT_EYE).getPoints();
-                    List<FirebaseVisionPoint> upperLipBottomContour = face.getContour(FirebaseVisionFaceContour.UPPER_LIP_BOTTOM).getPoints();
-
-//                    FirebaseVisionPoint left = leftEyeContour.get(57);
-//                    Log.d("miiiiinw", String.valueOf(left));
-
-
-                    // If classification was enabled:
-                    if (face.getSmilingProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
-                        float smileProb = face.getSmilingProbability();
-                        Log.d("smileeee", String.valueOf(smileProb));
-                    }
-
-                    if (face.getRightEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
-                        float rightEyeOpenProb = face.getRightEyeOpenProbability();
-                    }
-
-                    // If face tracking was enabled:
-                    if (face.getTrackingId() != FirebaseVisionFace.INVALID_ID) {
-                        int id = face.getTrackingId();
-                    }
-                }
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(t6_dashboard.this, "Oops, Something went wrong", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
+    private MappedByteBuffer loadmodelfile(Activity activity) throws IOException {
+        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd("Qfacenet.tflite");
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startoffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startoffset, declaredLength);
+    }
 
+    private TensorOperator getPreprocessNormalizeOp() {
+        return new NormalizeOp(IMAGE_MEAN, IMAGE_STD);
+    }
+
+    //face detection
+    public void face_detector(final Bitmap bitmap, final String imagetype) {
+
+        final InputImage image = InputImage.fromBitmap(bitmap, 0);
+        FaceDetector detector = FaceDetection.getClient();
+        detector.process(image)
+                .addOnSuccessListener(
+                        new OnSuccessListener<List<Face>>() {
+                            @Override
+                            public void onSuccess(List<Face> faces) {
+                                // Task completed successfully
+                                for (Face face : faces) {
+                                    Rect bounds = face.getBoundingBox();
+                                    cropped = Bitmap.createBitmap(bitmap, bounds.left, bounds.top, bounds.width(), bounds.height());
+                                    get_embaddings(cropped, imagetype);
+
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+    }
+
+    public void get_embaddings(Bitmap bitmap, String imagetype) {
+
+        TensorImage inputImageBuffer;
+        float[][] embedding = new float[1][128];
+
+        int imageTensorIndex = 0;
+        int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
+        imageSizeY = imageShape[1];
+        imageSizeX = imageShape[2];
+        DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
+
+        inputImageBuffer = new TensorImage(imageDataType);
+
+        inputImageBuffer = loadImage(bitmap, inputImageBuffer);
+
+        tflite.run(inputImageBuffer.getBuffer(), embedding);
+
+        if (imagetype.equals("original"))
+            ori_embedding = embedding;
+        else if (imagetype.equals("current"))
+            test_embedding = embedding;
+    }
+
+    //    Drawer
     @Override
     public void onBackPressed() {
         if (tdrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -281,10 +291,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(), t2_login_signup_choice.class));
                 break;
             }
-//            case R.id.nav_setting: {
-//                startActivity(new Intent(getApplicationContext(), t8_setting.class));
-//                break;
-//            }
             case R.id.nav_profile: {
                 startActivity(new Intent(getApplicationContext(), t7_profile.class));
                 break;

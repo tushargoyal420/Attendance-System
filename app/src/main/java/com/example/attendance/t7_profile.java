@@ -56,7 +56,6 @@ public class t7_profile extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     UserData user= dataSnapshot.getValue(UserData.class);
                     Picasso.get().load(user.getImageUri()).into(tprofileimage);
-
                     tUserName.setText(user.getName());
                     tSapid.setText(user.getSapId());
                     tEmailAddress.setText(user.getEmail());

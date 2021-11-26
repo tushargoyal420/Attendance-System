@@ -72,8 +72,6 @@ public class t4_signup extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         tpasswordshow = findViewById(R.id.passwordshowbutton);
 
-
-
         tpasswordshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
