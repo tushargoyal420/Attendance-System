@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/dayname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Day"
+            android:textColor="@color/teal_700"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/subjectName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_700"
+            android:text="Subject"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/starttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Time"
+                android:textColor="@color/teal_700"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/dash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/teal_700"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Time"
+                android:textColor="@color/teal_700"
+                android:textSize="25sp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/faculty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Faculty"
+            android:textColor="@color/teal_700"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/roomNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Room no"
+            android:textColor="@color/teal_700"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

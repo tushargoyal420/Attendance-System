@@ -19,7 +19,10 @@
 <!--                    android:id="@+id/nav_setting"-->
 <!--                    android:title="Settings" />-->
                 <!--                android:icon="@drawable/icons8_cycling_500"-->
-
+                <item
+                    android:id="@+id/nav_timeTable"
+                    android:title="Time Table"
+                    />
                 <item
                     android:id="@+id/nav_logout"
                     android:title="Logout" />

@@ -55,6 +55,8 @@
             <ImageView
                 android:id="@+id/currentImage"
                 android:layout_width="400dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_height="400dp"
                 android:src="@drawable/myaccountimageasset_foreground"
 

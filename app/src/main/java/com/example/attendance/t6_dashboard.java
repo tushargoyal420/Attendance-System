@@ -63,12 +63,12 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     NavigationView tnavigationView;
     private ImageView tCurrentImage;
     private Toolbar tdashboardtoolbar;
-    private TextView result_text;
+    private TextView result_text, theaderUserName , theaderSapId;
 
     private FirebaseAuth fAuth;
     private Button topencam, tmatchImage;
     private final static int REQUEST_IMAGE_CAPTURE = 124;
-    DatabaseReference DataRef;
+    private DatabaseReference DataRef;
 
     protected Interpreter tflite;
     private int imageSizeX;
@@ -92,6 +92,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tdashboardtoolbar = findViewById(R.id.toolbar);
         setSupportActionBar(tdashboardtoolbar);
         tdashboardtoolbar.setTitle("Dashboard");
+//      tnavigationView.addHeaderView();
 
         //drawer
         tnavigationView.bringToFront();
@@ -101,8 +102,8 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tnavigationView.setNavigationItemSelectedListener(this);
         tnavigationView.setCheckedItem(R.id.nav_dashboard);
         fAuth = FirebaseAuth.getInstance();
-        LoadUserData();
 
+        LoadUserData();
         tCurrentImage = findViewById(R.id.currentImage);
         result_text = findViewById(R.id.result);
 
@@ -113,9 +114,9 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 double distance=calculate_distance(ori_embedding,test_embedding);
                 Log.e("distance", String.valueOf(distance));
                 if(distance<5.0) {
-                    result_text.setText("Result : Same Faces");
+                    result_text.setText("Result : Face match");
                 }else{
-                    result_text.setText("Result : Different Faces");
+                    result_text.setText("Result : Face didn't match");
             }}
         });
         // open camera
@@ -156,6 +157,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                         .build();
         return imageProcessor.process(inputImageBuffer);
     }
+
     //Getting original image from firebase
     private void LoadUserData() {
         String CurrentUser = fAuth.getCurrentUser().getUid();
@@ -165,6 +167,11 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     UserData user = dataSnapshot.getValue(UserData.class);
+
+
+//                    theaderUserName.setText(user.getName());
+//                    theaderSapId.setText(user.getSapId());
+
 //                    Picasso.get().load(user.getImageUri()).into(tOriginalImage);
                     Picasso.get()
                             .load(user.getImageUri())
@@ -215,7 +222,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     private TensorOperator getPreprocessNormalizeOp() {
         return new NormalizeOp(IMAGE_MEAN, IMAGE_STD);
     }
-
     //face detection
     public void face_detector(final Bitmap bitmap, final String imagetype) {
 
@@ -231,7 +237,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                                     Rect bounds = face.getBoundingBox();
                                     cropped = Bitmap.createBitmap(bitmap, bounds.left, bounds.top, bounds.width(), bounds.height());
                                     get_embaddings(cropped, imagetype);
-
                                 }
                             }
                         })
@@ -267,7 +272,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         else if (imagetype.equals("current"))
             test_embedding = embedding;
     }
-
     //    Drawer
     @Override
     public void onBackPressed() {
@@ -280,22 +284,23 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.nav_dashboard: {
                 startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
                 break;
-            }
-            case R.id.nav_logout: {
+            }case R.id.nav_logout: {
                 fAuth.signOut();
                 finish();
                 startActivity(new Intent(getApplicationContext(), t2_login_signup_choice.class));
                 break;
-            }
-            case R.id.nav_profile: {
+            }case R.id.nav_profile: {
                 startActivity(new Intent(getApplicationContext(), t7_profile.class));
                 break;
+            }case R.id.nav_timeTable: {
+                startActivity(new Intent(getApplicationContext(), t9_time_table.class));
+                break;
             }
-        }
-        return true;
+        }return true;
     }
 }

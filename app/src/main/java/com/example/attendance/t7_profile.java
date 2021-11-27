@@ -21,11 +21,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class t7_profile extends AppCompatActivity {
     private Toolbar tprofile_toolbar;
-    CircleImageView tprofileimage;
-    DatabaseReference ref, DataRef;
-    FirebaseAuth fAuth;
+    private CircleImageView tprofileimage;
+    private DatabaseReference ref, DataRef;
+    private FirebaseAuth fAuth;
     private String User;
-    TextView tUserName, tSapid, tEmailAddress;
+    private TextView tUserName, tSapid, tEmailAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,9 @@ public class t7_profile extends AppCompatActivity {
         tprofile_toolbar.setTitle("Profile");
         setSupportActionBar(tprofile_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         fAuth = FirebaseAuth.getInstance();
-        User = fAuth.getCurrentUser().getUid();   //current user
+        User = fAuth.getCurrentUser().getUid();
 
         tUserName= findViewById(R.id.userName);
         tSapid= findViewById(R.id.sapId);
@@ -59,9 +60,6 @@ public class t7_profile extends AppCompatActivity {
                     tUserName.setText(user.getName());
                     tSapid.setText(user.getSapId());
                     tEmailAddress.setText(user.getEmail());
-
-
-
                 }
             }
             @Override

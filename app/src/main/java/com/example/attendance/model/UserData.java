@@ -5,6 +5,15 @@ public class UserData {
     private String name;
     private String SapId;
     private String Email;
+    private String branch;
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
     public UserData(String imageUri, String name, String sapId, String email) {
         this.imageUri = imageUri;

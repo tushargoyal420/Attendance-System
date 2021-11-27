@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Attendance"
         tools:replace="android:theme">
         <activity
+            android:name=".t9_time_table"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
 
