@@ -20,11 +20,25 @@
         android:theme="@style/Theme.Attendance"
         tools:replace="android:theme">
         <activity
+            android:name=".t12_attendance_retrieve"
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
+        <activity
+            android:name=".t11_get_attendance"
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
+        <activity
+            android:name=".t10_upload_timetable"
+            android:exported="true"
+            android:parentActivityName=".t9_time_table" />
+        <activity
             android:name=".t9_time_table"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

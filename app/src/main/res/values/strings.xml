@@ -29,6 +29,9 @@
     <string name="enter_your_name">Enter your name</string>
     <string name="loading">______</string>
     <string name="tushar_goyal_bhavuk_baluja">Tushar Goyal || Bhavuk Baluja</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="you_are_late">You are late.</string>
 
 
 </resources>

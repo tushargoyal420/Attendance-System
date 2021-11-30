@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.attendance.R;
 import com.example.attendance.t6_dashboard;
+import com.example.attendance.t9_time_table;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class t2_login_signup_choice extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class t2_login_signup_choice extends AppCompatActivity {
 
         if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
+//            startActivity(new Intent(getApplicationContext(), t9_time_table.class));
             finish();
         }
 

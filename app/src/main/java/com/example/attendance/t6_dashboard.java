@@ -63,10 +63,10 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     NavigationView tnavigationView;
     private ImageView tCurrentImage;
     private Toolbar tdashboardtoolbar;
-    private TextView result_text, theaderUserName , theaderSapId;
+    private TextView result_text ;
 
     private FirebaseAuth fAuth;
-    private Button topencam, tmatchImage;
+    private Button topencam, tmatchImage, getAttendanceBut;
     private final static int REQUEST_IMAGE_CAPTURE = 124;
     private DatabaseReference DataRef;
 
@@ -92,8 +92,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tdashboardtoolbar = findViewById(R.id.toolbar);
         setSupportActionBar(tdashboardtoolbar);
         tdashboardtoolbar.setTitle("Dashboard");
-//      tnavigationView.addHeaderView();
-
         //drawer
         tnavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, tdrawerLayout, tdashboardtoolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -106,7 +104,13 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         LoadUserData();
         tCurrentImage = findViewById(R.id.currentImage);
         result_text = findViewById(R.id.result);
-
+        getAttendanceBut = findViewById(R.id.getAttendanceBut);
+        getAttendanceBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(t6_dashboard.this, t11_get_attendance.class));
+            }
+        });
         tmatchImage = findViewById(R.id.matchImage);
         tmatchImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,15 +119,22 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 Log.e("distance", String.valueOf(distance));
                 if(distance<5.0) {
                     result_text.setText("Result : Face match");
+                    getAttendanceBut.setVisibility(View.VISIBLE);
+
                 }else{
                     result_text.setText("Result : Face didn't match");
-            }}
+                    getAttendanceBut.setVisibility(View.VISIBLE);
+
+                }}
         });
         // open camera
         topencam = findViewById(R.id.opencam);
         topencam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tCurrentImage.setImageBitmap(null);
+                result_text.setText("Result : ");
+                getAttendanceBut.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
@@ -143,12 +154,10 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     }
 
     private TensorImage loadImage(final Bitmap bitmap, TensorImage inputImageBuffer) {
-        // Loads bitmap into a TensorImage.
         inputImageBuffer.load(bitmap);
 
         // Creates processor for the TensorImage.
         int cropSize = Math.min(bitmap.getWidth(), bitmap.getHeight());
-        // TODO(b/143564309): Fuse ops inside ImageProcessor.
         ImageProcessor imageProcessor =
                 new ImageProcessor.Builder()
                         .add(new ResizeWithCropOrPadOp(cropSize, cropSize))
@@ -167,12 +176,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     UserData user = dataSnapshot.getValue(UserData.class);
-
-
-//                    theaderUserName.setText(user.getName());
-//                    theaderSapId.setText(user.getSapId());
-
-//                    Picasso.get().load(user.getImageUri()).into(tOriginalImage);
                     Picasso.get()
                             .load(user.getImageUri())
                             .into(new Target() {

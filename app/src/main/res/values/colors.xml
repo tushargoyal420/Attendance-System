@@ -11,5 +11,11 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="myaccountimageasset_background">#FFFFFF</color>
+    <color name="lightgray">#717171</color>
+    <color name="lightBlack">#121212</color>
+    <color name="lightgrayforBg">#CDF1F1F1</color>
+    <color name="red">#CDFF0000</color>
+
+
 
 </resources>

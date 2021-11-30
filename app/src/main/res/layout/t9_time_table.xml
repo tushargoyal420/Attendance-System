@@ -17,27 +17,26 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/setting_toolbar"
+                android:id="@+id/time_table_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/teal_700"
                 app:buttonGravity="center_vertical"
-                />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="this is time table"
-            android:textSize="30sp"
-            android:textColor="@color/teal_700"
-            />
-
+           />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/timetableRecyclerview"
                 android:layout_width="match_parent"
+                android:background="@color/lightgrayforBg"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchlinearlayout"
                 tools:layout_editor_absoluteX="8dp" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/uploadTimeTable"
+                android:text="Upload"
+                />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

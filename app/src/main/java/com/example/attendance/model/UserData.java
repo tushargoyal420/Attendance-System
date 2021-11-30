@@ -18,8 +18,8 @@ public class UserData {
     public UserData(String imageUri, String name, String sapId, String email) {
         this.imageUri = imageUri;
         this.name = name;
-        SapId = sapId;
-        Email = email;
+        this.SapId = sapId;
+        this.Email = email;
     }
 
     public UserData() {
@@ -47,7 +47,7 @@ public class UserData {
     }
 
     public void setSapId(String sapId) {
-        SapId = sapId;
+        this.SapId = sapId;
     }
 
     public String getEmail() {
@@ -55,6 +55,6 @@ public class UserData {
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.Email = email;
     }
 }

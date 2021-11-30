@@ -114,7 +114,7 @@ public class t3_login extends AppCompatActivity {
                         FirebaseUser user = fAuth.getCurrentUser();
                         assert user != null;
                         if (!user.isEmailVerified()) {
-                            SimpleToast.ok(t3_login.this, "Please verify your email");
+                            SimpleToast.error(t3_login.this, "Please verify your email");
 //                            Toast.makeText(t3_login.this, "Please Verify email.", Toast.LENGTH_SHORT).show();
                             mprogressDialog.hide();
                         } else {

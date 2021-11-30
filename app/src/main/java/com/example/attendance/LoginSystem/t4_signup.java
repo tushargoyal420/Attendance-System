@@ -214,7 +214,7 @@ public class t4_signup extends AppCompatActivity {
 //                        Intent intent=new Intent(t4_signup.this, t6_dashboard.class);
 //                        intent.putExtra("currentSapId",emailname);
 //                        startActivity(intent);
-                        startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
+                        startActivity(new Intent(getApplicationContext(), t3_login.class));
                         finish();
                     }else{
                         Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

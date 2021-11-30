@@ -9,12 +9,15 @@ public class TimeTable {
     private String Day;
 
     public TimeTable(String startTime, String endTime, String subject, String room, String faculty, String day) {
-        StartTime = startTime;
-        EndTime = endTime;
-        Subject = subject;
-        Room = room;
-        Faculty = faculty;
-        Day = day;
+        this.StartTime = startTime;
+        this.EndTime = endTime;
+        this.Subject = subject;
+        this.Room = room;
+        this.Faculty = faculty;
+       this.Day = day;
+    }
+    public TimeTable() {
+
     }
 
     public String getDay() {
@@ -22,19 +25,16 @@ public class TimeTable {
     }
 
     public void setDay(String day) {
-        Day = day;
+        this.Day = day;
     }
 
-    public TimeTable() {
-
-    }
 
     public String getStartTime() {
         return StartTime;
     }
 
     public void setStartTime(String startTime) {
-        StartTime = startTime;
+        this.StartTime = startTime;
     }
 
     public String getEndTime() {
@@ -42,7 +42,7 @@ public class TimeTable {
     }
 
     public void setEndTime(String endTime) {
-        EndTime = endTime;
+        this.EndTime = endTime;
     }
 
     public String getSubject() {
@@ -50,7 +50,7 @@ public class TimeTable {
     }
 
     public void setSubject(String subject) {
-        Subject = subject;
+        this.Subject = subject;
     }
 
     public String getRoom() {
@@ -58,7 +58,7 @@ public class TimeTable {
     }
 
     public void setRoom(String room) {
-        Room = room;
+        this.Room = room;
     }
 
     public String getFaculty() {
@@ -66,6 +66,6 @@ public class TimeTable {
     }
 
     public void setFaculty(String faculty) {
-        Faculty = faculty;
+        this.Faculty = faculty;
     }
 }

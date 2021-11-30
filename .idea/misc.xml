@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/border.xml" value="0.231" />
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/button_state_list_anim_material.xml" value="0.2555" />
+        <entry key="..\:/Major1/Code/app/src/main/res/drawable/cardshadow.xml" value="0.26614583333333336" />
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/edittextborder.xml" value="0.2555" />
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/flat_button_state_list_anim_material.xml" value="0.1" />
         <entry key="..\:/Major1/Code/app/src/main/res/drawable/my_vector.xml" value="0.2555" />
@@ -16,7 +17,9 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_main.xml" value="0.2046875" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_showing_recognized_face.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/backtoolbar.xml" value="0.20521590423257802" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/cardshadow.xml" value="0.25" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/dashboard_copy.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/fragment_monday.xml" value="0.21557971014492755" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/fragment_result_dialog.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/fragment_resultdialog.xml" value="0.264" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/fragment_task_face_fragement.xml" value="0.20521590423257802" />
@@ -25,6 +28,9 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/list_item.xml" value="0.4" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/printlist.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/ssssfragment_task_face_fragment.xml" value="0.20521590423257802" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t10_upload_timetable.xml" value="0.2" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t11_get_attendance.xml" value="0.2" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t12_attendance_retrieve.xml" value="0.264" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t1_splash_screen.xml" value="0.4" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t20_faculty_student_choice.xml" value="0.17699871740059855" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t2_1_faculty_login.xml" value="0.18854211201368107" />
@@ -37,8 +43,8 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t7_profile.xml" value="0.2" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t8_setting.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t9_editprofile.xml" value="0.1" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t9_time_table.xml" value="0.176" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/timetablecard.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t9_time_table.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/timetablecard.xml" value="0.4" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/toolbar.xml" value="0.176" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/toolbarsecond.xml" value="0.1" />
         <entry key="..\:/Major1/Code/app/src/main/res/menu/main_menu.xml" value="0.1" />
