@@ -2,6 +2,7 @@ package com.example.attendance;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,7 @@ public class t9_time_table extends AppCompatActivity {
     private RecyclerView timetableRecyclerview;
     private FirebaseRecyclerAdapter<TimeTable, RetreiveTimeTable> adapter2;
     private FirebaseRecyclerOptions<TimeTable> options;
-    private DatabaseReference PostRef = FirebaseDatabase.getInstance().getReference().child("TimeTable").child("oss");
-//    private Query PostRef = FirebaseDatabase.getInstance().getReference().child("TimeTable").child("oss").orderByChild("Day");
+    private DatabaseReference PostRef = FirebaseDatabase.getInstance().getReference().child("TimeTable").child("osos");
 
     private Button uploadTimeTable;
     @Override
@@ -52,11 +52,14 @@ public class t9_time_table extends AppCompatActivity {
         });
     }
     private void LoadTimeTable() {
+
         options = new FirebaseRecyclerOptions.Builder<TimeTable>().setQuery(PostRef, TimeTable.class).build();
+
         adapter2 = new FirebaseRecyclerAdapter<TimeTable, RetreiveTimeTable>(options) {
             @Override
             protected void onBindViewHolder(@NonNull RetreiveTimeTable holder, int position, @NonNull TimeTable timeTable) {
-                holder.day.setText(timeTable.getDay());
+
+                holder.day.setText(timeTable.getDate());
                 holder.subject.setText(timeTable.getSubject());
                 holder.startTime.setText(timeTable.getStartTime());
                 holder.endTime.setText(timeTable.getEndTime());

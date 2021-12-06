@@ -1,5 +1,6 @@
 package com.example.attendance;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -9,18 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
 public class t10_upload_timetable extends AppCompatActivity {
     private Toolbar upload_time_table_toolbar;
-    private EditText day, sub, starttime, endtime, room, faculty;
+    private EditText date, sub, starttime, endtime, room, faculty, branch;
     private Button submit;
     private FirebaseAuth fAuth;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("TimeTable/osos");
+    private DatabaseReference attendance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +38,12 @@ public class t10_upload_timetable extends AppCompatActivity {
         upload_time_table_toolbar = findViewById(R.id.upload_time_table_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        day = findViewById(R.id.day);
+        date = findViewById(R.id.date);
         sub = findViewById(R.id.subject);
         starttime = findViewById(R.id.startTime);
         endtime = findViewById(R.id.endTime);
         room = findViewById(R.id.room);
+        branch = findViewById(R.id.branch);
         faculty = findViewById(R.id.faculty);
 
         submit = findViewById(R.id.submitBut);
@@ -51,21 +58,37 @@ public class t10_upload_timetable extends AppCompatActivity {
     }
 
     private void uploadData() {
-        String days = day.getText().toString().trim();
-        String sub = day.getText().toString().trim();
-        String starttime = day.getText().toString().trim();
-        String endtime = day.getText().toString().trim();
-        String room = day.getText().toString().trim();
-        String faculty = day.getText().toString().trim();
+        String dateS = date.getText().toString().trim();
+        String subS = sub.getText().toString().trim();
+        String starttimeS = starttime.getText().toString().trim();
+        String endtimeS = endtime.getText().toString().trim();
+        String roomS = room.getText().toString().trim();
+        String facultyS = faculty.getText().toString().trim();
+        String branchS = branch.getText().toString().trim();
 
         HashMap<String, String> timetableMap = new HashMap<>();
-        timetableMap.put("Day", days);
-        timetableMap.put("Subject", sub);
-        timetableMap.put("Room", room);
-        timetableMap.put("StartTime", starttime);
-        timetableMap.put("EndTime", endtime);
-        timetableMap.put("Faculty", faculty);
+        timetableMap.put("Date", dateS);
+        timetableMap.put("Subject", subS);
+        timetableMap.put("Room", roomS);
+        timetableMap.put("StartTime", starttimeS);
+        timetableMap.put("EndTime", endtimeS);
+        timetableMap.put("Faculty", facultyS);
         root.push().setValue(timetableMap);
+        Query query = FirebaseDatabase.getInstance().getReference().child("studentlist").child(branchS);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String ClassTime= starttimeS+":"+endtimeS;
+                    attendance = FirebaseDatabase.getInstance().getReference().child("Attendance").child(branchS).child(dateS).child(subS).child(ClassTime);
+                    attendance.setValue(snapshot.getValue());
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

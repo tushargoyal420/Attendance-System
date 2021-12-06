@@ -40,65 +40,90 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+
                 <EditText
-                    android:id="@+id/day"
+                    android:id="@+id/date"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:ems="10"
+                    android:hint="Date"
                     android:inputType="text"
-                    android:text="Day"
-                    android:textColor="@color/lightgray" />
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
 
                 <EditText
                     android:id="@+id/subject"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:ems="10"
+                    android:hint="Subject"
                     android:inputType="text"
-                    android:text="Subject"
-                    android:textColor="@color/lightgray" />
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
 
                 <EditText
                     android:id="@+id/faculty"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="Faculty"
-                    android:textColor="@color/lightgray" />
+                    android:hint="Faculty"
+                    android:inputType="text"
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
 
                 <EditText
                     android:id="@+id/room"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:ems="10"
+                    android:hint="Room Number"
                     android:inputType="number"
-                    android:text="Room Number"
-                    android:textColor="@color/lightgray" />
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
 
                 <EditText
                     android:id="@+id/startTime"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:ems="10"
+                    android:hint="Start time"
                     android:inputType="time"
-                    android:text="Start time"
-                    android:textColor="@color/lightgray" />
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
 
                 <EditText
                     android:id="@+id/endTime"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:ems="10"
+                    android:hint="End time"
                     android:inputType="time"
-                    android:text="End time"
-                    android:textColor="@color/lightgray" />
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
+
+                <EditText
+                    android:id="@+id/branch"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:ems="10"
+                    android:hint="branch"
+                    android:inputType="text"
+                    android:textColor="@color/lightgray"
+                    android:textColorHint="@color/black" />
 
 
                 <Button
@@ -106,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="@string/submit"
+                    android:hint="@string/submit"
                     android:textColor="@color/white" />
 
             </LinearLayout>

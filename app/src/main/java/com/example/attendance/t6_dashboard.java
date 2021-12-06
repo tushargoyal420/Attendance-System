@@ -303,6 +303,9 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             }case R.id.nav_timeTable: {
                 startActivity(new Intent(getApplicationContext(), t9_time_table.class));
                 break;
+            }case R.id.nav_attendance: {
+                startActivity(new Intent(getApplicationContext(),t12_attendance_retrieve.class));
+                break;
             }
         }return true;
     }

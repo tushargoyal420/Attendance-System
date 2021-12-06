@@ -7,13 +7,16 @@
     tools:context=".t9_time_table"
     android:background="@color/white"
     >
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-100dp"
+        tools:layout_editor_absoluteY="-16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
@@ -21,22 +24,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/teal_700"
-                app:buttonGravity="center_vertical"
-           />
+                app:buttonGravity="center_vertical" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/timetableRecyclerview"
                 android:layout_width="match_parent"
-                android:background="@color/lightgrayforBg"
                 android:layout_height="match_parent"
+                android:background="@color/lightgrayforBg"
                 app:layout_constraintTop_toBottomOf="@+id/searchlinearlayout"
                 tools:layout_editor_absoluteX="8dp" />
 
             <Button
+                android:id="@+id/uploadTimeTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/uploadTimeTable"
-                android:text="Upload"
-                />
+                android:text="Upload" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

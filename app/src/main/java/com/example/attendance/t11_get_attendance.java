@@ -85,20 +85,13 @@ public class t11_get_attendance extends AppCompatActivity {
         dayFormat = new SimpleDateFormat("EEEE");
         timestamp = timestampFormat.format(calendar.getTime());
         date = dateFormat.format(calendar.getTime());
+        Log.e("checkingdata", date);
         getDay = dayFormat.format(calendar.getTime());
         noclass.setVisibility(View.VISIBLE);
         singletime = singletimeFormat.format(calendar.getTime());
         completetime = completeTimeFormat.format(calendar.getTime());
         addedsingletime = singletime + ":59";
-        markAttendanceBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mprogressDialog.setMessage("Please wait...");
-                mprogressDialog.show();
-                mprogressDialog.setCancelable(false);
-                markAttendance();
-            }
-        });
+
         LoadClass();
 
     }
@@ -106,8 +99,8 @@ public class t11_get_attendance extends AppCompatActivity {
 
     private void LoadClass() {
         String CurrentUser = fAuth.getCurrentUser().getUid();
-        Query query = FirebaseDatabase.getInstance().getReference().child("TimeTable/oss")
-                .orderByChild("Day").equalTo(getDay);
+        Query query = FirebaseDatabase.getInstance().getReference().child("TimeTable/osos")
+                .orderByChild("Date").equalTo(date);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -119,35 +112,59 @@ public class t11_get_attendance extends AppCompatActivity {
                             noclass.setVisibility(View.GONE);
                             classDetailsLinear.setVisibility(View.VISIBLE);
                             subjectName.setText(timeTable.getSubject());
-                            dayname.setText(timeTable.getDay());
+                            dayname.setText(timeTable.getDate());
                             roomNo.setText(timeTable.getRoom());
                             starttime.setText(timeTable.getStartTime());
                             endtime.setText(timeTable.getEndTime());
                             faculty.setText(timeTable.getFaculty());
                             String subName = timeTable.getSubject();
+                            String sFaculty = timeTable.getFaculty();
+                            String sDate = timeTable.getDate();
+                            String sRoomno = timeTable.getRoom();
+
                             String timeperiod = (timeTable.getStartTime() + ":" + timeTable.getEndTime());
-                            ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child("osos").child(date).child(subName).child(timeperiod);
+                            ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child("osos")
+                                    .child(date).child(subName).child(timeperiod);
                             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        for (DataSnapshot data : snapshot.getChildren()) {
-                                            if (data.getKey().equals(CurrentUser)) {
-                                                markAttendanceBut.setVisibility(View.GONE);
+//                                    if (snapshot.exists()) {
+                                    for (DataSnapshot data : snapshot.getChildren()) {
+                                        TimeTable timeTable = data.getValue(TimeTable.class);
+                                        if (data.getKey().equals(CurrentUser)) {
+                                            if (timeTable.getDone().equals("0")) {
+                                                markAttendanceBut.setVisibility(View.VISIBLE);
+                                                markAttendanceBut.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        mprogressDialog.setMessage("Please wait...");
+                                                        mprogressDialog.show();
+                                                        mprogressDialog.setCancelable(false);
+                                                        markAttendance(sFaculty, subName, sDate, sRoomno);
+                                                    }
+                                                });
+                                            }
+                                            if (timeTable.getDone().equals("Present")) {
                                                 lateText.setText("You already get attendance");
                                                 lateText.setVisibility(View.VISIBLE);
-                                            } else {
-                                                markAttendanceBut.setVisibility(View.VISIBLE);
+                                                markAttendanceBut.setVisibility(View.GONE);
                                             }
+//                                        if (data.getKey().equals(CurrentUser)){
+//                                            markAttendanceBut.setVisibility(View.GONE);
+//                                            lateText.setText("You already get attendance");
+//                                            lateText.setVisibility(View.VISIBLE);
+//                                        } else {
+//                                            markAttendanceBut.setVisibility(View.VISIBLE);
+//                                        }
                                         }
-                                    } else {
-                                        markAttendanceBut.setVisibility(View.VISIBLE);
                                     }
+//                                    } else {
+//                                        markAttendanceBut.setVisibility(View.VISIBLE);
+//                                    }
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
                                 }
                             });
 
@@ -170,41 +187,45 @@ public class t11_get_attendance extends AppCompatActivity {
         });
     }
 
-    private void markAttendance() {
+    private void markAttendance(String sFaculty, String subName, String sDate, String sRoomno) {
         try {
             String CurrentUser = fAuth.getCurrentUser().getUid();
-
             DataRef = FirebaseDatabase.getInstance().getReference().child("students").child(CurrentUser);
             DataRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         UserData user = dataSnapshot.getValue(UserData.class);
-                        String stuName = user.getName();
+//                        String stuName = user.getName();
+//                        String email = user.getEmail();
+//                        String sapId = user.getSapId();
+//                        String imageUri = user.getImageUri();
                         String ctimeStamp = timestamp;
-                        String sapId = user.getSapId();
-                        String imageUri = user.getImageUri();
-                        String email = user.getEmail();
-                        Log.e("work", "two");
-                        HashMap<String, String> detail = new HashMap<>();
+                        HashMap<String, Object> detail = new HashMap<>();
                         detail.put("UserId", CurrentUser);
-                        detail.put("StudentName", stuName);
                         detail.put("TimeStamp", ctimeStamp);
-                        detail.put("SapId", sapId);
-                        detail.put("ImageUri", imageUri);
-                        detail.put("Email", email);
-                        ref.child(CurrentUser).setValue(detail);
+                        detail.put("Done", "Present");
+                        detail.put("Faculty", sFaculty);
+                        detail.put("Date", sDate);
+                        detail.put("Room", sRoomno);
+                        detail.put("Subject", subName);
+//                        detail.put("SapId", sapId);
+//                        detail.put("ImageUri", imageUri);
+//                        detail.put("StudentName", stuName);
+//                        detail.put("Email", email);
+                        ref.child(CurrentUser).updateChildren(detail);
+//                                put(detail);
                         markAttendanceBut.setVisibility(View.GONE);
                         mprogressDialog.hide();
                         SimpleToast.ok(t11_get_attendance.this, "Marked");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent( t11_get_attendance.this, t6_dashboard.class);
+                                Intent intent = new Intent(t11_get_attendance.this, t6_dashboard.class);
                                 startActivity(intent);
                                 finish();
                             }
-                        },SPLASH_TIME_OUT);
+                        }, SPLASH_TIME_OUT);
                     }
 
                 }

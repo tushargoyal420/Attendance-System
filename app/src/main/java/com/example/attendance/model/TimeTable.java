@@ -7,17 +7,79 @@ public class TimeTable {
     private String Room;
     private String Faculty;
     private String Day;
+    private String Date;
+    private String TimeStamp;
+    private String StudentName;
+    private String Attend;
+    private String UserId;
+    private String Done;
 
-    public TimeTable(String startTime, String endTime, String subject, String room, String faculty, String day) {
+    public String getDone() {
+        return Done;
+    }
+
+    public void setDone(String done) {
+        Done = done;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
+
+    public String getAttend() {
+        return Attend;
+    }
+
+    public void setAttend(String attend) {
+        Attend = attend;
+    }
+
+    public String getStudentName() {
+        return StudentName;
+    }
+
+    public void setStudentName(String studentName) {
+        StudentName = studentName;
+    }
+
+    public TimeTable() {
+
+    }
+
+    public TimeTable(String startTime, String endTime, String subject, String room, String userId,  String faculty, String day, String date, String timestamp, String attend,String done ) {
         this.StartTime = startTime;
         this.EndTime = endTime;
         this.Subject = subject;
         this.Room = room;
         this.Faculty = faculty;
-       this.Day = day;
-    }
-    public TimeTable() {
+        this.Day = day;
+        this.Date = date;
+        this.TimeStamp = timestamp;
+        this.Attend = attend;
+        this.UserId= userId;
+        this.Done= done;
 
+    }
+
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
+
+    public String getTimeStamp() {
+        return TimeStamp;
+    }
+
+    public void setTimeStamp(String timestamp) {
+        TimeStamp = timestamp;
     }
 
     public String getDay() {
