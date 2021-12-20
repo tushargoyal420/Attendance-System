@@ -197,6 +197,7 @@
                 android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/forFacultyLinear"
                 android:layout_width="match_parent"
                 android:visibility="gone"
                 android:layout_height="wrap_content"
@@ -231,7 +232,7 @@
 
             <Button
                 android:id="@+id/markAttendanceBut"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:backgroundTint="@color/teal_700"
@@ -239,7 +240,9 @@
                 android:paddingBottom="15dp"
                 android:textAllCaps="false"
                 android:textSize="22sp"
-                android:visibility="gone" />
+                android:text="@string/mark_attendance"
+                android:visibility="gone"
+                />
         </LinearLayout>
     </LinearLayout>
 

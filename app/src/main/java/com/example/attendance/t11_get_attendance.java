@@ -39,7 +39,7 @@ public class t11_get_attendance extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat singletimeFormat, completeTimeFormat, dayFormat, timestampFormat, dateFormat;
     private String completetime, singletime, addedsingletime, getDay, timestamp, date;
-    private LinearLayout classDetailsLinear, noclass;
+    private LinearLayout classDetailsLinear, noclass, tforFacultyLinear;
     private ProgressDialog mprogressDialog;
     private DatabaseReference ref, attendance;
 
@@ -70,6 +70,7 @@ public class t11_get_attendance extends AppCompatActivity {
         noclassText = findViewById(R.id.noclassText);
         mcreateClassButton = findViewById(R.id.createClassButton);
         mleftSmallBut = findViewById(R.id.leftSmallBut);
+        tforFacultyLinear = findViewById(R.id.forFacultyLinear);
         mleftSmallBut.setText("Check Attendance");
 
         markAttendanceBut = findViewById(R.id.markAttendanceBut);
@@ -154,6 +155,7 @@ public class t11_get_attendance extends AppCompatActivity {
 
                             if (type.equals("faculty")) {
                                 faculty.setText(branchS);
+                                tforFacultyLinear.setVisibility(View.VISIBLE);
                                 mcreateClassButton.setText("Create Class");
                                 mcreateClassButton.setVisibility(View.VISIBLE);
 
