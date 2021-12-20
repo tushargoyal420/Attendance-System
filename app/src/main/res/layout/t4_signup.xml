@@ -65,34 +65,7 @@
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:contentDescription="userprofileimage"
-                android:src="@mipmap/myaccountimageasset"
-                />
-
-            <Button
-                android:id="@+id/selectprofileimage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:text="Select Image"
-                android:textColor="@color/teal_700"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:backgroundTint="#FFFFFF" />
-
-            <!--            <ImageView-->
-<!--                android:id="@+id/loginPageImage"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="250dp"-->
-<!--                android:layout_marginBottom="10dp"-->
-<!--                android:src="@drawable/splashvector" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:orientation="vertical"-->
-<!--                android:gravity="bottom|center"-->
-<!--                android:paddingBottom="80dp"-->
-<!--                >-->
+                android:src="@mipmap/myaccountimageasset" />
 
             <EditText
                 android:id="@+id/nameInput"
@@ -162,7 +135,25 @@
                     android:gravity="center"
                     android:background="@drawable/show2"
                     />
+
             </RelativeLayout>
+
+            <EditText
+                android:id="@+id/branch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/eduttextborder5"
+                android:ems="10"
+                android:fontFamily="@font/titilliumweregular"
+                android:hint="Branch"
+                android:inputType="text"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:textColor="#535353"
+                android:textColorHint="#BAB4B4"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/studentlogin"

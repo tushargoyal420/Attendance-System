@@ -25,7 +25,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.attendance.LoginSystem.t2_login_signup_choice;
+import com.example.attendance.model.TimeTable;
 import com.example.attendance.model.UserData;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -63,17 +65,17 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     NavigationView tnavigationView;
     private ImageView tCurrentImage;
     private Toolbar tdashboardtoolbar;
-    private TextView result_text ;
+    private TextView result_text;
 
-    private FirebaseAuth fAuth;
     private Button topencam, tmatchImage, getAttendanceBut;
     private final static int REQUEST_IMAGE_CAPTURE = 124;
-    private DatabaseReference DataRef;
+    private FirebaseAuth fAuth;
+    private DatabaseReference DataRef, userTypeRef;
 
     protected Interpreter tflite;
     private int imageSizeX;
     private int imageSizeY;
-
+    static String BranchOrName = "";
     private static final float IMAGE_MEAN = 0.0f;
     private static final float IMAGE_STD = 1.0f;
 
@@ -100,32 +102,72 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tnavigationView.setNavigationItemSelectedListener(this);
         tnavigationView.setCheckedItem(R.id.nav_dashboard);
         fAuth = FirebaseAuth.getInstance();
+        getAttendanceBut = findViewById(R.id.getAttendanceBut);
 
-        LoadUserData();
+        try {
+            String CurrentUser = fAuth.getCurrentUser().getUid();
+            userTypeRef = FirebaseDatabase.getInstance().getReference("users");
+            userTypeRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if (snapshot.exists()) {
+                        if ((snapshot.child("faculty").child(CurrentUser)).exists()) {
+                            DataRef = FirebaseDatabase.getInstance().getReference("users").child("faculty").child(CurrentUser);
+                            String UserType = "faculty";
+                            String FacultyName = CurrentUser;
+                            LoadUserData(UserType, FacultyName);
+                        }
+                        if ((snapshot.child("students").child(CurrentUser)).exists()) {
+                            DataRef = FirebaseDatabase.getInstance().getReference("users").child("students").child(CurrentUser);
+                            DataRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    UserData userData = snapshot.getValue(UserData.class);
+                                    BranchOrName = userData.getBranch();
+//                                    Log.e("USERBranch", BranchOrName);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
+                            String UserType = "student";
+                            Log.e("USERBranchthis", "thiss"+BranchOrName);
+
+                            String UserBranch = BranchOrName;
+                            LoadUserData(UserType, UserBranch);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("UserTypeError", "Exception", e);
+        }
+
         tCurrentImage = findViewById(R.id.currentImage);
         result_text = findViewById(R.id.result);
-        getAttendanceBut = findViewById(R.id.getAttendanceBut);
-        getAttendanceBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(t6_dashboard.this, t11_get_attendance.class));
-            }
-        });
+
         tmatchImage = findViewById(R.id.matchImage);
         tmatchImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                double distance=calculate_distance(ori_embedding,test_embedding);
+                double distance = calculate_distance(ori_embedding, test_embedding);
                 Log.e("distance", String.valueOf(distance));
-                if(distance<5.0) {
+                if (distance < 5.0) {
                     result_text.setText("Result : Face match");
                     getAttendanceBut.setVisibility(View.VISIBLE);
 
-                }else{
+                } else {
                     result_text.setText("Result : Face didn't match");
                     getAttendanceBut.setVisibility(View.VISIBLE);
-
-                }}
+                }
+            }
         });
         // open camera
         topencam = findViewById(R.id.opencam);
@@ -145,10 +187,11 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         });
         initTflite();
     }
+
     private double calculate_distance(float[][] ori_embedding, float[][] test_embedding) {
-        double sum =0.0;
-        for(int i=0;i<128;i++){
-            sum=sum+Math.pow((ori_embedding[0][i]-test_embedding[0][i]),2.0);
+        double sum = 0.0;
+        for (int i = 0; i < 128; i++) {
+            sum = sum + Math.pow((ori_embedding[0][i] - test_embedding[0][i]), 2.0);
         }
         return Math.sqrt(sum);
     }
@@ -167,28 +210,44 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         return imageProcessor.process(inputImageBuffer);
     }
 
-    //Getting original image from firebase
-    private void LoadUserData() {
-        String CurrentUser = fAuth.getCurrentUser().getUid();
-        DataRef = FirebaseDatabase.getInstance().getReference().child("students").child(CurrentUser);
+
+
+    private void LoadUserData(String UserType, String UserBranchOrName) {
+        getAttendanceBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(t6_dashboard.this, t11_get_attendance.class);
+                intent.putExtra("UserType", UserType);
+                intent.putExtra("UserBranchOrName", UserBranchOrName);
+                startActivity(intent);
+            }
+        });
+
         DataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     UserData user = dataSnapshot.getValue(UserData.class);
-                    Picasso.get()
-                            .load(user.getImageUri())
-                            .into(new Target() {
-                                @Override
-                                public void onBitmapLoaded(final Bitmap originalBitmap, Picasso.LoadedFrom from) {
-                                    Log.i("donec", "code run");
-                                    face_detector(originalBitmap, "original");
-                                }
-                                @Override public void onBitmapFailed(Exception e, Drawable errorDrawable) {}
-                                @Override public void onPrepareLoad(Drawable placeHolderDrawable) {}});
-                }}
+                    Picasso.get().load(user.getImageUri()).into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(final Bitmap originalBitmap, Picasso.LoadedFrom from) {
+                            face_detector(originalBitmap, "original");
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        }
+                    });
+                }
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                SimpleToast.error(t6_dashboard.this, "Error to fetch Image from server");
             }
         });
     }
@@ -225,32 +284,30 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
     private TensorOperator getPreprocessNormalizeOp() {
         return new NormalizeOp(IMAGE_MEAN, IMAGE_STD);
     }
+
     //face detection
     public void face_detector(final Bitmap bitmap, final String imagetype) {
 
         final InputImage image = InputImage.fromBitmap(bitmap, 0);
         FaceDetector detector = FaceDetection.getClient();
-        detector.process(image)
-                .addOnSuccessListener(
-                        new OnSuccessListener<List<Face>>() {
-                            @Override
-                            public void onSuccess(List<Face> faces) {
-                                // Task completed successfully
-                                for (Face face : faces) {
-                                    Rect bounds = face.getBoundingBox();
-                                    cropped = Bitmap.createBitmap(bitmap, bounds.left, bounds.top, bounds.width(), bounds.height());
-                                    get_embaddings(cropped, imagetype);
-                                }
-                            }
-                        })
-                .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Task failed with an exception
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
+        detector.process(image).addOnSuccessListener(new OnSuccessListener<List<Face>>() {
+            @Override
+            public void onSuccess(List<Face> faces) {
+                // Task completed successfully
+                for (Face face : faces) {
+                    Rect bounds = face.getBoundingBox();
+                    cropped = Bitmap.createBitmap(bitmap, bounds.left, bounds.top, bounds.width(), bounds.height());
+                    get_embaddings(cropped, imagetype);
+                }
+            }
+        }).addOnFailureListener(
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Task failed with an exception
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public void get_embaddings(Bitmap bitmap, String imagetype) {
@@ -275,6 +332,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         else if (imagetype.equals("current"))
             test_embedding = embedding;
     }
+
     //    Drawer
     @Override
     public void onBackPressed() {
@@ -287,26 +345,30 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.nav_dashboard: {
                 startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
                 break;
-            }case R.id.nav_logout: {
+            }
+            case R.id.nav_logout: {
                 fAuth.signOut();
                 finish();
                 startActivity(new Intent(getApplicationContext(), t2_login_signup_choice.class));
                 break;
-            }case R.id.nav_profile: {
+            }
+            case R.id.nav_profile: {
                 startActivity(new Intent(getApplicationContext(), t7_profile.class));
                 break;
-            }case R.id.nav_timeTable: {
+            }
+            case R.id.nav_timeTable: {
                 startActivity(new Intent(getApplicationContext(), t9_time_table.class));
                 break;
-            }case R.id.nav_attendance: {
-                startActivity(new Intent(getApplicationContext(),t12_attendance_retrieve.class));
+            }
+            case R.id.nav_attendance: {
+                startActivity(new Intent(getApplicationContext(), t12_attendance_retrieve.class));
                 break;
             }
-        }return true;
+        }
+        return true;
     }
 }

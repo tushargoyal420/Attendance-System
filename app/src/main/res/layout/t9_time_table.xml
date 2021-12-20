@@ -25,7 +25,29 @@
                 android:layout_height="60dp"
                 android:background="@color/teal_700"
                 app:buttonGravity="center_vertical" />
+            <LinearLayout
+                android:id="@+id/noclass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/cardshadow"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:visibility="gone"
+                android:paddingBottom="20dp">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="There is no class"
+                    android:textSize="20sp"
+                    android:textColor="@color/lightgray"
+                    android:textAlignment="center"
+                    />
+
+            </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/timetableRecyclerview"
                 android:layout_width="match_parent"

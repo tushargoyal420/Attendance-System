@@ -20,6 +20,13 @@
         android:theme="@style/Theme.Attendance"
         tools:replace="android:theme">
         <activity
+            android:name=".t13_check_attendance_activity"
+            android:exported="true"
+            android:parentActivityName=".t11_get_attendance" />
+        <activity
+            android:name=".faculty.t13_faculty_dashboard"
+            android:exported="false" />
+        <activity
             android:name=".t12_attendance_retrieve"
             android:exported="true"
             android:parentActivityName=".t6_dashboard" />

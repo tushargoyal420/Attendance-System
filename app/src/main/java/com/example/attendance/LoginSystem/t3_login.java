@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.attendance.R;
+import com.example.attendance.faculty.t13_faculty_dashboard;
 import com.example.attendance.t6_dashboard;
 import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -115,15 +116,26 @@ public class t3_login extends AppCompatActivity {
                         assert user != null;
                         if (!user.isEmailVerified()) {
                             SimpleToast.error(t3_login.this, "Please verify your email");
-//                            Toast.makeText(t3_login.this, "Please Verify email.", Toast.LENGTH_SHORT).show();
-                            mprogressDialog.hide();
+                            mprogressDialog.dismiss();
                         } else {
+                            String studentemailtype = "[0-9]+@[stu]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
+                            String email = temailaddress.getText().toString().trim();
+                            if(email.matches(studentemailtype) && email.length()> 0 ){
+                                Intent intent = new Intent(t3_login.this, t6_dashboard.class);
+                                intent.putExtra("User", "student");
+                                startActivity(intent);
+//                                startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
+                            }else{
+                                Intent intent = new Intent(t3_login.this, t6_dashboard.class);
+                                intent.putExtra("User", "faculty");
+                                startActivity(intent);
+                            }
+                            mprogressDialog.dismiss();
                             finish();
-                            startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
                         }
                     } else {
                         Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        mprogressDialog.hide();
+                        mprogressDialog.dismiss();
                     }
                 }
             });

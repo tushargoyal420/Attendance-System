@@ -43,87 +43,101 @@
 
                 <EditText
                     android:id="@+id/date"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="Date"
                     android:inputType="text"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
                 <EditText
                     android:id="@+id/subject"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="Subject"
                     android:inputType="text"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
                 <EditText
                     android:id="@+id/faculty"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="Faculty"
                     android:inputType="text"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
                 <EditText
                     android:id="@+id/room"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="Room Number"
                     android:inputType="number"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
                 <EditText
                     android:id="@+id/startTime"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="Start time"
                     android:inputType="time"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
                 <EditText
                     android:id="@+id/endTime"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="End time"
                     android:inputType="time"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
                 <EditText
                     android:id="@+id/branch"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:background="@drawable/eduttextborder5"
                     android:ems="10"
                     android:hint="branch"
                     android:inputType="text"
-                    android:textColor="@color/lightgray"
-                    android:textColorHint="@color/black" />
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:textColor="#535353"
+                    android:textColorHint="#BAB4B4" />
 
 
                 <Button

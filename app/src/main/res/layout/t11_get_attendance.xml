@@ -36,7 +36,6 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/classDetailsLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +45,8 @@
             android:paddingLeft="15dp"
             android:paddingTop="20dp"
             android:paddingRight="15dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,8 +152,8 @@
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/noclass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,16 +163,17 @@
             android:paddingLeft="15dp"
             android:paddingTop="20dp"
             android:paddingRight="15dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+            android:visibility="gone">
 
             <TextView
+                android:id="@+id/noclassText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="There is no class at this time"
-                android:textSize="20sp"
-                android:textColor="@color/lightgray"
                 android:textAlignment="center"
-                />
+                android:textColor="@color/lightgray"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -186,26 +187,55 @@
                 android:id="@+id/lateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/red"
-                android:textSize="30sp"
                 android:layout_margin="20dp"
+                android:background="@drawable/cardshadow"
+                android:gravity="center"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:visibility="gone"
-                android:background="@drawable/cardshadow"
-                />
+                android:textColor="@color/red"
+                android:textSize="30sp"
+                android:visibility="gone" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/leftSmallBut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/teal_700"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/createClassButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/teal_700"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/markAttendanceBut"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/teal_700"
                 android:layout_margin="20dp"
+                android:backgroundTint="@color/teal_700"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:text="Mark Attendance"
                 android:textAllCaps="false"
                 android:textSize="22sp"
                 android:visibility="gone" />

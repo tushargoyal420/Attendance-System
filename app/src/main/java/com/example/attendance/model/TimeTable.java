@@ -13,6 +13,51 @@ public class TimeTable {
     private String Attend;
     private String UserId;
     private String Done;
+    private String Branch;
+    private String SapId;
+    private String Name;
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getSapId() {
+        return SapId;
+    }
+
+    public void setSapId(String sapId) {
+        SapId = sapId;
+    }
+
+    public String getBranch() {
+        return Branch;
+    }
+
+    public TimeTable(String startTime,String name, String sapId , String endTime, String subject, String room, String faculty, String day, String date, String timeStamp, String studentName, String attend, String userId, String done, String branch) {
+        StartTime = startTime;
+        Name = name;
+        SapId= sapId;
+        EndTime = endTime;
+        Subject = subject;
+        Room = room;
+        Faculty = faculty;
+        Day = day;
+        Date = date;
+        TimeStamp = timeStamp;
+        StudentName = studentName;
+        Attend = attend;
+        UserId = userId;
+        Done = done;
+        Branch = branch;
+    }
+
+    public void setBranch(String branch) {
+        Branch = branch;
+    }
 
     public String getDone() {
         return Done;
@@ -50,20 +95,6 @@ public class TimeTable {
 
     }
 
-    public TimeTable(String startTime, String endTime, String subject, String room, String userId,  String faculty, String day, String date, String timestamp, String attend,String done ) {
-        this.StartTime = startTime;
-        this.EndTime = endTime;
-        this.Subject = subject;
-        this.Room = room;
-        this.Faculty = faculty;
-        this.Day = day;
-        this.Date = date;
-        this.TimeStamp = timestamp;
-        this.Attend = attend;
-        this.UserId= userId;
-        this.Done= done;
-
-    }
 
 
     public String getDate() {

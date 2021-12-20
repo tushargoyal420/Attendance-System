@@ -44,8 +44,8 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class t4_signup extends AppCompatActivity {
-    private EditText tname, temailaddress, tpassword;
-    private Button tcreateaccount, mselectprofileimage;
+    private EditText tname, temailaddress, tpassword, tBranch;
+    private Button tcreateaccount, mselectImage;
     private TextView tsignin;
     private String userid;
     private ImageView tpasswordshow;
@@ -55,7 +55,7 @@ public class t4_signup extends AppCompatActivity {
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference root;
 
-    private StorageReference reference;
+    private StorageReference reference = FirebaseStorage.getInstance().getReference();
     private CircleImageView meditprofilepicture;
     private Uri imageUri;
 
@@ -65,6 +65,7 @@ public class t4_signup extends AppCompatActivity {
         mprogressDialog = new ProgressDialog(this);
         setContentView(R.layout.t4_signup);
         tname = findViewById(R.id.nameInput);
+        tBranch = findViewById(R.id.branch);
         temailaddress = findViewById(R.id.emailinput);
         tpassword = findViewById(R.id.createpasswordinput);
         tcreateaccount = findViewById(R.id.studentlogin);
@@ -72,17 +73,23 @@ public class t4_signup extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         tpasswordshow = findViewById(R.id.passwordshowbutton);
 
+        meditprofilepicture = findViewById(R.id.editprofilepicture);
+        meditprofilepicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseimage();
+            }
+        });
         tpasswordshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.getId()==R.id.passwordshowbutton){
+                if (view.getId() == R.id.passwordshowbutton) {
 
-                    if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                    if (tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
                         tpasswordshow.setImageResource(R.drawable.hide3);
 
                         tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    }
-                    else{
+                    } else {
                         tpasswordshow.setImageResource(R.drawable.show3);
                         //Hide Password
                         tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -97,16 +104,7 @@ public class t4_signup extends AppCompatActivity {
                 finish();
             }
         });
-        reference = FirebaseStorage.getInstance().getReference();
 
-        meditprofilepicture= findViewById(R.id.editprofilepicture);
-        mselectprofileimage= findViewById(R.id.selectprofileimage);
-        mselectprofileimage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseimage();
-            }
-        });
 
         tcreateaccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,23 +113,25 @@ public class t4_signup extends AppCompatActivity {
             }
 
             private void validation() {
-                if(TextUtils.isEmpty(tname.getText().toString().trim())){
+                if (TextUtils.isEmpty(tname.getText().toString().trim())) {
                     tname.setError("Please enter your Name ");
                     return;
-                }if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
+                }
+                if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
                     temailaddress.setError("Please enter email");
                     return;
-                }if (TextUtils.isEmpty(tpassword.getText().toString().trim())) {
+                }
+                if (TextUtils.isEmpty(tpassword.getText().toString().trim())) {
                     tpassword.setError("Please enter password");
                     return;
-                }if ((tpassword.getText().toString().trim()).length() < 6) {
+                }
+                if ((tpassword.getText().toString().trim()).length() < 6) {
                     tpassword.setError("Enter password more then 6 characters");
                     return;
-                }else {
+                } else {
                     mprogressDialog.setMessage("Registering...");
                     mprogressDialog.show();
                     mprogressDialog.setCancelable(false);
-
                     String studentemailtype = "[0-9]+@[stu]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
 //                    String facultyemailtype = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -140,90 +140,97 @@ public class t4_signup extends AppCompatActivity {
                     //String forfaculty = "[a-zA-Z0-9._-]+@[ddn]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
 
                     String email = temailaddress.getText().toString().trim();
-                    if(email.matches(studentemailtype) && email.length()> 0 ){
+                    if (email.matches(studentemailtype) && email.length() > 0) {
                         String currentUser = "student";
                         registerUser(currentUser, imageUri);
-                    }else{
+                    } else {
                         String currentUser = "faculty";
                         registerUser(currentUser, imageUri);
                     }
                 }
             }
 
+            private void registerUser(String currentUser, Uri uri) {
+                String name = tname.getText().toString().trim();
+                String email = temailaddress.getText().toString().trim();
+                String password = tpassword.getText().toString().trim();
+                String branch = tBranch.getText().toString().trim();
+                String emailname = email.substring(0, email.lastIndexOf("@"));
+                String domain = email.substring(email.lastIndexOf("@") + 1);
 
-
-        private void registerUser(String currentUser, Uri uri) {
-            String name =  tname.getText().toString().trim();
-            String email = temailaddress.getText().toString().trim();
-            String password = tpassword.getText().toString().trim();
-            String emailname   = email.substring(0, email.lastIndexOf("@"));
-            String domain = email.substring(email.lastIndexOf("@") +1);
-
-            fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = fAuth.getCurrentUser();
-                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-                                    fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = fAuth.getCurrentUser();
+                            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        try {
+                                            StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+                                            Log.e("uploadimage1", String.valueOf(fileRef));
+                                            fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                 @Override
-                                                public void onSuccess(Uri uri) {
-
-                                                    userid = fAuth.getCurrentUser().getUid();
-
-                                                    Map<String, Object> useData = new HashMap<>();
-                                                    useData.put("id", userid);
-                                                    useData.put("name", name);
-                                                    useData.put("Email", email);
-                                                    useData.put("imageUri",uri.toString());
-                                                     if(String.valueOf(currentUser).equals("student")) {
-                                                        String sapid= emailname;
-                                                        useData.put("SapId", sapid);
-                                                        root = db.getReference("students").child(userid);
-                                                    }
-                                                    else{
-                                                        root = db.getReference("faculty").child(userid);
-                                                    }
-                                                    root.setValue(useData);
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                        @Override
+                                                        public void onSuccess(Uri uri) {
+                                                            userid = fAuth.getCurrentUser().getUid();
+                                                            Map<String, Object> useData = new HashMap<>();
+                                                            useData.put("id", userid);
+                                                            useData.put("Branch", branch);
+                                                            useData.put("Name", name);
+                                                            useData.put("Email", email);
+                                                            useData.put("imageUri", uri.toString());
+                                                            if (String.valueOf(currentUser).equals("student")) {
+                                                                String sapid = emailname;
+                                                                useData.put("SapId", sapid);
+                                                                root = db.getReference("users").child("students").child(userid);
+                                                            } else {
+                                                                root = db.getReference("users").child("faculty").child(userid);
+                                                            }
+                                                            root.setValue(useData);
+                                                            mprogressDialog.dismiss();
+                                                            startActivity(new Intent(getApplicationContext(), t3_login.class));
+                                                            finish();
+                                                        }
+                                                    });
+                                                }
+                                            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    mprogressDialog.hide();
+                                                    Toast.makeText(t4_signup.this, "Uploading Failed!.", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
+                                        } catch (Exception e) {
+                                            if (uri.equals("")) {
+                                                Log.e("UploadImageError", "empty");
+                                            } else {
+                                                Log.e("UploadImageError", String.valueOf(uri));
+                                            }
+                                            Log.e("UploadImageError", "Exception", e);
                                         }
-                                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(t4_signup.this, "Uploading Failed!.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }else {
-
-                                    Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    mprogressDialog.hide();
+                                    } else {
+                                        mprogressDialog.hide();
+                                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }});
-//                        Intent intent=new Intent(t4_signup.this, t6_dashboard.class);
-//                        intent.putExtra("currentSapId",emailname);
-//                        startActivity(intent);
-                        startActivity(new Intent(getApplicationContext(), t3_login.class));
-                        finish();
-                    }else{
-                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        mprogressDialog.hide();
+                            });
+
+                        } else {
+                            mprogressDialog.hide();
+                            Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
     }
 
     private void chooseimage() {
@@ -232,6 +239,7 @@ public class t4_signup extends AppCompatActivity {
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, 2);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -240,10 +248,10 @@ public class t4_signup extends AppCompatActivity {
             meditprofilepicture.setImageURI(imageUri);
         }
     }
+
     private String getFileExtension(Uri mUri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(mUri));
     }
-
 }

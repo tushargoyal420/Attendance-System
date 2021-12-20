@@ -29,9 +29,21 @@
     <string name="enter_your_name">Enter your name</string>
     <string name="loading">______</string>
     <string name="tushar_goyal_bhavuk_baluja">Tushar Goyal || Bhavuk Baluja</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="you_are_late">You are late.</string>
+    <string name="no_student_is_present">No student is Present</string>
+    <string name="student_name">Student name</string>
+    <string name="join_time">Join time</string>
+    <string name="present_students">Present students</string>
+    <string name="absent_students">Absent students</string>
+    <string name="add_attendance">Add attendance</string>
+    <string name="enter_sapid">Enter SapID</string>
+    <string name="add">Add</string>
+    <string name="you_haven_t_create_class">You haven\'t create class</string>
 
+    <string-array name="addattendancedropdown">
+        <item>SapId</item>
+        <item>Name</item>
+    </string-array>
 
 </resources>

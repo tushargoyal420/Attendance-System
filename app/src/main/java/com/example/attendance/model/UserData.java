@@ -2,24 +2,25 @@ package com.example.attendance.model;
 
 public class UserData {
     private String imageUri;
-    private String name;
+    private String Name;
     private String SapId;
     private String Email;
-    private String branch;
+    private String Branch;
 
     public String getBranch() {
-        return branch;
+        return Branch;
     }
 
     public void setBranch(String branch) {
-        this.branch = branch;
+        this.Branch = branch;
     }
 
-    public UserData(String imageUri, String name, String sapId, String email) {
+    public UserData(String imageUri, String name, String sapId, String email, String branch) {
         this.imageUri = imageUri;
-        this.name = name;
+        this.Name = name;
         this.SapId = sapId;
         this.Email = email;
+        this.Branch = branch;
     }
 
     public UserData() {
@@ -35,11 +36,11 @@ public class UserData {
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getSapId() {

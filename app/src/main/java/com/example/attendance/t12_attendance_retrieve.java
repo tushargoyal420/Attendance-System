@@ -29,12 +29,7 @@ import java.util.List;
 public class t12_attendance_retrieve extends AppCompatActivity {
     private Toolbar getAttendance_toolbar;
     private RecyclerView attendanceRecyclerview;
-    private FirebaseRecyclerAdapter<TimeTable, RetreiveAttendance> adapter2;
-    private FirebaseRecyclerOptions<TimeTable> options;
-    private DatabaseReference PostRef, ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child("osos");
-    //            .child("osos").child("01-12-2021").child("OSS for industry").child("02:03");
     private FirebaseAuth fAuth;
-    private TextView tdate, tattend, tsubject, troomNo, tjointime, tfaculty;
     private List<TimeTable> atList;
     private AttendanceAdapter attendanceAdapter;
 
@@ -51,34 +46,9 @@ public class t12_attendance_retrieve extends AppCompatActivity {
         attendanceRecyclerview = findViewById(R.id.attendanceRecyclerview);
         attendanceRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         LoadAttendance();
-
     }
 
     private void LoadAttendance() {
-        String CurrentUser = fAuth.getCurrentUser().getUid();
-
-//        options = new FirebaseRecyclerOptions.Builder<TimeTable>().setQuery(PostRef, TimeTable.class).build();
-//        adapter2 = new FirebaseRecyclerAdapter<TimeTable, RetreiveAttendance>(options) {
-//            @Override
-//            protected void onBindViewHolder(@NonNull RetreiveAttendance holder, int position, @NonNull TimeTable timeTable) {
-////                holder.date.setText(timeTable.getDay());
-//                holder.subject.setText(timeTable.getSubject());
-//                holder.jointime.setText(timeTable.getStartTime());
-//                holder.faculty.setText(timeTable.getFaculty());
-//                holder.roomNo.setText(timeTable.getRoom());
-//                holder.jointime.setText(timeTable.getTimeStamp());
-//            }
-//
-//            @NonNull
-//            @Override
-//            public RetreiveAttendance onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.attendance_class_card, parent, false);
-//                return new RetreiveAttendance(view);
-//            }
-//        };
-//        adapter2.startListening();
-//        attendanceRecyclerview.setAdapter(adapter2);
-
         Query query = FirebaseDatabase.getInstance().getReference().child("Attendance/osos")
                 .orderByPriority();
         query.addValueEventListener(new ValueEventListener() {
@@ -93,55 +63,18 @@ public class t12_attendance_retrieve extends AppCompatActivity {
                             String subjectT = subject.getKey();
                             for (DataSnapshot time : subject.getChildren()) {
                                 if (time.child(CurrentUser).exists()) {
-                                    for(DataSnapshot singleUserData: time.getChildren()){
-                                        TimeTable timeTable = singleUserData.getValue(TimeTable.class);
-                                        if(timeTable.getDone().equals("0")){
-                                            Log.e("classNotexist","notcomplete");
-                                        }
-                                        else{
-                                            TimeTable singleUser = time.child(CurrentUser).getValue(TimeTable.class);
-                                            atList.add(singleUser);
-                                            attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this,atList);
-                                            attendanceRecyclerview.setAdapter(attendanceAdapter);
+                                    for (DataSnapshot singleUserData : time.getChildren()) {
+                                        if (singleUserData.getKey().equals(CurrentUser)) {
+                                            TimeTable timeTable = singleUserData.getValue(TimeTable.class);
+                                            if (!timeTable.getDone().equals("0")) {
+                                                TimeTable singleUser = time.child(CurrentUser).getValue(TimeTable.class);
+                                                atList.add(singleUser);
+                                                attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this, atList);
+                                                attendanceRecyclerview.setAdapter(attendanceAdapter);
+                                            }
                                         }
                                     }
-
                                 }
-//                                if (time.child(CurrentUser).exists()) {
-//                                    TimeTable particularTT = time.child(CurrentUser).getValue((TimeTable.class));
-//                                    String attended = "Present";
-//                                    atList.add(particularTT);
-//                                    attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this, atList, attended);
-//                                    break;
-//                                }
-//                                if (!time.child(CurrentUser).exists()) {
-//                                    for (DataSnapshot notPresent : time.getChildren()) {
-//                                        String notPresentKey = notPresent.getKey();
-//                                        TimeTable all = notPresent.getValue(TimeTable.class);
-//                                        String attended = "Absent";
-//                                        atList.add(all);
-//                                        attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this, atList, attended);
-//                                        break;
-//                                    }
-//                                }
-
-//                                for (DataSnapshot particular :time.getChildren()){
-//                            }
-
-//                                    _tmp = particular.getValue((TimeTable.class));
-//                                    String particularT = particular.getKey();
-//                                    if (particularT.equals(CurrentUser)) {
-//                                        attended = "Present";
-//                                        atList.add(_tmp);
-//                                        attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this, atList, attended);
-//                                        attendanceRecyclerview.setAdapter(attendanceAdapter);
-//                                        break;
-//                                    }else{
-//                                        attended = "Absent";
-//                                        atList.add(_tmp);
-//                                        attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this, atList, attended);
-//                                        attendanceRecyclerview.setAdapter(attendanceAdapter);
-//                                    }
                             }
                         }
                     }
