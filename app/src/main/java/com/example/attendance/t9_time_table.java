@@ -61,7 +61,6 @@ public class t9_time_table extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if ((snapshot.child("faculty").child(CurrentUser)).exists()) {
-//                        UserData data = snapshot.child("faculty").child(CurrentUser).getValue(UserData.class);
                         LoadFacultyTimeTable(CurrentUser);
                     }
                     if ((snapshot.child("students").child(CurrentUser)).exists()) {
@@ -115,7 +114,6 @@ public class t9_time_table extends AppCompatActivity {
                 Intent intent = new Intent(t9_time_table.this, t10_upload_timetable.class);
                 intent.putExtra("FacultyName", Name);
                 startActivity(intent);
-//                startActivity(new Intent(t9_time_table.this, t10_upload_timetable.class));
             }
         });
 

@@ -1,8 +1,5 @@
 package com.example.attendance.LoginSystem;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.attendance.R;
-import com.example.attendance.faculty.t13_faculty_dashboard;
 import com.example.attendance.t6_dashboard;
 import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnCompleteListener;

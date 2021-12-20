@@ -24,7 +24,6 @@ public class CurrentAttendanceRetreive extends RecyclerView.Adapter<CurrentAtten
         this.mContext = mContext;
         this.type = type;
     }
-
     @NonNull
     @Override
     public CurrentAttendanceRetreive.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

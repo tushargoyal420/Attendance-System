@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:background="@color/teal_700"
@@ -17,45 +15,5 @@
         android:textSize="32sp"
         android:textStyle="bold"
         />
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Management System"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="26sp"-->
-<!--        android:textStyle="bold"-->
-<!--        />-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tushar_goyal_bhavuk_baluja"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        />
-
-<!--    <ImageView-->
-<!--        android:id="@+id/userprofile"-->
-<!--        android:layout_width="75dp"-->
-<!--        android:layout_height="75dp"-->
-<!--        android:paddingTop="5dp"-->
-<!--        app:srcCompat="@drawable/userimage"-->
-<!--        tools:srcCompat="@drawable/userimage" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/headerUserName"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fontFamily="@font/titilliumwebbold"-->
-<!--        android:text="@string/loading"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="23sp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/headerSapId"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/loading"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="18sp" />-->
 
 </LinearLayout>
