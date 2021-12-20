@@ -65,5 +65,4 @@ public class CurrentAttendanceRetreive extends RecyclerView.Adapter<CurrentAtten
             card = itemView.findViewById(R.id.card);
         }
     }
-
 }

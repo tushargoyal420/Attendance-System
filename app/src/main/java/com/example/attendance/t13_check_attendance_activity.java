@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,11 +48,11 @@ import java.util.List;
 public class t13_check_attendance_activity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView tpresentList, tabsentList;
-    private TextView tNoPresentStu, tNoAbsentStu;
+    private TextView tNoPresentStu, tNoAbsentStu, tstudentName;
     private FirebaseAuth fAuth;
     private List<TimeTable> presentList, absentList;
     private CurrentAttendanceRetreive currentAttendanceRetreive;
-    private Button taddAttendance, tadd;
+    private Button taddAttendance, tadd, tcheck, tremove;
     private EditText tEntersapid;
     private LinearLayout taddAttendanceLinear, tclassCreatedLinear, tclassCreatedNotLinear;
     private DatabaseReference findStudentId, uploadAttendance;
@@ -78,6 +79,11 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         timestamp = timestampFormat.format(calendar.getTime());
         mprogressDialog = new ProgressDialog(this);
 
+        tcheck = findViewById(R.id.check);
+        tremove = findViewById(R.id.remove);
+        tadd = findViewById(R.id.add);
+        tstudentName = findViewById(R.id.studentName);
+
         tNoPresentStu = findViewById(R.id.NoPresentStu);
         tNoAbsentStu = findViewById(R.id.NoAbsentStu);
         tpresentList = findViewById(R.id.presentList);
@@ -90,6 +96,11 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         String Time = getIntent().getStringExtra("Time");
         String Faculty = getIntent().getStringExtra("Faculty");
         String Room = getIntent().getStringExtra("Room");
+        try {
+            retrieveList(Branch, Date, SubjectName, Time);
+        } catch (Exception e) {
+            Log.e("CheckAttendance", "exception", e);
+        }
 
         taddAttendanceLinear = findViewById(R.id.addAttendanceLinear);
         tEntersapid = findViewById(R.id.Entersapid);
@@ -97,89 +108,25 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         taddAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taddAttendanceLinear.setVisibility(View.VISIBLE);
+                if (taddAttendanceLinear.getVisibility() == View.VISIBLE) {
+                    taddAttendanceLinear.setVisibility(View.GONE);
+                } else {
+                    taddAttendanceLinear.setVisibility(View.VISIBLE);
+                }
             }
         });
-        try {
-            retrieveList(Branch, Date, SubjectName, Time);
-        } catch (Exception e) {
-            Log.e("CheckAttendance", "exception", e);
-        }
-        tadd = findViewById(R.id.add);
-        tadd.setOnClickListener(new View.OnClickListener() {
+        tcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(tEntersapid.getText().toString().trim())) {
                     tEntersapid.setError("Please enter SapId");
                     return;
                 } else {
+                    mprogressDialog.setMessage("Please wait...");
+                    mprogressDialog.show();
+                    mprogressDialog.setCancelable(false);
                     CheckStudent(Branch, Date, SubjectName, Time, Faculty, Room);
                 }
-            }
-        });
-    }
-
-    private void CheckStudent(String Branch, String Date, String SubjectName, String Time, String Faculty, String Room) {
-        String Sap = tEntersapid.getText().toString().trim();
-        findStudentId = FirebaseDatabase.getInstance().getReference("users").child("students");
-        findStudentId.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot particularStudent : snapshot.getChildren()) {
-                        UserData studentData = particularStudent.getValue(UserData.class);
-                        if (Sap.equals(studentData.getSapId())) {
-                            flag = true;
-                            String UserId = particularStudent.getKey();
-                            AddStudent(Branch, Date, SubjectName, Time, UserId, Faculty, Room);
-                            break;
-                        }
-                    }
-                    if (!flag) {
-                        tEntersapid.setError("No student find");
-                    } else {
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                SimpleToast.error(t13_check_attendance_activity.this, "Database Error");
-            }
-        });
-    }
-
-    private void AddStudent(String Branch, String Date, String SubjectName, String Time, String UserId, String Faculty, String Room) {
-        HashMap<String, Object> studentDetail = new HashMap<>();
-        studentDetail.put("UserId", UserId);
-        studentDetail.put("TimeStamp", timestamp);
-        studentDetail.put("Done", "Present");
-        studentDetail.put("Faculty", Faculty);
-        studentDetail.put("Date", Date);
-        studentDetail.put("Room", Room);
-        studentDetail.put("Subject", SubjectName);
-
-        uploadAttendance = FirebaseDatabase.getInstance().getReference().child("Attendance").child(Branch).child(Date).child(SubjectName).child(Time);
-        uploadAttendance.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    TimeTable timeTable = data.getValue(TimeTable.class);
-                    if (data.getKey().equals(UserId)) {
-                        if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
-                            uploadAttendance.child(UserId).updateChildren(studentDetail);
-                        }
-                        if (timeTable.getDone().equals("Present")) {
-                            SimpleToast.error(t13_check_attendance_activity.this, "Already get attendance");
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                SimpleToast.error(t13_check_attendance_activity.this, "Error to getting Student List");
-                mprogressDialog.dismiss();
             }
         });
 
@@ -210,10 +157,6 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                             tNoAbsentStu.setVisibility(View.GONE);
                             tabsentList.setAdapter(currentAttendanceRetreive);
                         }
-//                        else{
-//                            tclassCreatedLinear.setVisibility(View.GONE);
-//                            tclassCreatedNotLinear.setVisibility(View.VISIBLE);
-//                        }
                     }
                 }
             }
@@ -224,4 +167,130 @@ public class t13_check_attendance_activity extends AppCompatActivity {
             }
         });
     }
+
+    private void CheckStudent(String Branch, String Date, String SubjectName, String Time, String Faculty, String Room) {
+        String Sap = tEntersapid.getText().toString().trim();
+        findStudentId = FirebaseDatabase.getInstance().getReference("users").child("students");
+        findStudentId.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot particularStudent : snapshot.getChildren()) {
+                        UserData studentData = particularStudent.getValue(UserData.class);
+                        if (Sap.equals(studentData.getSapId())) {
+                            flag = true;
+                            String UserId = particularStudent.getKey();
+                            tcheck.setVisibility(View.GONE);
+                            String userName = studentData.getName();
+                            String sapid = studentData.getSapId();
+                            tstudentName.setText(userName);
+                            tstudentName.setVisibility(View.VISIBLE);
+                            AddStudent(Branch, Date, SubjectName, Time, UserId, Faculty, Room, userName, sapid);
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        tEntersapid.setError("No student find");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                SimpleToast.error(t13_check_attendance_activity.this, "Database Error");
+            }
+        });
+    }
+
+    private void AddStudent(String Branch, String Date, String SubjectName, String Time, String UserId, String Faculty, String Room, String userName, String sapid) {
+        tadd.setVisibility(View.VISIBLE);
+        tremove.setVisibility(View.VISIBLE);
+        mprogressDialog.hide();
+
+        HashMap<String, Object> studentDetail = new HashMap<>();
+        studentDetail.put("TimeStamp", timestamp);
+        studentDetail.put("Date", Date);
+        studentDetail.put("Done", "Present");
+        studentDetail.put("Faculty", Faculty);
+        studentDetail.put("Room", Room);
+        studentDetail.put("Subject", SubjectName);
+
+        HashMap<String, Object> absentStudentDetail = new HashMap<>();
+        absentStudentDetail.put("Date", Date);
+        absentStudentDetail.put("Done", "Absent");
+        absentStudentDetail.put("Faculty", Faculty);
+        absentStudentDetail.put("Name", userName);
+        absentStudentDetail.put("Room", Room);
+        absentStudentDetail.put("SapId", sapid);
+        absentStudentDetail.put("Subject", SubjectName);
+
+        tadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mprogressDialog.show();
+                uploadAttendance = FirebaseDatabase.getInstance().getReference().child("Attendance").child(Branch).child(Date).child(SubjectName).child(Time);
+                uploadAttendance.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            TimeTable timeTable = data.getValue(TimeTable.class);
+                            if (data.getKey().equals(UserId)) {
+                                if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
+                                    uploadAttendance.child(UserId).updateChildren(studentDetail);
+                                    mprogressDialog.dismiss();
+                                    finish();
+                                }
+                                if (timeTable.getDone().equals("Present")) {
+                                    mprogressDialog.hide();
+                                    SimpleToast.error(t13_check_attendance_activity.this, "Already get attendance");
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        mprogressDialog.dismiss();
+                        SimpleToast.error(t13_check_attendance_activity.this, "Error to add Student");
+                    }
+                });
+            }
+        });
+        tremove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mprogressDialog.show();
+                uploadAttendance = FirebaseDatabase.getInstance().getReference().child("Attendance").child(Branch).child(Date).child(SubjectName).child(Time);
+                uploadAttendance.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            TimeTable timeTable = data.getValue(TimeTable.class);
+                            if (data.getKey().equals(UserId)) {
+                                if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
+                                    SimpleToast.error(t13_check_attendance_activity.this, "Already absent");
+                                    mprogressDialog.hide();
+
+                                }
+                                if (timeTable.getDone().equals("Present")) {
+                                    uploadAttendance.child(UserId).setValue(absentStudentDetail);
+                                    finish();
+                                    mprogressDialog.dismiss();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        SimpleToast.error(t13_check_attendance_activity.this, "Error to remove student");
+                        mprogressDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+
+    }
+
 }

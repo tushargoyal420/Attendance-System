@@ -72,7 +72,6 @@ public class t11_get_attendance extends AppCompatActivity {
         mleftSmallBut = findViewById(R.id.leftSmallBut);
         mleftSmallBut.setText("Check Attendance");
 
-
         markAttendanceBut = findViewById(R.id.markAttendanceBut);
         calendar = Calendar.getInstance();
         timestampFormat = new SimpleDateFormat("hh:mm:ss");
@@ -118,7 +117,6 @@ public class t11_get_attendance extends AppCompatActivity {
                         TimeTable timeTable = snapshot.getValue(TimeTable.class);
                         String time = timeTable.getStartTime();
                         if (time.equals(singletime)) {
-                            noclass.setVisibility(View.GONE);
                             String starttimeT = timeTable.getStartTime();
                             String endtimeT = timeTable.getEndTime();
                             String branchS = timeTable.getBranch();
@@ -126,14 +124,17 @@ public class t11_get_attendance extends AppCompatActivity {
                             String sFaculty = timeTable.getFaculty();
                             String sDate = timeTable.getDate();
                             String sRoomno = timeTable.getRoom();
+                            String ctimeStamp = timestamp;
+                            String ClassTime = starttimeT + ":" + endtimeT;
 
+                            noclass.setVisibility(View.GONE);
                             classDetailsLinear.setVisibility(View.VISIBLE);
-                            subjectName.setText(subName);dateName.setText(sDate);
+                            subjectName.setText(subName);
+                            dateName.setText(sDate);
                             roomNo.setText(sRoomno);
                             starttime.setText(starttimeT);
                             endtime.setText(endtimeT);
 
-                            String ClassTime = starttimeT + ":" + endtimeT;
                             HashMap<String, Object> fromFaculty = new HashMap<>();
                             fromFaculty.put("Done", "Absent");
                             fromFaculty.put("Faculty", sFaculty);
@@ -141,7 +142,6 @@ public class t11_get_attendance extends AppCompatActivity {
                             fromFaculty.put("Room", sRoomno);
                             fromFaculty.put("Subject", subName);
 
-                            String ctimeStamp = timestamp;
                             HashMap<String, Object> studentDetail = new HashMap<>();
                             studentDetail.put("UserId", CurrentUser);
                             studentDetail.put("TimeStamp", ctimeStamp);
@@ -151,24 +151,29 @@ public class t11_get_attendance extends AppCompatActivity {
                             studentDetail.put("Room", sRoomno);
                             studentDetail.put("Subject", subName);
                             String timeperiod = (timeTable.getStartTime() + ":" + timeTable.getEndTime());
-                            mleftSmallBut.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
 
-                                    Intent intent = new Intent(t11_get_attendance.this, t13_check_attendance_activity.class);
-                                    intent.putExtra("Branch", branchS);
-                                    intent.putExtra("Date", sDate);
-                                    intent.putExtra("SubjectName", subName);
-                                    intent.putExtra("Time", ClassTime);
-                                    intent.putExtra("Room", sRoomno);
-                                    intent.putExtra("Faculty", sFaculty);
-                                    startActivity(intent);
-                                }
-                            });
                             if (type.equals("faculty")) {
                                 faculty.setText(branchS);
                                 mcreateClassButton.setText("Create Class");
                                 mcreateClassButton.setVisibility(View.VISIBLE);
+
+                                mleftSmallBut.setVisibility(View.VISIBLE);
+                                mleftSmallBut.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        Intent intent = new Intent(t11_get_attendance.this, t13_check_attendance_activity.class);
+                                        intent.putExtra("Branch", branchS);
+                                        intent.putExtra("Date", sDate);
+                                        intent.putExtra("SubjectName", subName);
+                                        intent.putExtra("Time", ClassTime);
+                                        intent.putExtra("Room", sRoomno);
+                                        intent.putExtra("Faculty", sFaculty);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+
                                 mcreateClassButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
