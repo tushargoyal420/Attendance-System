@@ -6,7 +6,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,7 +26,7 @@ public class t14_upload_location_coordinates extends AppCompatActivity implement
     private Toolbar locationToolbar;
     private TextView firstT, secondT, thirdT, fourthT;
     private Button firstB, secondB, thirdB, fourthB, submitAllB;
-    private EditText roomno;
+    //    private EditText roomno;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
     protected Context context;
@@ -39,74 +41,93 @@ public class t14_upload_location_coordinates extends AppCompatActivity implement
         setSupportActionBar(locationToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        firstT = findViewById(R.id.firstText);
-        secondT = findViewById(R.id.secondText);
-        thirdT = findViewById(R.id.thirdText);
+
         fourthT = findViewById(R.id.fourthText);
+//        firstT = findViewById(R.id.firstText);
+//        secondT = findViewById(R.id.secondText);
+//        thirdT = findViewById(R.id.thirdText);
+//
+//        firstB = findViewById(R.id.firstBut);
+//        secondB = findViewById(R.id.secondBut);
+//        thirdB = findViewById(R.id.thirdBut);
+//        fourthB = findViewById(R.id.fourthBut);
+//
+//        roomno = findViewById(R.id.roomNo);
 
-        firstB = findViewById(R.id.firstBut);
-        secondB = findViewById(R.id.secondBut);
-        thirdB = findViewById(R.id.thirdBut);
-        fourthB = findViewById(R.id.fourthBut);
-
-        roomno = findViewById(R.id.roomNo);
-
+        findLocation();
         submitAllB = findViewById(R.id.submitCoordinates);
+//        firstB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        secondB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        thirdB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        fourthB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//            }
+//        });
 
-
-        firstB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        secondB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        thirdB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        fourthB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findLocation("Fourth");
-            }
-        });
-
-        submitAllB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(roomno.getText().toString().trim())) {
-                    roomno.setError("Please enter room number");
-                    return;
-                } else {
-                    uploadData();
-                }
-            }
-        });
+//        submitAllB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (TextUtils.isEmpty(roomno.getText().toString().trim())) {
+//                    roomno.setError("Please enter room number");
+//                    return;
+//                } else {
+//                    uploadData();
+//                }
+//            }
+//        });
     }
+//
+//    private void uploadData() {
+//    }
 
-    private void uploadData() {
-    }
-
-    private void findLocation(String number) {
+    private void findLocation() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 2, this);
     }
 
-
+    @SuppressLint("SetTextI18n")
     @Override
     public void onLocationChanged(@NonNull Location location) {
+        Log.d("Latitude lat", String.valueOf(location.getLatitude()));
+        Log.d("Latitude long", String.valueOf(location.getLongitude()));
+
         fourthT.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+        submitAllB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String CornerNum = getIntent().getStringExtra("CornerNumber");
+
+                Log.d("Latitude latdd", String.valueOf(location.getLatitude()));
+                Log.d("Latitude longdd", String.valueOf(location.getLongitude()));
+                Intent intent = new Intent(t14_upload_location_coordinates.this, t15_get_all_locations.class);
+                intent.putExtra("OldActivity", "ParticularLocation");
+                intent.putExtra("CornerNumber", CornerNum);
+                intent.putExtra("Latitude", String.valueOf(location.getLatitude()));
+                intent.putExtra("Longitude", String.valueOf(location.getLatitude()));
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     @Override
