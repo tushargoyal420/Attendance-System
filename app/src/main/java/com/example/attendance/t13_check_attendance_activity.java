@@ -37,13 +37,13 @@ import java.util.List;
 public class t13_check_attendance_activity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView tpresentList, tabsentList;
-    private TextView tNoPresentStu, tNoAbsentStu, tstudentName;
+    private TextView tNoPresentStu, tNoAbsentStu, tstudentName, tTotalPresent, tTotalAbsent, tTotalStudentOne, tTotalStudentTwo;
     private FirebaseAuth fAuth;
     private List<TimeTable> presentList, absentList;
     private CurrentAttendanceRetreive currentAttendanceRetreive;
     private Button taddAttendance, tadd, tcheck, tremove;
     private EditText tEntersapid;
-    private LinearLayout taddAttendanceLinear, tclassCreatedLinear, tclassCreatedNotLinear;
+    private LinearLayout taddAttendanceLinear, tclassCreatedLinear, tclassCreatedNotLinear, tpresentCounter, tabsentCounter;
     private DatabaseReference findStudentId, uploadAttendance;
     boolean flag = false;
     private SimpleDateFormat timestampFormat;
@@ -72,6 +72,15 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         tremove = findViewById(R.id.remove);
         tadd = findViewById(R.id.add);
         tstudentName = findViewById(R.id.studentName);
+
+        tpresentCounter = findViewById(R.id.presentcounter);
+        tabsentCounter = findViewById(R.id.absentcounter);
+
+        tTotalPresent = findViewById(R.id.totalPresent);
+        tTotalAbsent = findViewById(R.id.totalAbsent);
+        tTotalStudentOne = findViewById(R.id.totalstuone);
+        tTotalStudentTwo = findViewById(R.id.totalstuTwo);
+
 
         tNoPresentStu = findViewById(R.id.NoPresentStu);
         tNoAbsentStu = findViewById(R.id.NoAbsentStu);
@@ -130,9 +139,15 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     presentList = new ArrayList<>();
                     absentList = new ArrayList<>();
+                    int tpresent= 0;
+                    int tabsent= 0;
+                    int ttotal= 0;
+
                     for (DataSnapshot particular : dataSnapshot.getChildren()) {
                         TimeTable data = particular.getValue(TimeTable.class);
                         if ((data.getDone()).equals("Present")) {
+                            tpresent = tpresent + 1;
+                            tpresentCounter.setVisibility(View.VISIBLE);
                             presentList.add(data);
                             currentAttendanceRetreive = new CurrentAttendanceRetreive(t13_check_attendance_activity.this, presentList, "Present");
                             tpresentList.setVisibility(View.VISIBLE);
@@ -140,13 +155,22 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                             tpresentList.setAdapter(currentAttendanceRetreive);
                         }
                         if ((data.getDone()).equals("Absent")) {
+                            tabsent = tabsent + 1;
+                            tpresentCounter.setVisibility(View.VISIBLE);
+
                             absentList.add(data);
                             currentAttendanceRetreive = new CurrentAttendanceRetreive(t13_check_attendance_activity.this, absentList, "Absent");
                             tabsentList.setVisibility(View.VISIBLE);
                             tNoAbsentStu.setVisibility(View.GONE);
                             tabsentList.setAdapter(currentAttendanceRetreive);
                         }
+                        ttotal = ttotal + 1 ;
                     }
+                    tTotalPresent.setText(""+tpresent);
+                    tTotalAbsent.setText(""+tabsent);
+
+                    tTotalStudentOne.setText(ttotal+"");
+                    tTotalStudentTwo.setText(ttotal+"");
                 }
             }
 
@@ -259,7 +283,6 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                                 if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
                                     SimpleToast.error(t13_check_attendance_activity.this, "Already absent");
                                     mprogressDialog.hide();
-
                                 }
                                 if (timeTable.getDone().equals("Present")) {
                                     uploadAttendance.child(UserId).setValue(absentStudentDetail);

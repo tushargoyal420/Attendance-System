@@ -41,13 +41,13 @@
                     android:textSize="20sp" />
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/addAttendanceLinear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@color/lightgrayforBg"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/Entersapid"
@@ -62,7 +62,6 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/studentName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -71,7 +70,7 @@
                         android:padding="10dp"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        />
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -91,8 +90,7 @@
                             android:textSize="19sp" />
 
                         <Button
-                            android:visibility="gone"
-                            android:id= "@+id/remove"
+                            android:id="@+id/remove"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -101,10 +99,10 @@
                             android:text="Remove"
                             android:textAllCaps="false"
                             android:textColor="@color/teal_700"
-                            android:textSize="19sp" />
+                            android:textSize="19sp"
+                            android:visibility="gone" />
 
                         <Button
-                            android:visibility="gone"
                             android:id="@+id/add"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -114,7 +112,8 @@
                             android:text="@string/add"
                             android:textAllCaps="false"
                             android:textColor="@color/teal_700"
-                            android:textSize="19sp" />
+                            android:textSize="19sp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -126,15 +125,57 @@
                     android:background="@drawable/cardshadow"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:background="@color/teal_700"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="15dp"
-                        android:text="@string/present_students"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+                        android:background="@color/teal_700"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="15dp"
+                            android:text="Present"
+                            android:textColor="@color/white"
+                            android:textSize="22sp" />
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/presentcounter"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/totalPresent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="right"
+                                android:padding="15dp"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:padding="15dp"
+                                android:text="/"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/totalstuone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:padding="15dp"
+
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/presentList"
@@ -160,15 +201,55 @@
                     android:background="@drawable/cardshadow"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/absentcounter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="15dp"
-                        android:text="@string/absent_students"
-                        android:textColor="@color/white"
                         android:background="@color/teal_700"
-                        android:textSize="25sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="15dp"
+                            android:text="Absent"
+                            android:textColor="@color/white"
+                            android:textSize="22sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/totalAbsent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="right"
+                                android:padding="15dp"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:padding="15dp"
+                                android:text="/"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/totalstuTwo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:padding="15dp"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/absentList"
