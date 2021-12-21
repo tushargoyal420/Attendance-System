@@ -369,10 +369,10 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_uploadLocation: {
-                Intent intent = new Intent(t6_dashboard.this, t15_get_all_locations.class);
-                intent.putExtra("OldActivity", "Dashboard");
-                startActivity(intent);
-//                startActivity(new Intent(getApplicationContext(), t14_upload_location_coordinates.class));
+//                Intent intent = new Intent(t6_dashboard.this, t15_get_all_locations.class);
+//                intent.putExtra("OldActivity", "Dashboard");
+//                startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), t14_upload_location_coordinates.class));
                 break;
             }
             case R.id.nav_uploadLocationtwo: {

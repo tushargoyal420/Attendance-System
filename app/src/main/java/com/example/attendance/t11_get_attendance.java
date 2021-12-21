@@ -226,40 +226,6 @@ public class t11_get_attendance extends AppCompatActivity {
                                     });
                                 }
                             }
-
-//                            ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child("osos").child(date).child(subName).child(timeperiod);
-//                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                    for (DataSnapshot data : snapshot.getChildren()) {
-//                                        TimeTable timeTable = data.getValue(TimeTable.class);
-//                                        if (data.getKey().equals(CurrentUser)) {
-//                                            if (timeTable.getDone().equals("0")) {
-//                                                markAttendanceBut.setVisibility(View.VISIBLE);
-//                                                markAttendanceBut.setOnClickListener(new View.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(View v) {
-//                                                        mprogressDialog.setMessage("Please wait...");
-//                                                        mprogressDialog.show();
-//                                                        mprogressDialog.setCancelable(false);
-//                                                        markAttendance(sFaculty, subName, sDate, sRoomno);
-//                                                    }
-//                                                });
-//                                            }
-//                                            if (timeTable.getDone().equals("Present")) {
-//                                                lateText.setText("You already get attendance");
-//                                                lateText.setVisibility(View.VISIBLE);
-//                                                markAttendanceBut.setVisibility(View.GONE);
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError error) {
-//                                }
-//                            });
-
                             if (completetime.compareTo(addedsingletime) >= 0) {
                                 lateText.setText("You are late");
                                 lateText.setVisibility(View.VISIBLE);
@@ -335,7 +301,6 @@ public class t11_get_attendance extends AppCompatActivity {
     private void markAttendance(HashMap detail) {
         try {
             String CurrentUser = fAuth.getCurrentUser().getUid();
-
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
