@@ -368,6 +368,10 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(), t12_attendance_retrieve.class));
                 break;
             }
+            case R.id.nav_uploadLocation: {
+                startActivity(new Intent(getApplicationContext(), t14_upload_location_coordinates.class));
+                break;
+            }
         }
         return true;
     }

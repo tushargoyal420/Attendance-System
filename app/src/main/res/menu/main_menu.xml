@@ -10,23 +10,20 @@
                 <item
                     android:id="@+id/nav_profile"
                     android:title="Profile" />
-                <!--                    android:icon="@drawable/profile_icon"-->
                 <item
                     android:id="@+id/nav_attendance"
                     android:title="Attendance" />
-                <!--                android:icon="@drawable/icons8_cycling_500"-->
-<!--                <item-->
-<!--                    android:id="@+id/nav_setting"-->
-<!--                    android:title="Settings" />-->
-                <!--                android:icon="@drawable/icons8_cycling_500"-->
                 <item
                     android:id="@+id/nav_timeTable"
                     android:title="Time Table"
                     />
+
+                <item
+                    android:id="@+id/nav_uploadLocation"
+                    android:title="Upload Locations" />
                 <item
                     android:id="@+id/nav_logout"
                     android:title="Logout" />
-                <!--                    android:icon="@drawable/logout_icon"-->
 
             </group>
         </menu>
