@@ -41,6 +41,7 @@
     <string name="add">Add</string>
     <string name="you_haven_t_create_class">You haven\'t create class</string>
     <string name="mark_attendance">Mark Attendance</string>
+    <string name="upload">Upload</string>
 
     <string-array name="addattendancedropdown">
         <item>SapId</item>

@@ -18,9 +18,13 @@
                     android:title="Time Table"
                     />
 
+
                 <item
                     android:id="@+id/nav_uploadLocation"
                     android:title="Upload Locations" />
+                <item
+                    android:id="@+id/nav_uploadLocationtwo"
+                    android:title="Upload Locations two" />
                 <item
                     android:id="@+id/nav_logout"
                     android:title="Logout" />

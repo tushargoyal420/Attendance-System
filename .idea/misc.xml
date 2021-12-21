@@ -15,6 +15,7 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_facedetectiontry.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_hometry.xml" value="0.25" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_main.xml" value="0.2046875" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_secondlocation.xml" value="0.18958333333333333" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/activity_showing_recognized_face.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/attendance_class_card.xml" value="0.264" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/backtoolbar.xml" value="0.20521590423257802" />
@@ -30,7 +31,7 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/printlist.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/ssssfragment_task_face_fragment.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/stu_attendance_card_for_faculty.xml" value="0.25" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t10_upload_timetable.xml" value="0.29508196721311475" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t10_upload_timetable.xml" value="0.2082018927444795" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t11_get_attendance.xml" value="0.2" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t12_attendance_retrieve.xml" value="0.152" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t13_check_attendance.xml" value="0.24124513618677043" />
@@ -47,7 +48,7 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t7_profile.xml" value="0.2" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t8_setting.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t9_editprofile.xml" value="0.1" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t9_time_table.xml" value="0.2" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t9_time_table.xml" value="0.152" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/timetablecard.xml" value="0.18689320388349515" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/toolbar.xml" value="0.176" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/toolbarsecond.xml" value="0.1" />

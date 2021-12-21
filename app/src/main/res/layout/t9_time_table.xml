@@ -60,7 +60,11 @@
                 android:id="@+id/uploadTimeTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload" />
+                android:text="@string/upload"
+                android:backgroundTint="@color/teal_700"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

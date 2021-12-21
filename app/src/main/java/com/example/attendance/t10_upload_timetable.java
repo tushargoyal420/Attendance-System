@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.attendance.LoginSystem.t3_login;
@@ -20,17 +23,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class t10_upload_timetable extends AppCompatActivity {
     private Toolbar upload_time_table_toolbar;
-    private EditText date, sub, starttime, endtime, room, faculty, branch;
+    private EditText tdate, sub, starttime, endtime, room, faculty, branch;
     private Button submit;
     private FirebaseAuth fAuth;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference studentRoot, facultyRoot, findFacultyName;
     private DatabaseReference attendance;
     boolean flag = false;
+    Calendar myCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +48,30 @@ public class t10_upload_timetable extends AppCompatActivity {
         setSupportActionBar(upload_time_table_toolbar);
         upload_time_table_toolbar = findViewById(R.id.upload_time_table_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        myCalendar = Calendar.getInstance();
 
         String FacultyName = getIntent().getStringExtra("FacultyName");
-        date = findViewById(R.id.date);
+        DatePickerDialog.OnDateSetListener datett = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+
+
+        tdate = findViewById(R.id.dateUTT);
+        tdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(t10_upload_timetable.this, datett, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),  myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });
+
+
         sub = findViewById(R.id.subject);
         starttime = findViewById(R.id.startTime);
         endtime = findViewById(R.id.endTime);
@@ -59,6 +87,12 @@ public class t10_upload_timetable extends AppCompatActivity {
                 uploadData();
             }
         });
+    }
+
+    private void updateLabel() {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            tdate.setText(sdf.format(myCalendar.getTime()));
+
     }
 
     private void uploadData() {
@@ -91,7 +125,7 @@ public class t10_upload_timetable extends AppCompatActivity {
 
     private void uploadTimeTable(String facultyS, String facultyID) {
         try {
-            String dateS = date.getText().toString().trim();
+            String dateS = tdate.getText().toString().trim();
             String subS = sub.getText().toString().trim();
             String starttimeS = starttime.getText().toString().trim();
             String endtimeS = endtime.getText().toString().trim();

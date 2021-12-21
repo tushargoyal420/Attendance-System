@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -20,6 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Attendance"
         tools:replace="android:theme">
+        <activity
+            android:name=".secondlocation"
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
         <activity
             android:name=".t14_upload_location_coordinates"
             android:exported="true"
