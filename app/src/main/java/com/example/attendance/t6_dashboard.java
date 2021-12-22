@@ -219,6 +219,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(t6_dashboard.this, t11_get_attendance.class);
                 intent.putExtra("UserType", UserType);
                 intent.putExtra("UserBranchOrName", UserBranchOrName);
+                intent.putExtra("LocationDone", "No");
                 startActivity(intent);
             }
         });

@@ -158,7 +158,7 @@ public class t14_upload_location_coordinates extends AppCompatActivity implement
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 2, this);
     }
 
     @SuppressLint("SetTextI18n")
@@ -217,3 +217,5 @@ public class t14_upload_location_coordinates extends AppCompatActivity implement
         Log.d("Latitude", "disable");
     }
 }
+
+

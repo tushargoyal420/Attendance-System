@@ -229,9 +229,42 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/locationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/currentLatiTudeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/eduttextborder5"
+                    android:gravity="center"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:text="Latitude"
+                    android:textColor="#535353" />
+
+                <TextView
+                    android:id="@+id/currentLongitudeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/eduttextborder5"
+                    android:gravity="center"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:text="Longitude"
+                    android:textColor="#535353" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/markAttendanceBut"
+                android:id="@+id/checkLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -242,6 +275,19 @@
                 android:textSize="22sp"
                 android:text="Check location"
                 android:visibility="gone"
+                />
+            <Button
+                android:visibility="gone"
+                android:id="@+id/markingAttendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="@color/teal_700"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textAllCaps="false"
+                android:textSize="22sp"
+                android:text="Mark attendance"
                 />
         </LinearLayout>
     </LinearLayout>

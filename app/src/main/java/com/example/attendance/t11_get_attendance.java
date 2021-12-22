@@ -1,9 +1,14 @@
 package com.example.attendance;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,7 +20,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
+import com.example.attendance.model.LocationModel;
 import com.example.attendance.model.TimeTable;
 import com.github.pierry.simpletoast.SimpleToast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,19 +40,20 @@ import java.util.Map;
 
 public class t11_get_attendance extends AppCompatActivity {
     private Toolbar getAttendance_toolbar;
-    private TextView subjectName, dateName, roomNo, starttime, endtime, faculty, lateText, noclassText;
-    private Button markAttendanceBut, mcreateClassButton, mleftSmallBut;
-    private Context context = this;
+    private TextView subjectName, dateName, roomNo, starttime, endtime, faculty, lateText, noclassText, currentLongitudeText, currentLatiTudeText;
+    private Button checkLocationBut, mcreateClassButton, mleftSmallBut, markingAttendance;
     private Calendar calendar;
     private SimpleDateFormat singletimeFormat, completeTimeFormat, dayFormat, timestampFormat, dateFormat;
     private String completetime, singletime, addedsingletime, getDay, timestamp, date;
-    private LinearLayout classDetailsLinear, noclass, tforFacultyLinear;
+    private LinearLayout classDetailsLinear, noclass, tforFacultyLinear, locationLayout;
     private ProgressDialog mprogressDialog;
-    private DatabaseReference ref, attendance;
+    private DatabaseReference ref, attendance, getLocationRef;
 
     FirebaseAuth fAuth;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static final int SPLASH_TIME_OUT = 2000;
+    protected LocationManager locationManager;
+    private Context context;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -58,6 +66,10 @@ public class t11_get_attendance extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
+        markingAttendance = findViewById(R.id.markingAttendance);
+        currentLatiTudeText = findViewById(R.id.currentLatiTudeText);
+        currentLongitudeText = findViewById(R.id.currentLongitudeText);
+        locationLayout = findViewById(R.id.locationLayout);
         subjectName = findViewById(R.id.subjectName);
         dateName = findViewById(R.id.dayname);
         roomNo = findViewById(R.id.roomNo);
@@ -73,7 +85,7 @@ public class t11_get_attendance extends AppCompatActivity {
         tforFacultyLinear = findViewById(R.id.forFacultyLinear);
         mleftSmallBut.setText("Check Attendance");
 
-        markAttendanceBut = findViewById(R.id.markAttendanceBut);
+        checkLocationBut = findViewById(R.id.checkLocation);
         calendar = Calendar.getInstance();
         timestampFormat = new SimpleDateFormat("hh:mm:ss");
         dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -89,6 +101,7 @@ public class t11_get_attendance extends AppCompatActivity {
         addedsingletime = singletime + ":59";
 
         try {
+            String LocationDone = getIntent().getStringExtra("LocationDone");
             String UserType = getIntent().getStringExtra("UserType");
             String UserBranchOrName = getIntent().getStringExtra("UserBranchOrName");
             String CurrentUser = fAuth.getCurrentUser().getUid();
@@ -96,12 +109,12 @@ public class t11_get_attendance extends AppCompatActivity {
             if (UserType.equals("faculty")) {
                 Query query = FirebaseDatabase.getInstance().getReference().child("TimeTable/faculty").child(UserBranchOrName).orderByChild("Date").equalTo(date);
                 String type = "faculty";
-                LoadClass(query, CurrentUser, type, UserBranchOrName);
+                LoadClass(query, CurrentUser, type, UserBranchOrName, LocationDone);
             }
             if (UserType.equals("student")) {
                 Query query = FirebaseDatabase.getInstance().getReference().child("TimeTable/students").child(UserBranchOrName).orderByChild("Date").equalTo(date);
                 String type = "student";
-                LoadClass(query, CurrentUser, type, UserBranchOrName);
+                LoadClass(query, CurrentUser, type, UserBranchOrName, LocationDone);
             }
         } catch (Exception e) {
             noclassText.setText("Error to Load class");
@@ -109,7 +122,7 @@ public class t11_get_attendance extends AppCompatActivity {
         }
     }
 
-    private void LoadClass(Query query, String CurrentUser, String type, String UserBranchOrName) {
+    private void LoadClass(Query query, String CurrentUser, String type, String UserBranchOrName, String LocationDone) {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -118,6 +131,7 @@ public class t11_get_attendance extends AppCompatActivity {
                         TimeTable timeTable = snapshot.getValue(TimeTable.class);
                         String time = timeTable.getStartTime();
                         if (time.equals(singletime)) {
+
                             String starttimeT = timeTable.getStartTime();
                             String endtimeT = timeTable.getEndTime();
                             String branchS = timeTable.getBranch();
@@ -136,14 +150,15 @@ public class t11_get_attendance extends AppCompatActivity {
                             starttime.setText(starttimeT);
                             endtime.setText(endtimeT);
 
-                            HashMap<String, Object> fromFaculty = new HashMap<>();
+
+                            HashMap<String, String> fromFaculty = new HashMap<>();
                             fromFaculty.put("Done", "Absent");
                             fromFaculty.put("Faculty", sFaculty);
                             fromFaculty.put("Date", sDate);
                             fromFaculty.put("Room", sRoomno);
                             fromFaculty.put("Subject", subName);
 
-                            HashMap<String, Object> studentDetail = new HashMap<>();
+                            HashMap<String, String> studentDetail = new HashMap<>();
                             studentDetail.put("UserId", CurrentUser);
                             studentDetail.put("TimeStamp", ctimeStamp);
                             studentDetail.put("Done", "Present");
@@ -190,52 +205,55 @@ public class t11_get_attendance extends AppCompatActivity {
                             if (type.equals("student")) {
                                 faculty.setText(timeTable.getFaculty());
                                 ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child(UserBranchOrName).child(date).child(subName).child(timeperiod);
-                                if (ref != null) {
-                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot data : snapshot.getChildren()) {
-                                                TimeTable timeTable = data.getValue(TimeTable.class);
-                                                if (data.getKey().equals(CurrentUser)) {
-                                                    if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
-                                                        markAttendanceBut.setVisibility(View.VISIBLE);
-                                                        markAttendanceBut.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                mprogressDialog.setMessage("Please wait...");
-                                                                mprogressDialog.show();
-                                                                mprogressDialog.setCancelable(false);
-                                                                markAttendance(studentDetail);
-                                                            }
-                                                        });
-                                                    }
-                                                    if (timeTable.getDone().equals("Present")) {
-                                                        lateText.setText("You already get attendance");
-                                                        lateText.setVisibility(View.VISIBLE);
-                                                        markAttendanceBut.setVisibility(View.GONE);
-                                                    }
+                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot data : snapshot.getChildren()) {
+                                            TimeTable timeTable = data.getValue(TimeTable.class);
+                                            if (data.getKey().equals(CurrentUser)) {
+                                                if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
+                                                    checkLocationBut.setVisibility(View.VISIBLE);
+                                                    checkLocationBut.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            Intent intent = new Intent(t11_get_attendance.this, t16_verify_location.class);
+                                                            intent.putExtra("StudentDetailsHashMap", studentDetail);
+                                                            startActivity(intent);
+                                                            finish();
+
+//                                                            mprogressDialog.setMessage("Please wait...");
+//                                                            mprogressDialog.show();
+//                                                            mprogressDialog.setCancelable(false);
+//                                                            checkLocation(studentDetail, sRoomno, LocationDone);
+                                                        }
+                                                    });
+                                                }
+                                                if (timeTable.getDone().equals("Present")) {
+                                                    lateText.setText("You already get attendance");
+                                                    lateText.setVisibility(View.VISIBLE);
+                                                    checkLocationBut.setVisibility(View.GONE);
                                                 }
                                             }
                                         }
+                                    }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            SimpleToast.error(t11_get_attendance.this, "Error to getiting Student List");
-                                            mprogressDialog.dismiss();
-                                        }
-                                    });
-                                }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        SimpleToast.error(t11_get_attendance.this, "Error to getiting Student List");
+                                        mprogressDialog.dismiss();
+                                    }
+                                });
                             }
                             if (completetime.compareTo(addedsingletime) >= 0) {
                                 lateText.setText("You are late");
                                 lateText.setVisibility(View.VISIBLE);
-                                markAttendanceBut.setVisibility(View.GONE);
+                                checkLocationBut.setVisibility(View.GONE);
                             }
                         }
                     }
                 } else {
                     lateText.setVisibility(View.GONE);
-                    markAttendanceBut.setVisibility(View.GONE);
+                    checkLocationBut.setVisibility(View.GONE);
                 }
             }
 
@@ -298,35 +316,50 @@ public class t11_get_attendance extends AppCompatActivity {
         }
     }
 
-    private void markAttendance(HashMap detail) {
+    private void checkLocation(HashMap detail, String sRoomno, String LocationDone) {
         try {
-            String CurrentUser = fAuth.getCurrentUser().getUid();
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ref.child(CurrentUser).updateChildren(detail);
-                    markAttendanceBut.setVisibility(View.GONE);
-                    mprogressDialog.dismiss();
-                    SimpleToast.ok(t11_get_attendance.this, "Marked");
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(t11_get_attendance.this, t6_dashboard.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }, SPLASH_TIME_OUT);
-                }
+//            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    SimpleToast.error(t11_get_attendance.this, "Error to Mark Attendance");
-                    mprogressDialog.dismiss();
-                }
-            });
+            if (LocationDone.equals("Yes")) {
+                markingAttendance.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String CurrentUser = fAuth.getCurrentUser().getUid();
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ref.child(CurrentUser).updateChildren(detail);
+                                checkLocationBut.setVisibility(View.GONE);
+                                mprogressDialog.dismiss();
+                                SimpleToast.ok(t11_get_attendance.this, "Marked");
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(t11_get_attendance.this, t6_dashboard.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }, SPLASH_TIME_OUT);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                SimpleToast.error(t11_get_attendance.this, "Error to Mark Attendance");
+                                mprogressDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+            }else{
+            }
         } catch (RuntimeException err) {
             mprogressDialog.hide();
             Log.e("error", String.valueOf(err));
         }
     }
+
 }

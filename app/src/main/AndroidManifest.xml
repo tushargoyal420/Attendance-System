@@ -23,6 +23,12 @@
         android:theme="@style/Theme.Attendance"
         tools:replace="android:theme">
         <activity
+            android:name=".t17_room_locations"
+            android:exported="false" />
+        <activity
+            android:name=".t16_verify_location"
+            android:exported="false" />
+        <activity
             android:name=".t15_get_all_locations"
             android:exported="false" />
         <activity
