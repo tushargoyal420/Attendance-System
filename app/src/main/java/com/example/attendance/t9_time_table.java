@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.attendance.Adapters.RetreiveTimeTable;
-import com.example.attendance.model.TimeTable;
+import com.example.attendance.model.Model;
 import com.example.attendance.model.UserData;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -30,8 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 public class t9_time_table extends AppCompatActivity {
     private Toolbar ttime_table_toolbar;
     private RecyclerView timetableRecyclerview;
-    private FirebaseRecyclerAdapter<TimeTable, RetreiveTimeTable> adapter2;
-    private FirebaseRecyclerOptions<TimeTable> options;
+    private FirebaseRecyclerAdapter<Model, RetreiveTimeTable> adapter2;
+    private FirebaseRecyclerOptions<Model> options;
     private DatabaseReference PostRef;
     private FirebaseAuth fAuth;
     private DatabaseReference getBranch, userTypeRef;
@@ -83,16 +83,16 @@ public class t9_time_table extends AppCompatActivity {
     private void LoadFacultyTimeTable(String Name) {
         PostRef = FirebaseDatabase.getInstance().getReference().child("TimeTable").child("faculty").child(Name);
         if (PostRef != null) {
-            options = new FirebaseRecyclerOptions.Builder<TimeTable>().setQuery(PostRef, TimeTable.class).build();
-            adapter2 = new FirebaseRecyclerAdapter<TimeTable, RetreiveTimeTable>(options) {
+            options = new FirebaseRecyclerOptions.Builder<Model>().setQuery(PostRef, Model.class).build();
+            adapter2 = new FirebaseRecyclerAdapter<Model, RetreiveTimeTable>(options) {
                 @Override
-                protected void onBindViewHolder(@NonNull RetreiveTimeTable holder, int position, @NonNull TimeTable timeTable) {
-                    holder.day.setText(timeTable.getDate());
-                    holder.subject.setText(timeTable.getSubject());
-                    holder.startTime.setText(timeTable.getStartTime());
-                    holder.endTime.setText(timeTable.getEndTime());
-                    holder.roomNo.setText(timeTable.getRoom());
-                    holder.faculty.setText(timeTable.getBranch());
+                protected void onBindViewHolder(@NonNull RetreiveTimeTable holder, int position, @NonNull Model model) {
+                    holder.day.setText(model.getDate());
+                    holder.subject.setText(model.getSubject());
+                    holder.startTime.setText(model.getStartTime());
+                    holder.endTime.setText(model.getEndTime());
+                    holder.roomNo.setText(model.getRoom());
+                    holder.faculty.setText(model.getBranch());
                 }
 
                 @NonNull
@@ -122,17 +122,17 @@ public class t9_time_table extends AppCompatActivity {
     private void LoadTimeTable(String Branch) {
         PostRef = FirebaseDatabase.getInstance().getReference().child("TimeTable").child("students").child(Branch);
         if (PostRef != null) {
-            options = new FirebaseRecyclerOptions.Builder<TimeTable>().setQuery(PostRef, TimeTable.class).build();
-            adapter2 = new FirebaseRecyclerAdapter<TimeTable, RetreiveTimeTable>(options) {
+            options = new FirebaseRecyclerOptions.Builder<Model>().setQuery(PostRef, Model.class).build();
+            adapter2 = new FirebaseRecyclerAdapter<Model, RetreiveTimeTable>(options) {
                 @Override
-                protected void onBindViewHolder(@NonNull RetreiveTimeTable holder, int position, @NonNull TimeTable timeTable) {
+                protected void onBindViewHolder(@NonNull RetreiveTimeTable holder, int position, @NonNull Model model) {
 
-                    holder.day.setText(timeTable.getDate());
-                    holder.subject.setText(timeTable.getSubject());
-                    holder.startTime.setText(timeTable.getStartTime());
-                    holder.endTime.setText(timeTable.getEndTime());
-                    holder.faculty.setText(timeTable.getFaculty());
-                    holder.roomNo.setText(timeTable.getRoom());
+                    holder.day.setText(model.getDate());
+                    holder.subject.setText(model.getSubject());
+                    holder.startTime.setText(model.getStartTime());
+                    holder.endTime.setText(model.getEndTime());
+                    holder.faculty.setText(model.getFaculty());
+                    holder.roomNo.setText(model.getRoom());
                 }
 
                 @NonNull

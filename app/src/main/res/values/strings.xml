@@ -40,8 +40,9 @@
     <string name="enter_sapid">Enter SapID</string>
     <string name="add">Add</string>
     <string name="you_haven_t_create_class">You haven\'t create class</string>
-    <string name="mark_attendance">Mark Attendance</string>
     <string name="upload">Upload</string>
+    <string name="mark_attendance">Mark Attendance</string>
+    <string name="if_locations_are_paused_then_click_on_this_verify_button">If locations are paused then click on this verify button</string>
 
     <string-array name="addattendancedropdown">
         <item>SapId</item>

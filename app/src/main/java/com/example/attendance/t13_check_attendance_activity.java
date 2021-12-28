@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.attendance.Adapters.CurrentAttendanceRetreive;
-import com.example.attendance.model.TimeTable;
+import com.example.attendance.model.Model;
 import com.example.attendance.model.UserData;
 import com.github.pierry.simpletoast.SimpleToast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,11 +39,11 @@ public class t13_check_attendance_activity extends AppCompatActivity {
     private RecyclerView tpresentList, tabsentList;
     private TextView tNoPresentStu, tNoAbsentStu, tstudentName, tTotalPresent, tTotalAbsent, tTotalStudentOne, tTotalStudentTwo;
     private FirebaseAuth fAuth;
-    private List<TimeTable> presentList, absentList;
+    private List<Model> presentList, absentList;
     private CurrentAttendanceRetreive currentAttendanceRetreive;
     private Button taddAttendance, tadd, tcheck, tremove;
     private EditText tEntersapid;
-    private LinearLayout taddAttendanceLinear, tclassCreatedLinear, tclassCreatedNotLinear, tpresentCounter, tabsentCounter;
+    private LinearLayout taddAttendanceLinear, tclassCreatedLinear, tclassCreatedNotLinear, tpresentCounter, tabsentCounter, absentListLayout, presentListLayout;
     private DatabaseReference findStudentId, uploadAttendance;
     boolean flag = false;
     private SimpleDateFormat timestampFormat;
@@ -56,7 +56,7 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t13_check_attendance);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Check Attendance");
+        toolbar.setTitle("Attendance Details");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         timestampFormat = new SimpleDateFormat("hh:mm:ss");
@@ -64,6 +64,9 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         tclassCreatedLinear = findViewById(R.id.allLayout);
         tclassCreatedNotLinear = findViewById(R.id.classNotCreated);
+
+        absentListLayout = findViewById(R.id.absentListLayout);
+        presentListLayout = findViewById(R.id.presentListLayout);
 
         timestamp = timestampFormat.format(calendar.getTime());
         mprogressDialog = new ProgressDialog(this);
@@ -107,9 +110,16 @@ public class t13_check_attendance_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (taddAttendanceLinear.getVisibility() == View.VISIBLE) {
+                    taddAttendance.setText("+");
                     taddAttendanceLinear.setVisibility(View.GONE);
+                    presentListLayout.setVisibility(View.VISIBLE);
+                    absentListLayout.setVisibility(View.VISIBLE);
                 } else {
+                    taddAttendance.setText("-");
                     taddAttendanceLinear.setVisibility(View.VISIBLE);
+                    presentListLayout.setVisibility(View.GONE);
+                    absentListLayout.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -144,7 +154,7 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                     int ttotal= 0;
 
                     for (DataSnapshot particular : dataSnapshot.getChildren()) {
-                        TimeTable data = particular.getValue(TimeTable.class);
+                        Model data = particular.getValue(Model.class);
                         if ((data.getDone()).equals("Present")) {
                             tpresent = tpresent + 1;
                             tpresentCounter.setVisibility(View.VISIBLE);
@@ -204,6 +214,7 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                     }
                     if (!flag) {
                         tEntersapid.setError("No student find");
+                        mprogressDialog.dismiss();
                     }
                 }
             }
@@ -246,14 +257,14 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot data : snapshot.getChildren()) {
-                            TimeTable timeTable = data.getValue(TimeTable.class);
+                            Model model = data.getValue(Model.class);
                             if (data.getKey().equals(UserId)) {
-                                if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
+                                if (model.getDone().equals("0") || model.getDone().equals("Absent")) {
                                     uploadAttendance.child(UserId).updateChildren(studentDetail);
                                     mprogressDialog.dismiss();
                                     finish();
                                 }
-                                if (timeTable.getDone().equals("Present")) {
+                                if (model.getDone().equals("Present")) {
                                     mprogressDialog.hide();
                                     SimpleToast.error(t13_check_attendance_activity.this, "Already get attendance");
                                 }
@@ -278,13 +289,13 @@ public class t13_check_attendance_activity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot data : snapshot.getChildren()) {
-                            TimeTable timeTable = data.getValue(TimeTable.class);
+                            Model model = data.getValue(Model.class);
                             if (data.getKey().equals(UserId)) {
-                                if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
+                                if (model.getDone().equals("0") || model.getDone().equals("Absent")) {
                                     SimpleToast.error(t13_check_attendance_activity.this, "Already absent");
                                     mprogressDialog.hide();
                                 }
-                                if (timeTable.getDone().equals("Present")) {
+                                if (model.getDone().equals("Present")) {
                                     uploadAttendance.child(UserId).setValue(absentStudentDetail);
                                     finish();
                                     mprogressDialog.dismiss();

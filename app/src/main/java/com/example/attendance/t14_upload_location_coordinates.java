@@ -39,7 +39,6 @@ public class t14_upload_location_coordinates extends AppCompatActivity implement
     private DatabaseReference checkroomLocationRef, roomLocationRef;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     protected LocationManager locationManager;
-    protected LocationListener locationListener;
     protected Context context;
 
     @Override
@@ -158,14 +157,12 @@ public class t14_upload_location_coordinates extends AppCompatActivity implement
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 2, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 1, this);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        Log.d("Latitude lat", String.valueOf(location.getLatitude()));
-        Log.d("Latitude long", String.valueOf(location.getLongitude()));
         currentCoordinates.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
         firstB.setOnClickListener(new View.OnClickListener() {
             @Override

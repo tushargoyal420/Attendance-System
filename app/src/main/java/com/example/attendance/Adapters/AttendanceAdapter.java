@@ -11,16 +11,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.attendance.R;
-import com.example.attendance.model.TimeTable;
+import com.example.attendance.model.Model;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
 public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
     private Context mContext;
-    private List<TimeTable> atList;
+    private List<Model> atList;
     FirebaseUser fuser;
-    public AttendanceAdapter(Context mContext, List<TimeTable> atList) {
+    public AttendanceAdapter(Context mContext, List<Model> atList) {
         this.atList = atList;
         this.mContext = mContext;
     }
@@ -35,7 +35,7 @@ public class AttendanceAdapter  extends RecyclerView.Adapter<AttendanceAdapter.V
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        TimeTable attend = atList.get(position);
+        Model attend = atList.get(position);
         holder.date.setText(attend.getDate());
         holder.subject.setText(attend.getSubject());
         holder.roomNo.setText(attend.getRoom());

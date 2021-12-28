@@ -1,14 +1,8 @@
 package com.example.attendance;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,10 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 
-import com.example.attendance.model.LocationModel;
-import com.example.attendance.model.TimeTable;
+import com.example.attendance.model.Model;
 import com.github.pierry.simpletoast.SimpleToast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,28 +24,32 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
+
+import javax.security.auth.callback.Callback;
 
 public class t11_get_attendance extends AppCompatActivity {
     private Toolbar getAttendance_toolbar;
-    private TextView subjectName, dateName, roomNo, starttime, endtime, faculty, lateText, noclassText, currentLongitudeText, currentLatiTudeText;
-    private Button checkLocationBut, mcreateClassButton, mleftSmallBut, markingAttendance;
+    private TextView subjectName, dateName, roomNo, starttime, endtime, faculty, lateText, noclassText, lateTimeShow;
+    private Button checkLocationBut, mcreateClassButton, mleftSmallBut;
     private Calendar calendar;
     private SimpleDateFormat singletimeFormat, completeTimeFormat, dayFormat, timestampFormat, dateFormat;
     private String completetime, singletime, addedsingletime, getDay, timestamp, date;
-    private LinearLayout classDetailsLinear, noclass, tforFacultyLinear, locationLayout;
+    private LinearLayout classDetailsLinear, noclass, tforFacultyLinear, locationLayout, lateTimeShowLinear;
     private ProgressDialog mprogressDialog;
-    private DatabaseReference ref, attendance, getLocationRef;
+    private DatabaseReference ref, attendance, lateTimeRef;
+
+    public interface MyCallback {
+        void onCallback(String value);
+    }
 
     FirebaseAuth fAuth;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static final int SPLASH_TIME_OUT = 2000;
-    protected LocationManager locationManager;
-    private Context context;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -61,15 +57,13 @@ public class t11_get_attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t11_get_attendance);
         getAttendance_toolbar = findViewById(R.id.getAttendance_toolbar);
-        getAttendance_toolbar.setTitle("Get Attendance");
+        getAttendance_toolbar.setTitle("Class Details");
         setSupportActionBar(getAttendance_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
-        markingAttendance = findViewById(R.id.markingAttendance);
-        currentLatiTudeText = findViewById(R.id.currentLatiTudeText);
-        currentLongitudeText = findViewById(R.id.currentLongitudeText);
-        locationLayout = findViewById(R.id.locationLayout);
+        lateTimeShow = findViewById(R.id.lateTimeShow);
+        lateTimeShowLinear = findViewById(R.id.lateTimeShowLinear);
         subjectName = findViewById(R.id.subjectName);
         dateName = findViewById(R.id.dayname);
         roomNo = findViewById(R.id.roomNo);
@@ -98,7 +92,30 @@ public class t11_get_attendance extends AppCompatActivity {
         noclass.setVisibility(View.VISIBLE);
         singletime = singletimeFormat.format(calendar.getTime());
         completetime = completeTimeFormat.format(calendar.getTime());
-        addedsingletime = singletime + ":59";
+//        addedsingletime = singletime + ":59";
+//        Log.d("LateTime", addedsingletime);
+        try {
+            lateTimeRef = FirebaseDatabase.getInstance().getReference("AdditionalData").child("LateClassTime");
+            lateTimeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Model model = snapshot.getValue(Model.class);
+                    String latetime = model.getLateTime();
+//                    addedsingletime = singletime +":"+ latetime;
+                    lateTimeShow.setText(singletime+":"+latetime);
+                }
+//last me late wala time firebase se uthaana h
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+//            Log.d("LateTime3", addedsingletime);
+        } catch (Exception e) {
+            Log.e("Error", "GetAttendance", e);
+        }
 
         try {
             String LocationDone = getIntent().getStringExtra("LocationDone");
@@ -128,17 +145,17 @@ public class t11_get_attendance extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        TimeTable timeTable = snapshot.getValue(TimeTable.class);
-                        String time = timeTable.getStartTime();
+                        Model model = snapshot.getValue(Model.class);
+                        String time = model.getStartTime();
                         if (time.equals(singletime)) {
 
-                            String starttimeT = timeTable.getStartTime();
-                            String endtimeT = timeTable.getEndTime();
-                            String branchS = timeTable.getBranch();
-                            String subName = timeTable.getSubject();
-                            String sFaculty = timeTable.getFaculty();
-                            String sDate = timeTable.getDate();
-                            String sRoomno = timeTable.getRoom();
+                            String starttimeT = model.getStartTime();
+                            String endtimeT = model.getEndTime();
+                            String branchS = model.getBranch();
+                            String subName = model.getSubject();
+                            String sFaculty = model.getFaculty();
+                            String sDate = model.getDate();
+                            String sRoomno = model.getRoom();
                             String ctimeStamp = timestamp;
                             String ClassTime = starttimeT + ":" + endtimeT;
 
@@ -158,7 +175,7 @@ public class t11_get_attendance extends AppCompatActivity {
                             fromFaculty.put("Room", sRoomno);
                             fromFaculty.put("Subject", subName);
 
-                            HashMap<String, String> studentDetail = new HashMap<>();
+                            HashMap<String, Object> studentDetail = new HashMap<>();
                             studentDetail.put("UserId", CurrentUser);
                             studentDetail.put("TimeStamp", ctimeStamp);
                             studentDetail.put("Done", "Present");
@@ -166,7 +183,7 @@ public class t11_get_attendance extends AppCompatActivity {
                             studentDetail.put("Date", sDate);
                             studentDetail.put("Room", sRoomno);
                             studentDetail.put("Subject", subName);
-                            String timeperiod = (timeTable.getStartTime() + ":" + timeTable.getEndTime());
+                            String timeperiod = (model.getStartTime() + ":" + model.getEndTime());
 
                             if (type.equals("faculty")) {
                                 faculty.setText(branchS);
@@ -203,32 +220,29 @@ public class t11_get_attendance extends AppCompatActivity {
                                 });
                             }
                             if (type.equals("student")) {
-                                faculty.setText(timeTable.getFaculty());
+                                faculty.setText(model.getFaculty());
                                 ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child(UserBranchOrName).child(date).child(subName).child(timeperiod);
                                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot data : snapshot.getChildren()) {
-                                            TimeTable timeTable = data.getValue(TimeTable.class);
+                                            Model model = data.getValue(Model.class);
                                             if (data.getKey().equals(CurrentUser)) {
-                                                if (timeTable.getDone().equals("0") || timeTable.getDone().equals("Absent")) {
+                                                if (model.getDone().equals("0") || model.getDone().equals("Absent")) {
                                                     checkLocationBut.setVisibility(View.VISIBLE);
                                                     checkLocationBut.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
                                                             Intent intent = new Intent(t11_get_attendance.this, t16_verify_location.class);
                                                             intent.putExtra("StudentDetailsHashMap", studentDetail);
+                                                            intent.putExtra("BranchForMarking", UserBranchOrName);
+                                                            intent.putExtra("TimePeridMarking", timeperiod);
                                                             startActivity(intent);
                                                             finish();
-
-//                                                            mprogressDialog.setMessage("Please wait...");
-//                                                            mprogressDialog.show();
-//                                                            mprogressDialog.setCancelable(false);
-//                                                            checkLocation(studentDetail, sRoomno, LocationDone);
                                                         }
                                                     });
                                                 }
-                                                if (timeTable.getDone().equals("Present")) {
+                                                if (model.getDone().equals("Present")) {
                                                     lateText.setText("You already get attendance");
                                                     lateText.setVisibility(View.VISIBLE);
                                                     checkLocationBut.setVisibility(View.GONE);
@@ -244,7 +258,10 @@ public class t11_get_attendance extends AppCompatActivity {
                                     }
                                 });
                             }
-                            if (completetime.compareTo(addedsingletime) >= 0) {
+
+//                            Log.d("LateTime4", addedsingletime);
+//                            if (completetime.compareTo(addedsingletime) >= 0) {
+                            if (completetime.compareTo((String) lateTimeShow.getText()) >= 0) {
                                 lateText.setText("You are late");
                                 lateText.setVisibility(View.VISIBLE);
                                 checkLocationBut.setVisibility(View.GONE);
@@ -267,8 +284,9 @@ public class t11_get_attendance extends AppCompatActivity {
 
     private void facultyCrateClass(String branchS, HashMap map) {
         try {
+            Log.d("minee0", "thisClick");
             Query query = FirebaseDatabase.getInstance().getReference("studentlist").child(branchS);
-            query.addValueEventListener(new ValueEventListener() {
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot sesnapshot) {
                     if (sesnapshot.exists()) {
@@ -279,6 +297,7 @@ public class t11_get_attendance extends AppCompatActivity {
                                     String everyKey = every.getKey();
                                     attendance.child(everyKey).updateChildren(map);
                                     mcreateClassButton.setVisibility(View.GONE);
+                                    Log.d("minee0", "thisClicka");
                                     SimpleToast.ok(t11_get_attendance.this, "Created");
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
@@ -301,7 +320,6 @@ public class t11_get_attendance extends AppCompatActivity {
                     } else {
                         SimpleToast.error(t11_get_attendance.this, "Error to ");
                         mprogressDialog.dismiss();
-
                     }
                 }
 
@@ -315,51 +333,4 @@ public class t11_get_attendance extends AppCompatActivity {
             Log.e("Mine", "FacultyCreateClass", e);
         }
     }
-
-    private void checkLocation(HashMap detail, String sRoomno, String LocationDone) {
-        try {
-//            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
-            if (LocationDone.equals("Yes")) {
-                markingAttendance.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String CurrentUser = fAuth.getCurrentUser().getUid();
-                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                ref.child(CurrentUser).updateChildren(detail);
-                                checkLocationBut.setVisibility(View.GONE);
-                                mprogressDialog.dismiss();
-                                SimpleToast.ok(t11_get_attendance.this, "Marked");
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Intent intent = new Intent(t11_get_attendance.this, t6_dashboard.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                }, SPLASH_TIME_OUT);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                SimpleToast.error(t11_get_attendance.this, "Error to Mark Attendance");
-                                mprogressDialog.dismiss();
-                            }
-                        });
-                    }
-                });
-            }else{
-            }
-        } catch (RuntimeException err) {
-            mprogressDialog.hide();
-            Log.e("error", String.valueOf(err));
-        }
-    }
-
 }

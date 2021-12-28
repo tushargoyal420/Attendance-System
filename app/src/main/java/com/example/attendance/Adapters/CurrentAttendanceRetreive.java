@@ -11,15 +11,15 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.attendance.R;
-import com.example.attendance.model.TimeTable;
+import com.example.attendance.model.Model;
 
 import java.util.List;
 
 public class CurrentAttendanceRetreive extends RecyclerView.Adapter<CurrentAttendanceRetreive.ViewHolder> {
     private Context mContext;
-    private List<TimeTable> atList;
+    private List<Model> atList;
     private String type;
-    public CurrentAttendanceRetreive(Context mContext, List<TimeTable> atList, String type) {
+    public CurrentAttendanceRetreive(Context mContext, List<Model> atList, String type) {
         this.atList = atList;
         this.mContext = mContext;
         this.type = type;
@@ -34,15 +34,15 @@ public class CurrentAttendanceRetreive extends RecyclerView.Adapter<CurrentAtten
     @Override
     public void onBindViewHolder(@NonNull CurrentAttendanceRetreive.ViewHolder holder, int position) {
         if(type.equals("Present")){
-            TimeTable timeTable = atList.get(position);
-            holder.stuname.setText(timeTable.getName());
-            holder.sapid.setText(timeTable.getSapId());
-            holder.bool.setText(timeTable.getTimeStamp());
+            Model model = atList.get(position);
+            holder.stuname.setText(model.getName());
+            holder.sapid.setText(model.getSapId());
+            holder.bool.setText(model.getTimeStamp());
         }
         if(type.equals("Absent")){
-            TimeTable timeTable = atList.get(position);
-            holder.stuname.setText(timeTable.getName());
-            holder.sapid.setText(timeTable.getSapId());
+            Model model = atList.get(position);
+            holder.stuname.setText(model.getName());
+            holder.sapid.setText(model.getSapId());
             holder.bool.setText("Absent");
         }
     }

@@ -1,6 +1,7 @@
 package com.example.attendance;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,10 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.attendance.Adapters.AttendanceAdapter;
-import com.example.attendance.model.TimeTable;
+import com.example.attendance.model.Model;
+import com.example.attendance.model.UserData;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -24,8 +28,9 @@ public class t12_attendance_retrieve extends AppCompatActivity {
     private Toolbar getAttendance_toolbar;
     private RecyclerView attendanceRecyclerview;
     private FirebaseAuth fAuth;
-    private List<TimeTable> atList;
+    private List<Model> atList;
     private AttendanceAdapter attendanceAdapter;
+    private DatabaseReference userTypeRef, DataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +44,36 @@ public class t12_attendance_retrieve extends AppCompatActivity {
 
         attendanceRecyclerview = findViewById(R.id.attendanceRecyclerview);
         attendanceRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        LoadAttendance();
+        try {
+            String CurrentUser = fAuth.getCurrentUser().getUid();
+            userTypeRef = FirebaseDatabase.getInstance().getReference().child("users");
+            userTypeRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        if ((snapshot.child("students").child(CurrentUser)).exists()) {
+                            UserData userdata = snapshot.child("students").child(CurrentUser).getValue(UserData.class);
+                            String Branch= userdata.getBranch();
+                            LoadAttendance(Branch);
+                        }else{
+                            SimpleToast.error(t12_attendance_retrieve.this, "no student exist");
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } catch (Exception e) {
+            Log.e("UserTypeError", "Exception", e);
+        }
+
     }
 
-    private void LoadAttendance() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("Attendance/osos")
+    private void LoadAttendance(String Branch) {
+        Query query = FirebaseDatabase.getInstance().getReference("Attendance").child(Branch)
                 .orderByPriority();
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,9 +89,9 @@ public class t12_attendance_retrieve extends AppCompatActivity {
                                 if (time.child(CurrentUser).exists()) {
                                     for (DataSnapshot singleUserData : time.getChildren()) {
                                         if (singleUserData.getKey().equals(CurrentUser)) {
-                                            TimeTable timeTable = singleUserData.getValue(TimeTable.class);
-                                            if (!timeTable.getDone().equals("0")) {
-                                                TimeTable singleUser = time.child(CurrentUser).getValue(TimeTable.class);
+                                            Model model = singleUserData.getValue(Model.class);
+                                            if (!model.getDone().equals("0")) {
+                                                Model singleUser = time.child(CurrentUser).getValue(Model.class);
                                                 atList.add(singleUser);
                                                 attendanceAdapter = new AttendanceAdapter(t12_attendance_retrieve.this, atList);
                                                 attendanceRecyclerview.setAdapter(attendanceAdapter);

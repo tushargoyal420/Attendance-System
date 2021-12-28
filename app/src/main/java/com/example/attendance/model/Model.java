@@ -1,6 +1,6 @@
 package com.example.attendance.model;
 
-public class TimeTable {
+public class Model {
     private String StartTime;
     private String EndTime;
     private String Subject;
@@ -16,6 +16,15 @@ public class TimeTable {
     private String Branch;
     private String SapId;
     private String Name;
+    private String LateTime;
+
+    public String getLateTime() {
+        return LateTime;
+    }
+
+    public void setLateTime(String lateTime) {
+        LateTime = lateTime;
+    }
 
     public String getName() {
         return Name;
@@ -37,9 +46,10 @@ public class TimeTable {
         return Branch;
     }
 
-    public TimeTable(String startTime,String name, String sapId , String endTime, String subject, String room, String faculty, String day, String date, String timeStamp, String studentName, String attend, String userId, String done, String branch) {
+    public Model(String startTime,String lateTime, String name, String sapId , String endTime, String subject, String room, String faculty, String day, String date, String timeStamp, String studentName, String attend, String userId, String done, String branch) {
         StartTime = startTime;
         Name = name;
+        LateTime = lateTime;
         SapId= sapId;
         EndTime = endTime;
         Subject = subject;
@@ -91,7 +101,7 @@ public class TimeTable {
         StudentName = studentName;
     }
 
-    public TimeTable() {
+    public Model() {
 
     }
 

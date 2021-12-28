@@ -32,12 +32,13 @@
         <entry key="..\:/Major1/Code/app/src/main/res/layout/ssssfragment_task_face_fragment.xml" value="0.20521590423257802" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/stu_attendance_card_for_faculty.xml" value="0.25" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t10_upload_timetable.xml" value="0.2082018927444795" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t11_get_attendance.xml" value="0.2" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t11_get_attendance.xml" value="0.264" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t12_attendance_retrieve.xml" value="0.152" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t13_check_attendance.xml" value="0.24124513618677043" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t14_upload_location_coordinates.xml" value="0.264" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t15_get_all_locations.xml" value="0.19739583333333333" />
-        <entry key="..\:/Major1/Code/app/src/main/res/layout/t16_verify_location.xml" value="0.25" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t16_verify_location.xml" value="0.264" />
+        <entry key="..\:/Major1/Code/app/src/main/res/layout/t17_room_locations.xml" value="0.25" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t1_splash_screen.xml" value="0.4" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t20_faculty_student_choice.xml" value="0.17699871740059855" />
         <entry key="..\:/Major1/Code/app/src/main/res/layout/t2_1_faculty_login.xml" value="0.18854211201368107" />

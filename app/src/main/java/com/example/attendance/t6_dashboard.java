@@ -25,7 +25,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.attendance.LoginSystem.t2_login_signup_choice;
-import com.example.attendance.model.TimeTable;
 import com.example.attendance.model.UserData;
 import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -125,15 +124,13 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     UserData userData = snapshot.getValue(UserData.class);
                                     BranchOrName = userData.getBranch();
-//                                    Log.e("USERBranch", BranchOrName);
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                 }
                             });
                             String UserType = "student";
-                            Log.e("USERBranchthis", "thiss"+BranchOrName);
-
                             String UserBranch = BranchOrName;
                             LoadUserData(UserType, UserBranch);
                         }
@@ -158,7 +155,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 double distance = calculate_distance(ori_embedding, test_embedding);
-                Log.e("distance", String.valueOf(distance));
                 if (distance < 5.0) {
                     result_text.setText("Result : Face match");
                     getAttendanceBut.setVisibility(View.VISIBLE);
@@ -209,7 +205,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                         .build();
         return imageProcessor.process(inputImageBuffer);
     }
-
 
 
     private void LoadUserData(String UserType, String UserBranchOrName) {
@@ -370,14 +365,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_uploadLocation: {
-//                Intent intent = new Intent(t6_dashboard.this, t15_get_all_locations.class);
-//                intent.putExtra("OldActivity", "Dashboard");
-//                startActivity(intent);
                 startActivity(new Intent(getApplicationContext(), t14_upload_location_coordinates.class));
-                break;
-            }
-            case R.id.nav_uploadLocationtwo: {
-                startActivity(new Intent(getApplicationContext(),secondlocation.class));
                 break;
             }
         }

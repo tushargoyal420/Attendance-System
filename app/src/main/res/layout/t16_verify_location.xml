@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,96 +7,116 @@
     android:background="@color/white"
     tools:context=".t16_verify_location">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/verifyLocationtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/teal_700"
+            app:buttonGravity="center_vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="top"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/verifyLocationtoolbar"
+
+            <TextView
+                android:id="@+id/currentLatitudeTextView"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/teal_700"
-                app:buttonGravity="center_vertical" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/eduttextborder5"
+                android:gravity="center"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:text="Latitude"
+                android:textColor="#535353" />
+
+            <TextView
+                android:id="@+id/currentLongitudeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/eduttextborder5"
+                android:gravity="center"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:text="Longitude"
+                android:textColor="#535353" />
 
             <LinearLayout
+                android:id="@+id/forFacultyLinear"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/getButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/teal_700"
-                    android:text="Get your location"
+                    android:backgroundTint="@color/white"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="Load"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/currentLatitudeTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="0.4"
-                    android:background="@drawable/eduttextborder5"
-                    android:gravity="center"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:text="Latitude"
-                    android:textColor="#535353" />
-
-                <TextView
-                    android:id="@+id/currentLongitudeTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="0.4"
-                    android:background="@drawable/eduttextborder5"
-                    android:gravity="center"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:text="Longitude"
-                    android:textColor="#535353" />
+                    android:textColor="@color/teal_700"
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/verifyButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:layout_margin="20dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/teal_700"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
                     android:text="Verify"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
-                <Button
-                    android:id="@+id/uploadButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/teal_700"
-                    android:text="Upload details"
-                    android:textAllCaps="false"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/if_locations_are_paused_then_click_on_this_verify_button"
+                android:textColor="@color/lightgray"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/uploadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/teal_700"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/mark_attendance"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
