@@ -100,7 +100,7 @@ public class t13_check_attendance_activity extends AppCompatActivity {
         try {
             retrieveList(Branch, Date, SubjectName, Time);
         } catch (Exception e) {
-            Log.e("CheckAttendance", "exception", e);
+            SimpleToast.error(t13_check_attendance_activity.this, String.valueOf(e));
         }
 
         taddAttendanceLinear = findViewById(R.id.addAttendanceLinear);

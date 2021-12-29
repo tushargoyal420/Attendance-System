@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.attendance.model.UserData;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,7 +73,7 @@ public class t7_profile extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
-            Log.e("UserTypeError", "Exception", e);
+            SimpleToast.error(t7_profile.this, String.valueOf(e));
         }
 
     }

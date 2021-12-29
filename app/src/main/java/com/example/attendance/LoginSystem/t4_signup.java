@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.attendance.R;
 import com.example.attendance.t6_dashboard;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +46,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class t4_signup extends AppCompatActivity {
     private EditText tname, temailaddress, tpassword, tBranch;
-    private Button tcreateaccount, mselectImage;
+    private Button tcreateaccount;
     private TextView tsignin;
     private String userid;
     private ImageView tpasswordshow;
@@ -133,7 +134,6 @@ public class t4_signup extends AppCompatActivity {
                     mprogressDialog.show();
                     mprogressDialog.setCancelable(false);
                     String studentemailtype = "[0-9]+@[stu]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
-//                    String facultyemailtype = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
                     //if we have faculty email then we add below pattern for faculty's email  but we don't have
                     //faculty email so we are using normal email vaildation for faculty
@@ -156,7 +156,7 @@ public class t4_signup extends AppCompatActivity {
                 String password = tpassword.getText().toString().trim();
                 String branch = tBranch.getText().toString().trim();
                 String emailname = email.substring(0, email.lastIndexOf("@"));
-                String domain = email.substring(email.lastIndexOf("@") + 1);
+//                String domain = email.substring(email.lastIndexOf("@") + 1);
 
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -169,7 +169,6 @@ public class t4_signup extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         try {
                                             StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-                                            Log.e("uploadimage1", String.valueOf(fileRef));
                                             fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                 @Override
                                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -177,7 +176,7 @@ public class t4_signup extends AppCompatActivity {
                                                         @Override
                                                         public void onSuccess(Uri uri) {
                                                             userid = fAuth.getCurrentUser().getUid();
-                                                            Map<String, Object> useData = new HashMap<>();
+                                                            HashMap<String, Object> useData = new HashMap<>();
                                                             useData.put("id", userid);
                                                             useData.put("Branch", branch);
                                                             useData.put("Name", name);
@@ -209,23 +208,18 @@ public class t4_signup extends AppCompatActivity {
                                                 }
                                             });
                                         } catch (Exception e) {
-                                            if (uri.equals("")) {
-                                                Log.e("UploadImageError", "empty");
-                                            } else {
-                                                Log.e("UploadImageError", String.valueOf(uri));
-                                            }
-                                            Log.e("UploadImageError", "Exception", e);
+                                            mprogressDialog.hide();
+                                            SimpleToast.error(t4_signup.this, String.valueOf(e));
                                         }
                                     } else {
                                         mprogressDialog.hide();
-                                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        SimpleToast.error(t4_signup.this, task.getException().getMessage());
                                     }
                                 }
                             });
-
                         } else {
                             mprogressDialog.hide();
-                            Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            SimpleToast.error(t4_signup.this, task.getException().getMessage());
                         }
                     }
                 });

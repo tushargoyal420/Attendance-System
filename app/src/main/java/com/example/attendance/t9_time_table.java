@@ -20,6 +20,7 @@ import com.example.attendance.model.Model;
 import com.example.attendance.model.UserData;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,7 +77,7 @@ public class t9_time_table extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
-            Log.e("UserTypeError", "Exception", e);
+            SimpleToast.error(t9_time_table.this, String.valueOf(e));
         }
     }
 

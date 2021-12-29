@@ -26,10 +26,6 @@
             android:name=".t16_verify_location"
             android:exported="false" />
         <activity
-            android:name=".secondlocation"
-            android:exported="true"
-            android:parentActivityName=".t6_dashboard" />
-        <activity
             android:name=".t14_upload_location_coordinates"
             android:exported="true"
             android:parentActivityName=".t6_dashboard" />
@@ -53,19 +49,11 @@
             android:name=".t9_time_table"
             android:exported="true"
             android:parentActivityName=".t6_dashboard" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:parentActivityName=".t6_dashboard" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="face" />
 
-        <activity
-            android:name=".t8_setting"
-            android:exported="true"
-            android:parentActivityName=".t6_dashboard" />
         <activity
             android:name=".t7_profile"
             android:exported="true"

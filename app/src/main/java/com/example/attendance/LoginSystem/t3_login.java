@@ -30,8 +30,8 @@ public class t3_login extends AppCompatActivity {
     private EditText temailaddress, tpassword;
     private Button tsignin;
     private ImageView tpasswordshow;
-    private TextView tcreateaccount , tforgetpassword;
-    private  FirebaseAuth fAuth;
+    private TextView tcreateaccount, tforgetpassword;
+    private FirebaseAuth fAuth;
     private ProgressDialog mprogressDialog;
     private Context context = this;
 
@@ -43,7 +43,7 @@ public class t3_login extends AppCompatActivity {
         tpassword = findViewById(R.id.passwordinput);
         tsignin = findViewById(R.id.studentlogin);
         tcreateaccount = findViewById(R.id.createanewaccountpagelink);
-        tforgetpassword= findViewById(R.id.gobackbutton);
+        tforgetpassword = findViewById(R.id.gobackbutton);
         tpasswordshow = findViewById(R.id.passwordshowbutton);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
@@ -52,15 +52,12 @@ public class t3_login extends AppCompatActivity {
         tpasswordshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.getId()==R.id.passwordshowbutton){
-                    if(tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                if (view.getId() == R.id.passwordshowbutton) {
+                    if (tpassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
                         tpasswordshow.setImageResource(R.drawable.hide3);
-                       //Show Password
                         tpassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    }
-                    else{
+                    } else {
                         tpasswordshow.setImageResource(R.drawable.show3);
-                        //Hide Password
                         tpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     }
                 }
@@ -87,56 +84,56 @@ public class t3_login extends AppCompatActivity {
             }
         });
     }
-        private void validation(){
-            if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
-                temailaddress.setError("Please enter your Email address ");
-                return;
-            }
-            if (TextUtils.isEmpty(tpassword.getText().toString().trim())) {
-                tpassword.setError("Please enter your password");
-                return;
-            } else {
-                mprogressDialog.setMessage("Sign in...");
-                mprogressDialog.show();
-                mprogressDialog.setCancelable(false);
-                login();
-            }
+
+    private void validation() {
+        if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
+            temailaddress.setError("Please enter your Email address ");
+            return;
         }
+        if (TextUtils.isEmpty(tpassword.getText().toString().trim())) {
+            tpassword.setError("Please enter your password");
+            return;
+        } else {
+            mprogressDialog.setMessage("Sign in...");
+            mprogressDialog.show();
+            mprogressDialog.setCancelable(false);
+            login();
+        }
+    }
 
-        private void login() {
-            String email = temailaddress.getText().toString().trim();
-            String password = tpassword.getText().toString().trim();
+    private void login() {
+        String email = temailaddress.getText().toString().trim();
+        String password = tpassword.getText().toString().trim();
 
-            fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = fAuth.getCurrentUser();
-                        assert user != null;
-                        if (!user.isEmailVerified()) {
-                            SimpleToast.error(t3_login.this, "Please verify your email");
-                            mprogressDialog.dismiss();
-                        } else {
-                            String studentemailtype = "[0-9]+@[stu]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
-                            String email = temailaddress.getText().toString().trim();
-                            if(email.matches(studentemailtype) && email.length()> 0 ){
-                                Intent intent = new Intent(t3_login.this, t6_dashboard.class);
-                                intent.putExtra("User", "student");
-                                startActivity(intent);
-//                                startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
-                            }else{
-                                Intent intent = new Intent(t3_login.this, t6_dashboard.class);
-                                intent.putExtra("User", "faculty");
-                                startActivity(intent);
-                            }
-                            mprogressDialog.dismiss();
-                            finish();
-                        }
-                    } else {
-                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = fAuth.getCurrentUser();
+                    assert user != null;
+                    if (!user.isEmailVerified()) {
+                        SimpleToast.error(t3_login.this, "Please verify your email");
                         mprogressDialog.dismiss();
+                    } else {
+                        String studentemailtype = "[0-9]+@[stu]+\\.+[upes]+\\.+[ac]+\\.+[in]+";
+                        if (email.matches(studentemailtype) && email.length() > 0) {
+                            Intent intent = new Intent(t3_login.this, t6_dashboard.class);
+                            intent.putExtra("User", "student");
+                            startActivity(intent);
+//                                startActivity(new Intent(getApplicationContext(), t6_dashboard.class));
+                        } else {
+                            Intent intent = new Intent(t3_login.this, t6_dashboard.class);
+                            intent.putExtra("User", "faculty");
+                            startActivity(intent);
+                        }
+                        mprogressDialog.dismiss();
+                        finish();
                     }
+                } else {
+                    SimpleToast.error(t3_login.this, task.getException().getMessage());
+                    mprogressDialog.dismiss();
                 }
-            });
+            }
+        });
     }
 }

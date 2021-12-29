@@ -24,13 +24,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import javax.security.auth.callback.Callback;
 
 public class t11_get_attendance extends AppCompatActivity {
     private Toolbar getAttendance_toolbar;
@@ -42,10 +40,6 @@ public class t11_get_attendance extends AppCompatActivity {
     private LinearLayout classDetailsLinear, noclass, tforFacultyLinear, locationLayout, lateTimeShowLinear;
     private ProgressDialog mprogressDialog;
     private DatabaseReference ref, attendance, lateTimeRef;
-
-    public interface MyCallback {
-        void onCallback(String value);
-    }
 
     FirebaseAuth fAuth;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -105,16 +99,13 @@ public class t11_get_attendance extends AppCompatActivity {
 //                    addedsingletime = singletime +":"+ latetime;
                     lateTimeShow.setText(singletime+":"+latetime);
                 }
-//last me late wala time firebase se uthaana h
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
-
-//            Log.d("LateTime3", addedsingletime);
         } catch (Exception e) {
-            Log.e("Error", "GetAttendance", e);
+            SimpleToast.error(t11_get_attendance.this, String.valueOf(e));
         }
 
         try {

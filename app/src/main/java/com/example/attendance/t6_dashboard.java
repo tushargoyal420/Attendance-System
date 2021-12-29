@@ -93,6 +93,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         tdashboardtoolbar = findViewById(R.id.toolbar);
         setSupportActionBar(tdashboardtoolbar);
         tdashboardtoolbar.setTitle("Dashboard");
+
         //drawer
         tnavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, tdrawerLayout, tdashboardtoolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -109,7 +110,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             userTypeRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                     if (snapshot.exists()) {
                         if ((snapshot.child("faculty").child(CurrentUser)).exists()) {
                             DataRef = FirebaseDatabase.getInstance().getReference("users").child("faculty").child(CurrentUser);
@@ -128,6 +128,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
+                                    SimpleToast.error(t6_dashboard.this, "Database error");
                                 }
                             });
                             String UserType = "student";
@@ -139,12 +140,12 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    SimpleToast.error(t6_dashboard.this, "Database error");
                 }
             });
 
         } catch (Exception e) {
-            Log.e("UserTypeError", "Exception", e);
+            SimpleToast.error(t6_dashboard.this, String.valueOf(e));
         }
 
         tCurrentImage = findViewById(R.id.currentImage);
@@ -158,10 +159,8 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 if (distance < 5.0) {
                     result_text.setText("Result : Face match");
                     getAttendanceBut.setVisibility(View.VISIBLE);
-
                 } else {
                     result_text.setText("Result : Face didn't match");
-                    getAttendanceBut.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -177,7 +176,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                 } else {
-                    Toast.makeText(t6_dashboard.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    SimpleToast.error(t6_dashboard.this , "Something went wrong");
                 }
             }
         });
@@ -214,7 +213,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(t6_dashboard.this, t11_get_attendance.class);
                 intent.putExtra("UserType", UserType);
                 intent.putExtra("UserBranchOrName", UserBranchOrName);
-                intent.putExtra("LocationDone", "No");
                 startActivity(intent);
             }
         });
@@ -264,7 +262,8 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         try {
             tflite = new Interpreter(loadmodelfile(this));
         } catch (Exception e) {
-            e.printStackTrace();
+            SimpleToast.error(t6_dashboard.this, String.valueOf(e));
+//            e.printStackTrace();
         }
     }
 
@@ -289,7 +288,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
         detector.process(image).addOnSuccessListener(new OnSuccessListener<List<Face>>() {
             @Override
             public void onSuccess(List<Face> faces) {
-                // Task completed successfully
                 for (Face face : faces) {
                     Rect bounds = face.getBoundingBox();
                     cropped = Bitmap.createBitmap(bitmap, bounds.left, bounds.top, bounds.width(), bounds.height());

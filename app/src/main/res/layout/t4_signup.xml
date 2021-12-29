@@ -132,9 +132,8 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_marginRight="15dp"
-                    android:gravity="center"
                     android:background="@drawable/show2"
-                    />
+                    android:gravity="center" />
 
             </RelativeLayout>
 

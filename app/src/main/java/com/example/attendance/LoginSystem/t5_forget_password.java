@@ -14,12 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.attendance.R;
+import com.github.pierry.simpletoast.SimpleToast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class t5_forget_password extends AppCompatActivity {
-    private EditText  temailaddress;
+    private EditText temailaddress;
     private Button tgetpassword;
     private TextView tgoback;
     FirebaseAuth fAuth;
@@ -30,9 +31,9 @@ public class t5_forget_password extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.t5_forget_password);
-        temailaddress= findViewById(R.id.emailinput);
-        tgetpassword= findViewById(R.id.studentlogin);
-        tgoback= findViewById(R.id.gobackbutton);
+        temailaddress = findViewById(R.id.emailinput);
+        tgetpassword = findViewById(R.id.studentlogin);
+        tgoback = findViewById(R.id.gobackbutton);
         mprogressDialog = new ProgressDialog(this);
         fAuth = FirebaseAuth.getInstance();
 
@@ -51,10 +52,10 @@ public class t5_forget_password extends AppCompatActivity {
     }
 
     private void validate() {
-        if (TextUtils.isEmpty(temailaddress.getText().toString().trim())){
+        if (TextUtils.isEmpty(temailaddress.getText().toString().trim())) {
             temailaddress.setError("Please enter Email");
             return;
-        }else {
+        } else {
             mprogressDialog.show();
             mprogressDialog.setMessage("Sending...");
             mprogressDialog.setCancelable(false);
@@ -68,11 +69,11 @@ public class t5_forget_password extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Email Sent", Toast.LENGTH_LONG).show();
+                    SimpleToast.ok(t5_forget_password.this, "Email Sent");
                     mprogressDialog.hide();
-                }else {
+                } else {
                     mprogressDialog.hide();
-                    Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    SimpleToast.ok(t5_forget_password.this, task.getException().getMessage());
                 }
             }
         });

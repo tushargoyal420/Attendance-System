@@ -6,7 +6,6 @@
                 <item
                     android:id="@+id/nav_dashboard"
                     android:title="Dashboard" />
-                <!--                android:icon="@drawable/home_icon"-->
                 <item
                     android:id="@+id/nav_profile"
                     android:title="Profile" />
@@ -16,45 +15,21 @@
                 <item
                     android:id="@+id/nav_timeTable"
                     android:title="Time Table" />
-
                 <item
                     android:id="@+id/nav_uploadLocation"
                     android:title="Upload Locations" />
-
-
-                <!--                <item-->
-                <!--                    android:id="@+id/nav_uploadLocationtwo"-->
-                <!--                    android:title="Upload Locations two" />-->
-
-
                 <item
                     android:id="@+id/nav_logout"
                     android:title="Logout" />
-
             </group>
         </menu>
     </item>
-
     <group>
-
         <item
             android:id="@+id/customer_care"
             android:title="Customer Care" />
-
         <item
             android:id="@+id/terms"
             android:title="Terms and Conditions" />
-        <!--                android:icon="@drawable/rate_icon"-->
     </group>
-
-    <!--    <group>-->
-    <!--        <item-->
-    <!--            android:id="@+id/myname"-->
-    <!--            android:title="Tushar Goyal" />-->
-    <!--        &lt;!&ndash;                android:icon="@drawable/share_icon"&ndash;&gt;-->
-    <!--        <item-->
-    <!--            android:id="@+id/balluname"-->
-    <!--            android:title="Bhavuk Baluja" />-->
-    <!--        &lt;!&ndash;                android:icon="@drawable/rate_icon"&ndash;&gt;-->
-    <!--    </group>-->
 </menu>
