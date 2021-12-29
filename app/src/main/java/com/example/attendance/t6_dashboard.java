@@ -156,7 +156,7 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 double distance = calculate_distance(ori_embedding, test_embedding);
-                if (distance < 5.0) {
+                if (distance < 8.0) {
                     result_text.setText("Result : Face match");
                     getAttendanceBut.setVisibility(View.VISIBLE);
                 } else {
@@ -360,10 +360,6 @@ public class t6_dashboard extends AppCompatActivity implements NavigationView.On
             }
             case R.id.nav_attendance: {
                 startActivity(new Intent(getApplicationContext(), t12_attendance_retrieve.class));
-                break;
-            }
-            case R.id.nav_uploadLocation: {
-                startActivity(new Intent(getApplicationContext(), t14_upload_location_coordinates.class));
                 break;
             }
         }

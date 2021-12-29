@@ -176,51 +176,6 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
-<!--            android:visibility="gone"-->
-
-        <LinearLayout
-            android:id="@+id/lateTimeShowLinear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="You will late after"
-                android:textAlignment="center"
-                android:textColor="@color/lightgray"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/lateTimeShow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="__ "
-                android:textAlignment="center"
-                android:textColor="@color/lightgray"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="."
-                android:textAlignment="center"
-                android:textColor="@color/lightgray"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -56,8 +56,6 @@ public class t11_get_attendance extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fAuth = FirebaseAuth.getInstance();
         mprogressDialog = new ProgressDialog(this);
-        lateTimeShow = findViewById(R.id.lateTimeShow);
-        lateTimeShowLinear = findViewById(R.id.lateTimeShowLinear);
         subjectName = findViewById(R.id.subjectName);
         dateName = findViewById(R.id.dayname);
         roomNo = findViewById(R.id.roomNo);
@@ -86,28 +84,27 @@ public class t11_get_attendance extends AppCompatActivity {
         noclass.setVisibility(View.VISIBLE);
         singletime = singletimeFormat.format(calendar.getTime());
         completetime = completeTimeFormat.format(calendar.getTime());
-//        addedsingletime = singletime + ":59";
-//        Log.d("LateTime", addedsingletime);
-        try {
-            lateTimeRef = FirebaseDatabase.getInstance().getReference("AdditionalData").child("LateClassTime");
-            lateTimeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Model model = snapshot.getValue(Model.class);
-                    String latetime = model.getLateTime();
-//                    addedsingletime = singletime +":"+ latetime;
-                    lateTimeShow.setText(singletime+":"+latetime);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        } catch (Exception e) {
-            SimpleToast.error(t11_get_attendance.this, String.valueOf(e));
-        }
-
+        addedsingletime = singletime + ":20";
+//        try {
+//            lateTimeRef = FirebaseDatabase.getInstance().getReference("AdditionalData").child("LateClassTime");
+//            lateTimeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @SuppressLint("SetTextI18n")
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    Model model = snapshot.getValue(Model.class);
+////                    String latetime = model.getLateTime();
+////                    addedsingletime = singletime + ":" + latetime;
+////                    lateTimeShow.setText(singletime+":"+latetime);
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    SimpleToast.error(t11_get_attendance.this, "Database error");
+//                }
+//            });
+//        } catch (Exception e) {
+//            SimpleToast.error(t11_get_attendance.this, String.valueOf(e));
+//        }
         try {
             String LocationDone = getIntent().getStringExtra("LocationDone");
             String UserType = getIntent().getStringExtra("UserType");
@@ -211,51 +208,52 @@ public class t11_get_attendance extends AppCompatActivity {
                                 });
                             }
                             if (type.equals("student")) {
-                                faculty.setText(model.getFaculty());
-                                ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child(UserBranchOrName).child(date).child(subName).child(timeperiod);
-                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot data : snapshot.getChildren()) {
-                                            Model model = data.getValue(Model.class);
-                                            if (data.getKey().equals(CurrentUser)) {
-                                                if (model.getDone().equals("0") || model.getDone().equals("Absent")) {
-                                                    checkLocationBut.setVisibility(View.VISIBLE);
-                                                    checkLocationBut.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            Intent intent = new Intent(t11_get_attendance.this, t16_verify_location.class);
-                                                            intent.putExtra("StudentDetailsHashMap", studentDetail);
-                                                            intent.putExtra("BranchForMarking", UserBranchOrName);
-                                                            intent.putExtra("TimePeridMarking", timeperiod);
-                                                            startActivity(intent);
-                                                            finish();
-                                                        }
-                                                    });
-                                                }
-                                                if (model.getDone().equals("Present")) {
-                                                    lateText.setText("You already get attendance");
-                                                    lateText.setVisibility(View.VISIBLE);
-                                                    checkLocationBut.setVisibility(View.GONE);
+
+                                if (completetime.compareTo(addedsingletime) >= 0) {
+                                    lateText.setText("You are late");
+                                    lateText.setVisibility(View.VISIBLE);
+                                    checkLocationBut.setVisibility(View.GONE);
+                                } else {
+
+                                    faculty.setText(model.getFaculty());
+                                    ref = FirebaseDatabase.getInstance().getReference().child("Attendance").child(UserBranchOrName).child(date).child(subName).child(timeperiod);
+                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot data : snapshot.getChildren()) {
+                                                Model model = data.getValue(Model.class);
+                                                if (data.getKey().equals(CurrentUser)) {
+                                                    if (model.getDone().equals("0") || model.getDone().equals("Absent")) {
+                                                        checkLocationBut.setVisibility(View.VISIBLE);
+                                                        checkLocationBut.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                Intent intent = new Intent(t11_get_attendance.this, t16_verify_location.class);
+                                                                intent.putExtra("StudentDetailsHashMap", studentDetail);
+                                                                intent.putExtra("BranchForMarking", UserBranchOrName);
+                                                                intent.putExtra("TimePeridMarking", timeperiod);
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
+                                                        });
+                                                    }
+                                                    if (model.getDone().equals("Present")) {
+                                                        lateText.setText("You already get attendance");
+                                                        lateText.setVisibility(View.VISIBLE);
+                                                        checkLocationBut.setVisibility(View.GONE);
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        SimpleToast.error(t11_get_attendance.this, "Error to getiting Student List");
-                                        mprogressDialog.dismiss();
-                                    }
-                                });
-                            }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            SimpleToast.error(t11_get_attendance.this, "Error to getiting Student List");
+                                            mprogressDialog.dismiss();
+                                        }
+                                    });
+                                }
 
-//                            Log.d("LateTime4", addedsingletime);
-//                            if (completetime.compareTo(addedsingletime) >= 0) {
-                            if (completetime.compareTo((String) lateTimeShow.getText()) >= 0) {
-                                lateText.setText("You are late");
-                                lateText.setVisibility(View.VISIBLE);
-                                checkLocationBut.setVisibility(View.GONE);
                             }
                         }
                     }

@@ -37,7 +37,7 @@ public class t9_time_table extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private DatabaseReference getBranch, userTypeRef;
     private LinearLayout noclass;
-    private Button uploadTimeTable;
+    private Button uploadTimeTable, uploadLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class t9_time_table extends AppCompatActivity {
         setSupportActionBar(ttime_table_toolbar);
 
         uploadTimeTable = findViewById(R.id.uploadTimeTable);
-        uploadTimeTable.setVisibility(View.GONE);
+        uploadLocation = findViewById(R.id.uploadLocation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fAuth = FirebaseAuth.getInstance();
         noclass = findViewById(R.id.noclass);
@@ -108,12 +108,21 @@ public class t9_time_table extends AppCompatActivity {
         } else {
             noclass.setVisibility(View.VISIBLE);
         }
+        
         uploadTimeTable.setVisibility(View.VISIBLE);
         uploadTimeTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(t9_time_table.this, t10_upload_timetable.class);
                 intent.putExtra("FacultyName", Name);
+                startActivity(intent);
+            }
+        });
+        uploadLocation.setVisibility(View.VISIBLE);
+        uploadLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(t9_time_table.this, t14_upload_location_coordinates.class);
                 startActivity(intent);
             }
         });

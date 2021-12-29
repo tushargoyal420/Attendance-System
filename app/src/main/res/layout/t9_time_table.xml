@@ -60,10 +60,21 @@
                 android:id="@+id/uploadTimeTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/upload"
+                android:text="Upload Timetable"
                 android:backgroundTint="@color/teal_700"
                 android:layout_margin="10dp"
                 android:textAllCaps="false"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/uploadLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload location"
+                android:backgroundTint="@color/teal_700"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:visibility="gone"
                 />
         </LinearLayout>
     </ScrollView>

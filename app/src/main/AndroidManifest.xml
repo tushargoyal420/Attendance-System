@@ -24,11 +24,12 @@
         tools:replace="android:theme">
         <activity
             android:name=".t16_verify_location"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".t6_dashboard" />
         <activity
             android:name=".t14_upload_location_coordinates"
             android:exported="true"
-            android:parentActivityName=".t6_dashboard" />
+            android:parentActivityName=".t9_time_table" />
         <activity
             android:name=".t13_check_attendance_activity"
             android:exported="true"
